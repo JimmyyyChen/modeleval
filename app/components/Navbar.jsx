@@ -1,20 +1,27 @@
-"use client";
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+"use client"; // headless ui problem
+import { Fragment } from "react";
+import { usePathname } from "next/navigation";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  CircleStackIcon,
+  BeakerIcon,
+  CubeIcon,
+} from "@heroicons/react/24/solid";
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-]
+  { name: "数据集", icon: CircleStackIcon, href: "/datasets"},
+  { name: "测试", icon: BeakerIcon, href: "/testings"},
+  { name: "模型", icon: CubeIcon, href: "/language-models"},
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar({ isSignIn }) {
+  const pathname = usePathname();
   return (
     <Disclosure as="nav" className="bg-transparent">
       {({ open }) => (
@@ -23,7 +30,7 @@ export default function Navbar({ isSignIn }) {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-gray-900">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -35,12 +42,13 @@ export default function Navbar({ isSignIn }) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-12 w-auto"
-                    // access logo in next public folder
-                    src="logo.png"
-                    alt="Your Company"
-                  />
+                  <a href="/">
+                    <img
+                      className="h-12 w-auto"
+                      src="logo.png"
+                      alt="ModalEval Logo"
+                    />
+                  </a>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -49,30 +57,26 @@ export default function Navbar({ isSignIn }) {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'text-teal-600 font-bold' : 'text-gray-400 hover:text-gray-700 font-medium',
-                          'rounded-md px-3 py-2 text-base'
+                          pathname.startsWith(item.href)
+                            ? "text-teal-600 font-bold"
+                            : "text-gray-400 hover:text-gray-700 font-medium",
+                          "rounded-md px-3 py-2 text-base"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
-                        {item.name}
+                        <div className="flex items-center space-x-2">
+                          <item.icon className="h-5 w-5" aria-hidden="true" />
+                          <span>{item.name}</span>
+                        </div>
                       </a>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full p-1 text-gray-500 hover:text-teal-700"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
                 {/* Profile dropdown */}
                 {/* show Profile dropdown only when isSignIn */}
-                {isSignIn &&
+                {isSignIn && (
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm">
@@ -99,7 +103,10 @@ export default function Navbar({ isSignIn }) {
                           {({ active }) => (
                             <a
                               href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Your Profile
                             </a>
@@ -109,7 +116,10 @@ export default function Navbar({ isSignIn }) {
                           {({ active }) => (
                             <a
                               href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Settings
                             </a>
@@ -119,7 +129,10 @@ export default function Navbar({ isSignIn }) {
                           {({ active }) => (
                             <a
                               href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
                             >
                               Sign out
                             </a>
@@ -128,8 +141,7 @@ export default function Navbar({ isSignIn }) {
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                }
-
+                )}
               </div>
             </div>
           </div>
@@ -142,12 +154,17 @@ export default function Navbar({ isSignIn }) {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-teal-700 text-white' : 'text-gray-500 hover:bg-gray-400 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "text-teal-600 font-bold"
+                      : "text-gray-400 hover:text-gray-700 font-medium",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
-                  {item.name}
+                  <div className="flex items-center space-x-2">
+                    <item.icon className="h-5 w-5" aria-hidden="true" />
+                    <span>{item.name}</span>
+                  </div>
                 </Disclosure.Button>
               ))}
             </div>
@@ -155,5 +172,5 @@ export default function Navbar({ isSignIn }) {
         </>
       )}
     </Disclosure>
-  )
+  );
 }
