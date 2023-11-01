@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -31,9 +33,9 @@ export default function Home() {
                 密码
               </label>
               <div className="text-sm">
-                <a href="#" className="font-semibold text-teal-600 hover:text-teal-500">
+                <Link href="#" className="font-semibold text-teal-600 hover:text-teal-500">
                   忘记密码?
-                </a>
+                </Link>
               </div>
             </div>
             <div className="mt-2">
@@ -60,9 +62,9 @@ export default function Home() {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           还没有帐号？{' '}
-          <a href="/registration" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
+          <Link href="/registration" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
             注册
-          </a>
+          </Link>
         </p>
       </div>
     </main>

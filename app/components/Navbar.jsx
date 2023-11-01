@@ -1,6 +1,7 @@
 "use client"; // headless ui problem
 import { Fragment } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -42,18 +43,18 @@ export default function Navbar({ isSignIn }) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <a href="/">
+                  <Link href="/">
                     <img
                       className="h-12 w-auto"
                       src="logo.png"
                       alt="ModalEval Logo"
                     />
-                  </a>
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -68,7 +69,7 @@ export default function Navbar({ isSignIn }) {
                           <item.icon className="h-5 w-5" aria-hidden="true" />
                           <span>{item.name}</span>
                         </div>
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -101,7 +102,7 @@ export default function Navbar({ isSignIn }) {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <Link
                               href="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -109,12 +110,12 @@ export default function Navbar({ isSignIn }) {
                               )}
                             >
                               Your Profile
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <Link
                               href="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -122,12 +123,12 @@ export default function Navbar({ isSignIn }) {
                               )}
                             >
                               Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <Link
                               href="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -135,7 +136,7 @@ export default function Navbar({ isSignIn }) {
                               )}
                             >
                               Sign out
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                       </Menu.Items>

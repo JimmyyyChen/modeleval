@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function Home() {
   return (
       <main className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -69,9 +71,9 @@ export default function Home() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             已有帐号？{' '}
-            <a href="/sign-in" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
+            <Link href="/sign-in" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
               登录
-            </a>
+            </Link>
           </p>
         </div>
       </main>
