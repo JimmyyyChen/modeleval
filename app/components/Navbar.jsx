@@ -1,8 +1,7 @@
 "use client"; // headless ui problem
-import { Fragment } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -64,7 +63,9 @@ export default function Navbar() {
                             : "text-gray-500 hover:text-gray-700 font-medium",
                           "rounded-md px-3 py-2 text-base"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={
+                          pathname.startsWith(item.href) ? "page" : undefined
+                        }
                       >
                         <div className="flex items-center space-x-2">
                           <item.icon className="h-5 w-5" aria-hidden="true" />
@@ -77,7 +78,12 @@ export default function Navbar() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
-                <UserButton afterSignOutUrl="/" />
+                <UserButton
+                  afterSignOutUrl="/"
+                  showName="true"
+                  userProfileMode="navigation"
+                  userProfileUrl="/profile"
+                />
               </div>
             </div>
           </div>
@@ -90,12 +96,14 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current
+                    pathname.startsWith(item.href)
                       ? "text-teal-600 font-bold"
                       : "text-gray-400 hover:text-gray-700 font-medium",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={
+                    pathname.startsWith(item.href) ? "page" : undefined
+                  }
                 >
                   <div className="flex items-center space-x-2">
                     <item.icon className="h-5 w-5" aria-hidden="true" />

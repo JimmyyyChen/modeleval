@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from './components/Navbar'
 import { ClerkProvider } from '@clerk/nextjs'
-import { frFR, zhCN } from "@clerk/localizations";
+import { zhCN } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ['latin'] })
 
