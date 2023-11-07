@@ -9,7 +9,7 @@ import {
   BeakerIcon,
   CubeIcon,
 } from "@heroicons/react/24/solid";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 const navigation = [
   { name: "数据集", icon: CircleStackIcon, href: "/datasets" },
@@ -77,13 +77,14 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                <UserButton
-                  afterSignOutUrl="/"
-                  showName="true"
-                  userProfileMode="navigation"
-                  userProfileUrl="/profile"
-                />
+                <SignedIn>
+                  <UserButton
+                    afterSignOutUrl="/"
+                    showName="true"
+                    userProfileMode="navigation"
+                    userProfileUrl="/profile"
+                  />
+                </SignedIn>
               </div>
             </div>
           </div>
