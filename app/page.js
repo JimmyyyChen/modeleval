@@ -3,7 +3,6 @@ import Link from "next/link"
 
 export default function Home() {
   return (
-    <main>
       <div className="text-left">
         <div className="flex flex-col sm:flex-row items-center">
           <img src="logo.png" alt="logo" className="h-24" />
@@ -32,6 +31,5 @@ export default function Home() {
           </div>
         </SignedOut>
       </div>
-    </main >
   )
 }

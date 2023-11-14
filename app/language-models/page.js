@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <main>
-      Language-Models
-    </main>
+    <div>
+      Language - Models
+    </div>
   )
 }
