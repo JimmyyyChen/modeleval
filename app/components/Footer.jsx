@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-			<footer className="footer flex items-center flex-col p-4 space-y-6 sm:space-y-0 sm:justify-between sm:flex-row">
+			<footer className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 footer flex items-center flex-col p-4 space-y-6 sm:space-y-0 sm:justify-between sm:flex-row">
 				<div className="flex flex-shrink-0 items-center flex-col space-y-4 sm:space-y-0 sm:space-x-6 sm:h-full sm:flex-row">
 					<div className="flex flex-shrink-0 items-center">
 						<Link href="/">
@@ -46,7 +46,7 @@ export default function Footer() {
 						<p className="text-gray-600 text-sm">About us</p>
 					</Link>
 
-					// TODO: Add Email link
+					{/* TODO: Add Email link */}
 					<Link
 						href="mailto:example@example.com"
 						className="flex flex-row items-center space-x-2 sm:space-x-0 sm:flex-col hover:text-gray-700 hover:font-semibold"
