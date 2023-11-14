@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="text-left">
-        <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row items-center">
           <img src="logo.png" alt="logo" className="h-24" />
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             ModelEval
           </h1>
         </div>
         <p className="mt-6 text-lg leading-8 text-gray-600">
-          Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
+          Anim autee id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
           cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
         </p>
         <SignedOut>
