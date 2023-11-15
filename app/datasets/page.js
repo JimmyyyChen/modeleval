@@ -1,51 +1,51 @@
 const datasetLabels = [
-	{
-		id: 1,
-		label: "类型",
-		value: [
-			{
-				id: 1,
-				content: "主观",
-			},
-			{
-				id: 2,
-				content: "客观",
-			},
-		],
-	},
-	{
-		id: 2,
-		label: "大小",
-		value: [
-			{
-				id: 1,
-				content: "<1K",
-			},
-			{
-				id: 2,
-				content: "1K-10K",
-			},
-			{
-				id: 3,
-				content: "10K-100K",
-			},
-			{
-				id: 4,
-				content: "100K-1M",
-			},
-			{
-				id: 5,
-				content: "1M-10M",
-			},
-			{
-				id: 6,
-				content: ">10M",
-			},
-		],
-	},
-	{
-		id: 3,
-		label: "任务",
+  {
+    id: 1,
+    label: "类型",
+    value: [
+      {
+        id: 1,
+        content: "主观",
+      },
+      {
+        id: 2,
+        content: "客观",
+      },
+    ],
+  },
+  {
+    id: 2,
+    label: "大小",
+    value: [
+      {
+        id: 1,
+        content: "<1K",
+      },
+      {
+        id: 2,
+        content: "1K-10K",
+      },
+      {
+        id: 3,
+        content: "10K-100K",
+      },
+      {
+        id: 4,
+        content: "100K-1M",
+      },
+      {
+        id: 5,
+        content: "1M-10M",
+      },
+      {
+        id: 6,
+        content: ">10M",
+      },
+    ],
+  },
+  {
+    id: 3,
+    label: "任务",
     value: [
       {
         id: 1,
@@ -68,7 +68,7 @@ const datasetLabels = [
         content: "其他",
       },
     ],
-	},
+  },
 ];
 
 const datasets = [
@@ -212,105 +212,102 @@ const datasets = [
     likes: "1000",
     downloads: "100",
   },
-
 ];
 
 export default function Home() {
-	return (
-		<>
-			<div className="text-4xl text-teal-600 text-left font-bold w-full">
-				<p>数据集</p>
-			</div>
+  return (
+    <>
+      <div className="text-4xl text-teal-600 text-left font-bold w-full">
+        <p>数据集</p>
+      </div>
 
-			<div className="w-full min-h-screen flex mt-6 space-x-6">
-				<div className="w-1/3 min-h-full bg-white rounded-xl">
-					<form className="w-full flex items-center justify-between bg-gray-200 rounded-lg rounded-b-none p-4 flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
-						<input
-							className="input input-bordered w-5/6"
-							placeholder="搜索数据集"
-						/>
-						{/* TODO: Add post link */}
-						<button className="w-16 btn btn-outline bg-teal-600 text-white">
-							搜索
-						</button>
-					</form>
+      <div className="w-full min-h-screen flex mt-6 space-x-6">
+        <div className="w-1/3 min-h-full bg-white rounded-xl">
+          <form className="w-full flex items-center justify-between bg-gray-200 rounded-lg rounded-b-none p-4 flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
+            <input
+              className="input input-bordered w-5/6"
+              placeholder="搜索数据集"
+            />
+            {/* TODO: Add post link */}
+            <button className="w-16 btn btn-primary text-white">搜索</button>
+          </form>
 
-					{/* TODO: Add post link */}
-					<form className="w-full p-4 divide-y-2">
-						{datasetLabels.map((item) => (
-							<div
-								key={item.id}
-								className="w-full flex flex-col space-y-2 m-2 pt-2"
-							>
-								<div className="text-lg text-teal-600 font-bold">
-									{item.label}
-								</div>
-								<div className="w-full flex flex-wrap">
-									{item.value.map((value) => (
-										<div
-											key={value.id}
-											className="form-control rounded-lg m-2 bg-gray-200 border border-collapse"
-										>
-											<label className="label cursor-pointer space-x-2">
-												<span className="label-text">{value.content}</span>
-												<input type="checkbox" className="checkbox" />
-											</label>
-										</div>
-									))}
-								</div>
-							</div>
-						))}
+          {/* TODO: Add post link */}
+          <form className="w-full p-4 divide-y-2">
+            {datasetLabels.map((item) => (
+              <div
+                key={item.id}
+                className="w-full flex flex-col space-y-2 m-2 pt-2"
+              >
+                <div className="text-lg text-teal-600 font-bold">
+                  {item.label}
+                </div>
+                <div className="w-full flex flex-wrap">
+                  {item.value.map((value) => (
+                    <div
+                      key={value.id}
+                      className="form-control rounded-lg m-2 bg-gray-200 border border-collapse"
+                    >
+                      <label className="label cursor-pointer space-x-2">
+                        <span className="label-text">{value.content}</span>
+                        <input type="checkbox" className="checkbox" />
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
 
-						<button className="w-full btn btn-outline bg-teal-600 text-white">
-							确认条件
-						</button>
-					</form>
-				</div>
+            <button className="w-full btn btn-outline bg-teal-600 text-white">
+              确认条件
+            </button>
+          </form>
+        </div>
 
-				<div className="w-2/3 min-h-full flex flex-col p-4 bg-white rounded-2xl">
-					<div className="w-full h-16 flex justify-end space-x-2">
-						{/* TODO: Add button onClick functions */}
-						<button className="btn btn-outline bg-teal-600 text-white">
-							选择数据集
-						</button>
-						<button className="btn btn-outline bg-teal-600 text-white">
-							下载
-						</button>
-					</div>
-					<div className="w-full flex-1 flex items-center justify-center">
-						<div className="overflow-x-auto max-h-96 m-4 rounded-lg border">
-							<table className="table table-pin-rows table-zebra text-center w-full">
-								<thead>
-									<tr className="bg-gray-200 font-bold text-black shadow-md">
-										<th></th>
-										<td>Name</td>
-										<td>Last Updata</td>
-										<td>Likes</td>
-										<td>Downloads</td>
-										<td>Operations</td>
-									</tr>
-								</thead>
-								<tbody>
-									{datasets.map((item) => (
-										<tr key={item.id}>
-											<th>{item.id}</th>
-											<td>{item.name}</td>
-											<td>{item.last_updata}</td>
-											<td>{item.likes}</td>
-											<td>{item.downloads}</td>
-											<td className="flex items-center justify-center">
-												<label className="cursor-pointer label w-min">
-													<input type="checkbox" className="checkbox" />
-												</label>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+        <div className="w-2/3 min-h-full flex flex-col p-4 bg-white rounded-2xl">
+          <div className="w-full h-16 flex justify-end space-x-2">
+            {/* TODO: Add button onClick functions */}
+            <button className="btn btn-outline bg-teal-600 text-white">
+              选择数据集
+            </button>
+            <button className="btn btn-outline bg-teal-600 text-white">
+              下载
+            </button>
+          </div>
+          <div className="w-full flex-1 flex items-center justify-center">
+            <div className="overflow-x-auto max-h-96 m-4 rounded-lg border">
+              <table className="table table-pin-rows table-zebra text-center w-full">
+                <thead>
+                  <tr className="bg-gray-200 font-bold text-black shadow-md">
+                    <th></th>
+                    <td>Name</td>
+                    <td>Last Updata</td>
+                    <td>Likes</td>
+                    <td>Downloads</td>
+                    <td>Operations</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {datasets.map((item) => (
+                    <tr key={item.id}>
+                      <th>{item.id}</th>
+                      <td>{item.name}</td>
+                      <td>{item.last_updata}</td>
+                      <td>{item.likes}</td>
+                      <td>{item.downloads}</td>
+                      <td className="flex items-center justify-center">
+                        <label className="cursor-pointer label w-min">
+                          <input type="checkbox" className="checkbox" />
+                        </label>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
