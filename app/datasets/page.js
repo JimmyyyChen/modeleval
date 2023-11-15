@@ -217,36 +217,36 @@ const datasets = [
 export default function Home() {
   return (
     <>
-      <div className="text-4xl text-teal-600 text-left font-bold w-full">
+      <div className="w-full text-left text-4xl font-bold text-teal-600">
         <p>数据集</p>
       </div>
 
-      <div className="w-full min-h-screen flex mt-6 space-x-6">
-        <div className="w-1/3 min-h-full bg-white rounded-xl">
-          <form className="w-full flex items-center justify-between bg-gray-200 rounded-lg rounded-b-none p-4 flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
+      <div className="mt-6 flex min-h-screen w-full space-x-6">
+        <div className="min-h-full w-1/3 rounded-xl bg-white">
+          <form className="flex w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:flex-row lg:space-x-2 lg:space-y-0">
             <input
               className="input input-bordered w-5/6"
               placeholder="搜索数据集"
             />
             {/* TODO: Add post link */}
-            <button className="w-16 btn btn-primary text-white">搜索</button>
+            <button className="btn btn-primary w-16 text-white">搜索</button>
           </form>
 
           {/* TODO: Add post link */}
-          <form className="w-full p-4 divide-y-2">
+          <form className="w-full divide-y-2 p-4">
             {datasetLabels.map((item) => (
               <div
                 key={item.id}
-                className="w-full flex flex-col space-y-2 m-2 pt-2"
+                className="m-2 flex w-full flex-col space-y-2 pt-2"
               >
-                <div className="text-lg text-teal-600 font-bold">
+                <div className="text-lg font-bold text-teal-600">
                   {item.label}
                 </div>
-                <div className="w-full flex flex-wrap">
+                <div className="flex w-full flex-wrap">
                   {item.value.map((value) => (
                     <div
                       key={value.id}
-                      className="form-control rounded-lg m-2 bg-gray-200 border border-collapse"
+                      className="form-control m-2 border-collapse rounded-lg border bg-gray-200"
                     >
                       <label className="label cursor-pointer space-x-2">
                         <span className="label-text">{value.content}</span>
@@ -258,14 +258,14 @@ export default function Home() {
               </div>
             ))}
 
-            <button className="w-full btn btn-outline bg-teal-600 text-white">
+            <button className="btn btn-outline w-full bg-teal-600 text-white">
               确认条件
             </button>
           </form>
         </div>
 
-        <div className="w-2/3 min-h-full flex flex-col p-4 bg-white rounded-2xl">
-          <div className="w-full h-16 flex justify-end space-x-2">
+        <div className="flex min-h-full w-2/3 flex-col rounded-2xl bg-white p-4">
+          <div className="flex h-16 w-full justify-end space-x-2">
             {/* TODO: Add button onClick functions */}
             <button className="btn btn-outline bg-teal-600 text-white">
               选择数据集
@@ -274,9 +274,9 @@ export default function Home() {
               下载
             </button>
           </div>
-          <div className="w-full flex-1 flex items-center justify-center">
-            <div className="overflow-x-auto max-h-96 m-4 rounded-lg border">
-              <table className="table table-pin-rows table-zebra text-center w-full">
+          <div className="flex w-full flex-1 items-center justify-center">
+            <div className="m-4 max-h-96 overflow-x-auto rounded-lg border">
+              <table className="table table-zebra table-pin-rows w-full text-center">
                 <thead>
                   <tr className="bg-gray-200 font-bold text-black shadow-md">
                     <th></th>
@@ -296,7 +296,7 @@ export default function Home() {
                       <td>{item.likes}</td>
                       <td>{item.downloads}</td>
                       <td className="flex items-center justify-center">
-                        <label className="cursor-pointer label w-min">
+                        <label className="label w-min cursor-pointer">
                           <input type="checkbox" className="checkbox" />
                         </label>
                       </td>

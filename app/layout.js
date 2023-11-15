@@ -13,9 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider localization={zhCN}>
       <html lang="zh">
-        <body className="min-h-screen flex flex-col justify-between">
+        <body className="flex min-h-screen flex-col justify-between">
           <Navbar />
-          <main className="flex-1 flex flex-col items-center justify-between px-16 py-6  ">
+          <main className="flex flex-1 flex-col items-center justify-between px-16 py-6">
             {children}
           </main>
           <Footer />

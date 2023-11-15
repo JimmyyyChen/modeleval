@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mx-auto px-2 sm:px-6 lg:px-8 footer flex items-center flex-col p-4 space-y-6 sm:space-y-0 sm:justify-between sm:flex-row">
-      <div className="flex flex-shrink-0 items-center flex-col space-y-4 sm:space-y-0 sm:space-x-6 sm:h-full sm:flex-row">
+    <footer className="footer mx-auto flex flex-col items-center space-y-6 p-4 px-2 sm:flex-row sm:justify-between sm:space-y-0 sm:px-6 lg:px-8">
+      <div className="flex flex-shrink-0 flex-col items-center space-y-4 sm:h-full sm:flex-row sm:space-x-6 sm:space-y-0">
         <div className="flex flex-shrink-0 items-center">
           <Link href="/">
             <img
@@ -13,7 +13,7 @@ export default function Footer() {
             />
           </Link>
         </div>
-        <div className="text-gray-500 text-sm flex flex-col flex-shrink-0 items-center sm:flex-row">
+        <div className="flex flex-shrink-0 flex-col items-center text-sm text-gray-500 sm:flex-row">
           <div>
             <p>&copy; 2023 ModalEval.&nbsp;</p>
           </div>
@@ -23,10 +23,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="text-gray-500 flex flex-col space-y-4 items-center sm:space-x-6 sm:space-y-0 sm:flex-row">
+      <div className="flex flex-col items-center space-y-4 text-gray-500 sm:flex-row sm:space-x-6 sm:space-y-0">
         <Link
           href="/about"
-          className="flex flex-row items-center space-x-2 sm:space-x-0 sm:flex-col hover:text-gray-700 hover:font-semibold"
+          className="flex flex-row items-center space-x-2 hover:font-semibold hover:text-gray-700 sm:flex-col sm:space-x-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function Footer() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -43,13 +43,13 @@ export default function Footer() {
             />
           </svg>
 
-          <p className="text-gray-600 text-sm">About us</p>
+          <p className="text-sm text-gray-600">About us</p>
         </Link>
 
         {/* TODO: Add Email link */}
         <Link
           href="mailto:example@example.com"
-          className="flex flex-row items-center space-x-2 sm:space-x-0 sm:flex-col hover:text-gray-700 hover:font-semibold"
+          className="flex flex-row items-center space-x-2 hover:font-semibold hover:text-gray-700 sm:flex-col sm:space-x-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@ export default function Footer() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -66,7 +66,7 @@ export default function Footer() {
             />
           </svg>
 
-          <p className="text-gray-600 text-sm">Contact</p>
+          <p className="text-sm text-gray-600">Contact</p>
         </Link>
       </div>
     </footer>
