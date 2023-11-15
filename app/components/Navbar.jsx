@@ -59,7 +59,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           pathname.startsWith(item.href)
-                            ? "text-teal-600 font-bold"
+                            ? "text-teal-800 font-bold"
                             : "text-gray-500 hover:text-gray-700 font-medium",
                           "rounded-md px-3 py-2 text-base"
                         )}
@@ -83,6 +83,15 @@ export default function Navbar() {
                     showName="true"
                     userProfileMode="navigation"
                     userProfileUrl="/profile"
+                    appearance={{
+                      variables: {
+                        colorPrimary: "#497174",
+                      },
+                      elements: {
+                        formFieldInput:
+                          "rounded-lg focus:ring-teal-800 focus:border-teal-800 border-gray-200",
+                      },
+                    }}
                   />
                 </SignedIn>
               </div>
@@ -98,7 +107,7 @@ export default function Navbar() {
                   href={item.href}
                   className={classNames(
                     pathname.startsWith(item.href)
-                      ? "text-teal-600 font-bold"
+                      ? "text-teal-800 font-bold"
                       : "text-gray-400 hover:text-gray-700 font-medium",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}

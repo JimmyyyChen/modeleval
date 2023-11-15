@@ -4,14 +4,11 @@ export default function Home() {
   return (
     <UserProfile
       appearance={{
+        "variables": {
+          "colorPrimary": "#497174",
+        },
         elements: {
-          profileSectionPrimaryButton:
-            "hover:bg-green-50 text-teal-800",
-          badge: "bg-teal-600 text-white",
-          avatarImageActionsUpload: "text-teal-800",
-          fileDropAreaButtonPrimary: "text-teal-800 hover:bg-green-50",
-          formButtonReset: "text-teal-800 hover:bg-green-50",
-          formButtonPrimary: "bg-teal-800 hover:bg-teal-700",
+          formFieldInput: "rounded-lg focus:ring-teal-600 focus:border-teal-600 border-gray-200",
         },
       }}
     />
