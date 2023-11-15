@@ -217,12 +217,12 @@ const datasets = [
 export default function Home() {
   return (
     <>
-      <div className="w-full text-left text-4xl font-bold text-teal-600">
+      <div className="w-full text-center text-4xl font-bold text-primary sm:text-left">
         <p>数据集</p>
       </div>
 
-      <div className="mt-6 flex min-h-screen w-full space-x-6">
-        <div className="min-h-full w-1/3 rounded-xl bg-white">
+      <div className="mt-6 flex min-h-screen flex-wrap space-x-0 space-y-6 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
+        <div className="h-fit w-full rounded-xl bg-white sm:w-1/3">
           <form className="flex w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:flex-row lg:space-x-2 lg:space-y-0">
             <input
               className="input input-bordered w-5/6"
@@ -239,7 +239,7 @@ export default function Home() {
                 key={item.id}
                 className="m-2 flex w-full flex-col space-y-2 pt-2"
               >
-                <div className="text-lg font-bold text-teal-600">
+                <div className="text-lg font-bold text-primary">
                   {item.label}
                 </div>
                 <div className="flex w-full flex-wrap">
@@ -258,53 +258,47 @@ export default function Home() {
               </div>
             ))}
 
-            <button className="btn btn-outline w-full bg-teal-600 text-white">
+            <button className="btn btn-primary w-full text-white">
               确认条件
             </button>
           </form>
         </div>
 
-        <div className="flex min-h-full w-2/3 flex-col rounded-2xl bg-white p-4">
+        <div className="flex min-h-full w-full flex-col rounded-2xl bg-white p-4 sm:w-2/3">
           <div className="flex h-16 w-full justify-end space-x-2">
             {/* TODO: Add button onClick functions */}
-            <button className="btn btn-outline bg-teal-600 text-white">
-              选择数据集
-            </button>
-            <button className="btn btn-outline bg-teal-600 text-white">
-              下载
-            </button>
+            <button className="btn btn-primary text-white">选择数据集</button>
+            <button className="btn btn-primary text-white">下载</button>
           </div>
-          <div className="flex w-full flex-1 items-center justify-center">
-            <div className="m-4 max-h-96 overflow-x-auto rounded-lg border">
-              <table className="table table-zebra table-pin-rows w-full text-center">
-                <thead>
-                  <tr className="bg-gray-200 font-bold text-black shadow-md">
-                    <th></th>
-                    <td>Name</td>
-                    <td>Last Updata</td>
-                    <td>Likes</td>
-                    <td>Downloads</td>
-                    <td>Operations</td>
+          <div className="flex w-full flex-1 items-center justify-center overflow-auto">
+            <table className="table table-zebra table-pin-rows w-full text-center">
+              <thead>
+                <tr className="bg-gray-200 font-bold text-black shadow-md">
+                  <th></th>
+                  <td>Name</td>
+                  <td>Last Updata</td>
+                  <td>Likes</td>
+                  <td>Downloads</td>
+                  <td>Operations</td>
+                </tr>
+              </thead>
+              <tbody>
+                {datasets.map((item) => (
+                  <tr key={item.id}>
+                    <th>{item.id}</th>
+                    <td>{item.name}</td>
+                    <td>{item.last_updata}</td>
+                    <td>{item.likes}</td>
+                    <td>{item.downloads}</td>
+                    <td className="flex items-center justify-center">
+                      <label className="label w-min cursor-pointer">
+                        <input type="checkbox" className="checkbox" />
+                      </label>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {datasets.map((item) => (
-                    <tr key={item.id}>
-                      <th>{item.id}</th>
-                      <td>{item.name}</td>
-                      <td>{item.last_updata}</td>
-                      <td>{item.likes}</td>
-                      <td>{item.downloads}</td>
-                      <td className="flex items-center justify-center">
-                        <label className="label w-min cursor-pointer">
-                          <input type="checkbox" className="checkbox" />
-                        </label>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
