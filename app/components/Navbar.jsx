@@ -85,7 +85,7 @@ export default function Navbar() {
                     userProfileUrl="/profile"
                     appearance={{
                       variables: {
-                        colorPrimary: "#134e4a",
+                        colorPrimary: "#497174",
                       },
                       elements: {
                         formFieldInput:

@@ -5,7 +5,7 @@ export default function Home() {
     <UserProfile
       appearance={{
         "variables": {
-          "colorPrimary": "#134e4a",
+          "colorPrimary": "#497174",
         },
         elements: {
           formFieldInput: "rounded-lg focus:ring-teal-600 focus:border-teal-600 border-gray-200",
