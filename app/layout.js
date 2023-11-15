@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <html lang="zh">
         <body className='min-h-screen flex flex-col justify-between'>
           <Navbar />
-          <main className="flex-1 flex-col items-center justify-between px-24 py-6">
+          <main className="flex-1 flex-col items-center justify-between px-16 py-6">
             {children}
           </main>
           <Footer />

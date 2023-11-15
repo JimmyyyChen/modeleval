@@ -1,8 +1,9 @@
-export default function Home() {
+import TestingCard from "./components/TestingCard"
+
+export default function TestingsPage() {
   return (
-    <div>
-      Testings
-      <button class="btn">Button</button>
+    <div className="w-full">
+      <TestingCard />
     </div>
   )
 }

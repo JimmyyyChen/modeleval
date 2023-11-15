@@ -1,7 +1,7 @@
 import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link"
 
-export default function Home() {
+export default function HomePage() {
   return (
       <div className="text-left">
         <div className="flex flex-col sm:flex-row items-center">
