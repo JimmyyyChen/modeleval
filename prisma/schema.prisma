@@ -20,9 +20,9 @@ model Testing {
   userId Int
   user   User @relation(fields: [userId], references: [id])
   name  String
-  size Int
+  sizeInMB Int
   startTime DateTime
-  endTime DateTime
+  endTime DateTime?
   taskCount Int
   completedTaskCount Int
   type String
