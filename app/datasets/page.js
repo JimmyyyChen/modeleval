@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const datasetLabels = [
   {
     id: 1,
@@ -215,14 +217,16 @@ const datasets = [
 ];
 
 export default function Home() {
+  const pages = Math.ceil(datasets.length / 10);
+
   return (
     <>
       <div className="w-full text-center text-4xl font-bold text-primary sm:text-left">
         <p>数据集</p>
       </div>
 
-      <div className="mt-6 flex min-h-screen flex-wrap space-x-0 space-y-6 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
-        <div className="h-fit w-full rounded-xl bg-white sm:w-1/3">
+      <div className="mt-6 flex w-full flex-wrap space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0">
+        <div className="flex w-full flex-1 flex-col rounded-xl bg-white shadow-lg sm:w-1/3">
           <form className="flex w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:flex-row lg:space-x-2 lg:space-y-0">
             <input
               className="input input-bordered w-5/6"
@@ -258,22 +262,22 @@ export default function Home() {
               </div>
             ))}
 
-            <button className="btn btn-primary w-full text-white">
+            <button className="btn btn-primary mt-6 w-full text-white">
               确认条件
             </button>
           </form>
         </div>
 
-        <div className="flex min-h-full w-full flex-col rounded-2xl bg-white p-4 sm:w-2/3">
+        <div className="flex min-h-full w-full flex-col rounded-2xl bg-white p-6 shadow-lg sm:w-2/3">
           <div className="flex h-16 w-full justify-end space-x-2">
             {/* TODO: Add button onClick functions */}
             <button className="btn btn-primary text-white">选择数据集</button>
             <button className="btn btn-primary text-white">下载</button>
           </div>
-          <div className="flex w-full flex-1 items-center justify-center overflow-auto">
+          <div className="flex w-full flex-1 flex-col items-center justify-center space-y-4 overflow-auto">
             <table className="table table-zebra table-pin-rows w-full text-center">
               <thead>
-                <tr className="bg-gray-200 font-bold text-black shadow-md">
+                <tr className="bg-gray-200 font-bold text-black shadow-md 2xl:text-lg">
                   <th></th>
                   <td>Name</td>
                   <td>Last Updata</td>
@@ -283,10 +287,18 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {datasets.map((item) => (
+                {/* TODO: Modify the datasets */}
+                {datasets.slice(0, 10).map((item) => (
                   <tr key={item.id}>
                     <th>{item.id}</th>
-                    <td>{item.name}</td>
+                    <td>
+                      <Link
+                        href={`/datasets/details/${item.name}`}
+                        className="btn btn-primary"
+                      >
+                        {item.name}
+                      </Link>
+                    </td>
                     <td>{item.last_updata}</td>
                     <td>{item.likes}</td>
                     <td>{item.downloads}</td>
@@ -299,6 +311,28 @@ export default function Home() {
                 ))}
               </tbody>
             </table>
+
+            <div className="join flex items-center justify-center">
+              <input
+                key="1"
+                className="btn btn-square join-item"
+                type="radio"
+                name="options"
+                aria-label="1"
+                defaultChecked
+              />
+              {Array.from({ length: pages - 1 }, (_, i) => i + 2).map(
+                (item) => (
+                  <input
+                    key={item}
+                    className="btn btn-square join-item"
+                    type="radio"
+                    name="options"
+                    aria-label={item}
+                  />
+                ),
+              )}
+            </div>
           </div>
         </div>
       </div>
