@@ -10,15 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       Int       @id @default(autoincrement())
-  testings Testing[]
-}
-
 model Testing {
   id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  userId String  
   name  String
   sizeInMB Int
   startTime DateTime

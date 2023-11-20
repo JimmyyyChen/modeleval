@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div className="text-left">
       <div className="flex flex-col items-center sm:flex-row">
-        <img src="logo.png" alt="logo" className="h-24" />
+        <img src="/logo.png" alt="logo" className="h-24" />
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           ModelEval
         </h1>
