@@ -8,7 +8,7 @@ export default function Footer() {
           <Link href="/">
             <img
               className="h-16 w-auto sm:h-16"
-              src="logo.png"
+              src="/logo.png"
               alt="ModalEval Logo"
             />
           </Link>
