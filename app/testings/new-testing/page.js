@@ -46,7 +46,7 @@ export default function NewTestingPage() {
       </Link>
 
       {/* make a white card with round corner */}
-      <div className="flex flex-col items-center justify-center space-y-10 rounded-lg bg-white p-8 sm:p-20 shadow-lg">
+      <div className="flex flex-col items-center justify-center space-y-10 rounded-lg bg-white p-8 shadow-lg sm:p-20">
         <div className="flex w-full max-w-lg flex-col space-y-2">
           <h2 className="text-xl font-bold">评测方法</h2>
           <select className="select select-bordered">

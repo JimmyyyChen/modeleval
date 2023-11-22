@@ -49,7 +49,7 @@ export default function TestingCard({
   }
 
   return (
-    <div className="m-3 w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-3 shadow-xl sm:flex sm:space-y-0">
+    <div className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-3 shadow-md sm:flex sm:space-y-0">
       <div
         className="radial-progress"
         style={{ "--value": progress, "--size": "3.3rem" }}
@@ -75,10 +75,10 @@ export default function TestingCard({
       </div>
 
       <div className="ml-auto space-x-1">
-        <button className="btn btn-ghost rounded-full" onClick={deleteTesting}>
+        <button className="btn btn-circle btn-ghost" onClick={deleteTesting}>
           <XMarkIcon className="h-5 w-5" />
         </button>
-        <button className="btn btn-ghost rounded-full">
+        <button className="btn btn-circle btn-ghost">
           <PauseIcon className="h-5 w-5" />
         </button>
         <button className="btn btn-neutral rounded-full ">

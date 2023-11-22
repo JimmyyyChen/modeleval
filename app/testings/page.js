@@ -3,9 +3,9 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
 import TestingCard from "./components/TestingCard";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default async function TestingsPage() {
-
   // get userId from clerk
   const { userId } = auth();
 
@@ -20,10 +20,11 @@ export default async function TestingsPage() {
   });
 
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col space-y-4">
       {/* Add Demo Testing */}
-      <Link className="btn" href="/testings/new-testing">
-        TODO: Add Demo Testing
+      <Link className="btn btn-secondary rounded-full shadow-md" href="/testings/new-testing">
+        <PlusIcon className="h-6 w-6" />
+        新测试
       </Link>
 
       {/* print all testings */}
