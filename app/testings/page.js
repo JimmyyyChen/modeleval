@@ -37,6 +37,7 @@ export default async function TestingsPage() {
           completedTaskCount={testing.completedTaskCount}
           startTime={testing.startTime}
           endTime={testing.endTime}
+          key={testing.id}
         />
       ))}
     </div>
