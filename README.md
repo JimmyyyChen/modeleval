@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ModelEval
 
-## Getting Started
+ModelEval是一个用于评估模型的代码仓库。按照以下步骤在本地机器上安装和运行该项目。
 
-First, run the development server:
+## 安装
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+按照以下步骤安装ModelEval：
+
+1. 克隆仓库：
+
+   ```
+   git clone https://github.com/JimmyyyChen/modeleval.git
+   cd modeleval
+   ```
+
+2. 安装所需的node模块：
+
+   ```
+   npm install
+   ```
+
+## 数据库设置
+
+ModelEval需要一个MySQL数据库。执行以下步骤来设置：
+
+1. 登录MySQL：
+
+   ```
+   mysql -u <username> -p
+   ```
+
+   将`<username>`替换为您的MySQL用户名，并在提示时输入密码。
+
+2. 创建`modeleval`数据库：
+
+   ```
+   CREATE DATABASE modeleval;
+   quit
+   ```
+
+## 配置
+
+1. 创建一个`.env`文件来存储数据库凭证：
+
+   ```
+   touch .env
+   echo 'DATABASE_URL="mysql://<username>:<password>@localhost:3306/modeleval"' > .env
+   ```
+
+   将`<username>`和`<password>`替换为您的MySQL凭证。
+
+## 数据库迁移
+
+运行Prisma迁移来设置数据库架构：
+
+```
+npx prisma migrate dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 运行应用程序
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+使用以下命令运行ModelEval：
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+npm run dev
+```
 
-## Learn More
+现在，应用程序应该在您的本地开发服务器上运行，访问地址为[http://localhost:3000](http://localhost:3000)。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
