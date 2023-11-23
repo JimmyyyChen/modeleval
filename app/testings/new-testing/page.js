@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import axios from "axios";
 
 export default function NewTestingPage() {
   const router = useRouter();
@@ -12,13 +13,8 @@ export default function NewTestingPage() {
     if (!isLoaded || !userId) {
       return null;
     }
-
-    await fetch("/api/testings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      await axios.post("/api/testings", {
         userId: userId,
         name: "THIS IS A DEMO TESTING",
         sizeInMB: 30,
@@ -27,18 +23,14 @@ export default function NewTestingPage() {
         taskCount: 100,
         completedTaskCount: 99,
         type: "Demo",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
       });
+    } catch (error) {
+      console.log(error);
+    }
 
     router.refresh();
   };
+
   return (
     <div className="w-full">
       <Link className="btn" href="/testings" onClick={addDemoTesting}>
