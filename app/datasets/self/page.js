@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { datasets, datasetLabels } from "./data";
 
-// TODO: 组件化
 export default function Home() {
   const pages = Math.ceil(datasets.length / 10);
 
@@ -11,7 +10,7 @@ export default function Home() {
     {/* TODO: 数据集名称长度 */}
       <div className="w-full text-center text-4xl font-bold text-primary sm:text-left">
         {/* TODO: 添加图标 */}
-        <p>数据集</p>
+        <p>我的数据集</p>
       </div>
 
       <div className="mt-6 flex w-full flex-wrap space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0">

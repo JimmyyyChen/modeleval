@@ -1,5 +1,4 @@
 "use client";
-import Badges from "@/app/components/Badges";
 import {
   datasetInfo,
   datasetBadges,
@@ -8,9 +7,12 @@ import {
   issues,
 } from "./data";
 import Community from "@/app/components/Community";
+import UserInfo from "@/app/profile/UserInfo";
+import Badges from "@/app/components/Badges";
+import DataDisplay from "../../DataDisplay";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
-import DataDisplay from "../DataDisplay";
 
+// TODO: 与其他页面雷同，将页面组件化
 export default function Home({ params: { name } }) {
   return (
     <>
@@ -20,21 +22,14 @@ export default function Home({ params: { name } }) {
         <Badges badges={datasetBadges} />
       </div>
 
-      <div className="mt-6 flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
-        <div className="flex h-full w-full flex-col space-y-4 sm:w-1/3">
-          <button className="btn btn-primary w-full text-white">
-            上传条目
-          </button>
-          <button className="btn btn-primary w-full text-white">
-            改动条目
-          </button>
-          <button className="btn btn-primary w-full text-white">
-            删除条目
-          </button>
-        </div>
-
+      <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 sm:flex-row sm:space-y-0 ">
         <div className="h-full w-full p-4 sm:w-2/3">
           <DataDisplay items={datasetItems} pages={pages} />
+        </div>
+
+        {/* TODO: 面板高度问题 */}
+        <div className="h-full w-full p-4 sm:w-1/3">
+          <UserInfo isVisitor={true} />
         </div>
       </div>
 
