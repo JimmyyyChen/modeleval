@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
@@ -16,16 +17,11 @@ export default function TestingCard({
   type,
 }) {
   const deleteTesting = async () => {
-    const res = await fetch(`/api/testings/remove/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      await axios.delete(`/api/testings/remove/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
 
     router.refresh();
   };
