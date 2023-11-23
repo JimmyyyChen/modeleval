@@ -14,7 +14,7 @@ import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 const navigation = [
   { name: "数据集", icon: CircleStackIcon, href: "/datasets" },
   { name: "测试", icon: BeakerIcon, href: "/testings" },
-  { name: "模型", icon: CubeIcon, href: "/language-models" },
+  { name: "模型", icon: CubeIcon, href: "/models" },
 ];
 
 function classNames(...classes) {
