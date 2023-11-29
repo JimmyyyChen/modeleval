@@ -1,7 +1,5 @@
 # API
 
-[TOC]
-
 ## Testings
 
 ### 添加新的测试数据`POST /api/testings`
