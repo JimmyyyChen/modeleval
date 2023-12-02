@@ -21,3 +21,8 @@ model Testing {
   completedTaskCount Int
   type String
 }
+
+model test_model {
+  id     Int  @id @default(autoincrement())
+  name  String
+}
