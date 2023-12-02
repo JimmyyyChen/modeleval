@@ -1,29 +1,48 @@
-# API
+# API-TASK
 
-## Testings
+## 模型测评部分(TODO)
 
-### 添加新的测试数据`POST /api/testings`
+### 获取当前的所有任务(TODO) `GET /api/test/info`
 
 **Request Body:**
 
-- `userId` (string): 用户ID
-- `name` (string): 测试的名称
-- `sizeInMB` (number): 测试大小，以MB为单位
-- `startTime` (date): 测试开始时间
-- `endTime` (date, 可选): 测试结束时间
-- `taskCount` (number): 总任务数量
-- `completedTaskCount` (number): 完成的任务数量
-- `type` (string): 测试类型
+- `userId` (number): 用户ID
 
 **Response:**
 
 - 成功 (`201`): 返回创建的测试数据对象：
-  - `id`(number): 测试数据ID
-  - `userId` (string): 用户ID
-  - `name` (string): 测试的名称
+  - `id`(number): 测试任务的ID
+  - `userId` (string): 发起测试的用户ID
+  - `name` (string): 测试任务的名称
   - `sizeInMB` (number): 测试大小，以MB为单位
   - `startTime` (date): 测试开始时间
-  - `endTime` (date, 可选): 测试结束时间
+  - `endTime` (date): 测试结束时间
+  - `taskCount` (number): 总任务数量
+  - `completedTaskCount` (number): 完成的任务数量
+  - `type` (string): 测试类型
+- 失败 (`500`): 返回错误信息。
+
+### 添加新的测试数据(TODO) `POST /api/test/addNewTask`
+
+**Request Body:**
+
+- `userId` (number): 用户ID
+- `name` (string): 新建测试任务的名称
+- `startTime` (date): 测试开始时间
+- `taskCount` (number): 总任务数量
+- `type` (number): 测试类型，客观评测(0)还是主观评测(1)还是对抗评测(2)
+- `modelName` (string): 选择的评测模型
+- `datasetName` (string): 选择的评测数据集
+
+**Response:**
+
+- 成功 (`201`): 返回创建的测试数据对象：
+  - `id`(number): 测试任务的ID
+  - `userId` (string): 发起测试的用户ID
+  - `name` (string): 测试任务的名称
+  - `sizeInMB` (number): 测试大小，以MB为单位
+  - `startTime` (date): 测试开始时间
+  - `endTime` (date): 测试结束时间
   - `taskCount` (number): 总任务数量
   - `completedTaskCount` (number): 完成的任务数量
   - `type` (string): 测试类型
@@ -70,7 +89,7 @@ axios.post("/api/testings", {
 }
 ```
 
-### 删除测试数据 `DELETE /api/testings/remove/{id}`
+### 删除测试数据 `DELETE /api/test/remove/{id}`
 
 **Request Body:** 无
 
