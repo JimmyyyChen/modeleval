@@ -23,6 +23,7 @@ export default function ModelOption({ isSelected }) {
           type="checkbox"
           className="checkbox-primary checkbox"
           checked={isSelected}
+          readOnly
         />
 
         <p className=" font-mono text-xl font-bold">GPT-4</p>
