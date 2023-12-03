@@ -19,13 +19,13 @@ export default function NewTestingPage() {
     try {
       await axios.post("/api/testings", {
         userId: userId,
-        name: "THIS IS A DEMO TESTING",
-        sizeInMB: 30,
+        name: "mmlu_select 客观测试",
+        sizeInMB: 101,
         startTime: new Date(),
         endTime: null,
         taskCount: 100,
-        completedTaskCount: 99,
-        type: "Demo",
+        completedTaskCount: 70,
+        type: "客观测试",
       });
     } catch (error) {
       console.log(error);
