@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 
-export default function ModelOption({ isSelected }) {
+export default function TestingModelInfo() {
   let demoDescription = " 这里是关于模型的叙述。这里是关于模型的叙述。";
 
   if (demoDescription.length > 50) {
@@ -11,19 +11,8 @@ export default function ModelOption({ isSelected }) {
   }
 
   return (
-    <div
-      className={` ${
-        isSelected ? "border-2 border-teal-700" : ""
-      } w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6`}
-    >
+    <div className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6">
       <h2 className="flex flex-wrap items-center space-x-3 ">
-        <input
-          type="checkbox"
-          className="checkbox-primary checkbox"
-          checked={isSelected}
-          readOnly
-        />
-
         <p className=" font-mono text-xl font-bold">GPT-4</p>
         {/* TODO: link to corresponded model */}
         <Link className="link-primary link text-sm" href="/llm">

@@ -22,6 +22,9 @@ export default async function TestingsPage() {
   return (
     <div className="flex w-full flex-col space-y-4">
       {/* Add Demo Testing */}
+      <Link className="btn" href="/testings/1">
+        TODO: 客观测试展示页面/testings/[id]，id应为Testing的id
+      </Link>
       <Link className="btn btn-secondary rounded-full shadow-md w-max" href="/testings/new-testing">
         <PlusIcon className="h-6 w-6" />
         新测试
