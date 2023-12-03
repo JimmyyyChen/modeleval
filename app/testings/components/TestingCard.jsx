@@ -18,7 +18,8 @@ export default function TestingCard({
   completedTaskCount,
   type,
 }) {
-  const deleteTesting = async () => {
+  const deleteTesting = async (event) => {
+    event.preventDefault();
     try {
       await axios.delete(`/api/testings/remove/${id}`);
     } catch (error) {
@@ -77,7 +78,7 @@ export default function TestingCard({
       </div>
 
       <div className="ml-auto space-x-1">
-        <button className="btn btn-circle btn-ghost" onClick={deleteTesting}>
+        <button className="btn btn-circle btn-ghost " onClick={deleteTesting}>
           <XMarkIcon className="h-5 w-5" />
         </button>
         <button className="btn btn-circle btn-ghost">
