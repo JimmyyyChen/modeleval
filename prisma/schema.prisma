@@ -30,9 +30,10 @@ model Label {
 }
 
 model Models {
-  modelid    Int     @id @default(autoincrement())
-  modelName  String  @unique
-  label_list Label[]
-  downloadN  Int     @default(0)
-  likeN      Int
+  modelid     Int     @id @default(autoincrement())
+  modelName   String  @unique
+  label_list  Label[]
+  description String  @default("this is a model for testing")
+  downloadN   Int     @default(0)
+  likeN       Int
 }
