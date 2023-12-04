@@ -3,13 +3,16 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
     try {
-        let names = await prisma.test_model.findMany({
+        let models = await prisma.Models.findMany({
             orderBy: {
-                id: "asc",
+                modelid: "asc",
             },
+            include: {
+                label_list: true,
+            }
         });
-        names = names.map((name) => name.name)
-        return new NextResponse(JSON.stringify(names), {
+        //names = names.map((name) => name.name)
+        return new NextResponse(JSON.stringify(models), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });
