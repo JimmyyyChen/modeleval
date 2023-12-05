@@ -11,13 +11,29 @@ datasource db {
 }
 
 model Testing {
-  id     Int  @id @default(autoincrement())
-  userId String  
-  name  String
-  sizeInMB Int
-  startTime DateTime
-  endTime DateTime?
-  taskCount Int
+  id                 Int       @id @default(autoincrement())
+  userId             String
+  name               String
+  sizeInMB           Int
+  startTime          DateTime
+  endTime            DateTime?
+  taskCount          Int
   completedTaskCount Int
-  type String
+  type               String
+}
+
+model Label {
+  labelid       Int     @id @default(autoincrement())
+  labelName     String  @unique
+  Models        Models? @relation(fields: [modelsModelid], references: [modelid])
+  modelsModelid Int?
+}
+
+model Models {
+  modelid     Int     @id @default(autoincrement())
+  modelName   String  @unique
+  label_list  Label[]
+  description String  @default("this is a model for testing")
+  downloadN   Int     @default(0)
+  likeN       Int
 }
