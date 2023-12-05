@@ -5,7 +5,7 @@ export default function Community({ issues, fontsize, textcontent }) {
     return (
       <div className="flex w-full flex-col items-center space-y-4 overflow-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
         <div className="flex w-full items-center justify-between">
-          <div className={`${fontsize} font-bold text-primary`}>
+          <div className={`font-bold text-primary`}>
             {textcontent}
           </div>
           <div>
@@ -35,7 +35,7 @@ export default function Community({ issues, fontsize, textcontent }) {
             </dialog>
           </div>
         </div>
-        <div className="w-full space-y-4 px-4 py-2">
+        <div className="w-full space-y-4 px-4 py-2 text-sm">
           {issues.map((item) => (
             <div key={item.id} className="w-full">
               <button
