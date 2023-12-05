@@ -29,7 +29,7 @@ export default function Home({ params: { name } }) {
 
         {/* TODO: 面板高度问题 */}
         <div className="w-full h-full p-4 sm:w-1/3">
-          <UserInfo isVisitor={true} />
+          <UserInfo isvisitor={true} />
         </div>
       </div>
 
