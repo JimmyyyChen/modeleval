@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 
+import DatasetOption from "./components/DatasetOption";
+import ModelOption from "./components/ModelOption";
+
 export default function NewTestingPage() {
   const router = useRouter();
   const { userId, isLoaded } = useAuth();
@@ -16,13 +19,13 @@ export default function NewTestingPage() {
     try {
       await axios.post("/api/testings", {
         userId: userId,
-        name: "THIS IS A DEMO TESTING",
-        sizeInMB: 30,
+        name: "mmlu_select 客观测试",
+        sizeInMB: 101,
         startTime: new Date(),
         endTime: null,
         taskCount: 100,
-        completedTaskCount: 99,
-        type: "Demo",
+        completedTaskCount: 70,
+        type: "客观测试",
       });
     } catch (error) {
       console.log(error);
@@ -32,48 +35,37 @@ export default function NewTestingPage() {
   };
 
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col  space-y-5 rounded-2xl bg-white p-8 shadow-lg sm:p-20">
       <Link className="btn" href="/testings" onClick={addDemoTesting}>
         TODO: add demo testing
       </Link>
-
-      {/* make a white card with round corner */}
-      <div className="flex flex-col items-center justify-center space-y-10 rounded-lg bg-white p-8 shadow-lg sm:p-20">
-        <div className="flex w-full max-w-lg flex-col space-y-2">
-          <h2 className="text-xl font-bold">评测方法</h2>
-          <select className="select select-bordered">
-            <option disabled selected>
-              评测方法
-            </option>
-            <option>客观评测</option>
-            <option>主观评测</option>
-            <option>对抗评测</option>
-          </select>
-        </div>
-
-        <div className="flex w-full max-w-lg flex-col space-y-2">
-          <h2 className="text-xl font-bold">模型</h2>
-          <select className="select select-bordered">
-            <option disabled selected>
-              模型
-            </option>
-            <option>模型1</option>
-            <option>模型2</option>
-            <option>模型3</option>
-          </select>
-        </div>
-
-        <div className="flex w-full max-w-lg flex-col space-y-2">
-          <h2 className="text-xl font-bold">评测方法</h2>
-          <select className="select select-bordered">
-            <option disabled selected>
-              数据集
-            </option>
-            <option>数据集1</option>
-            <option>数据集2</option>
-            <option>数据集3</option>
-          </select>
-        </div>
+      <h1 className="text-3xl font-bold ">创建新测试</h1>
+      <div className="flex items-center space-x-3">
+        <h2 className="text-xl font-bold ">选择数据集</h2>
+        <p>或</p>
+        {/* TODO: create new dataset */}
+        <Link className="link-primary link" href="/datasets">
+          上传数据集
+        </Link>
+      </div>
+      <DatasetOption isSelected={true} />
+      <DatasetOption isSelected={false} />
+      <h2 className="text-xl font-bold">选择模型</h2>
+      <div className="form-control w-max px-6 ">
+        <label className="label cursor-pointer space-x-3">
+          <input
+            type="checkbox"
+            checked="checked"
+            className="checkbox-primary checkbox"
+          />
+          <span className="label-text font-bold">全选</span>
+        </label>
+      </div>
+      <ModelOption isSelected={true} />
+      <ModelOption isSelected={false} />
+      <ModelOption isSelected={true} />
+      <div className="flex justify-end">
+        <button className="btn btn-primary w-max">创建新测试</button>
       </div>
     </div>
   );
