@@ -38,5 +38,8 @@ module.exports = {
       },
     ],
   },
-  plugins: [require("@tailwindcss/forms"), require("daisyui")],
+  plugins: [
+    require("@tailwindcss/forms")({ strategy: "class" }), // this fixes collapse bug in daisyui, see https://stackoverflow.com/questions/76715043/tailwind-daisyui-accordion-and-switch-are-not-working
+    require("daisyui"),
+  ],
 };
