@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-export default function Community({ issues, fontsize, textcontent }) {
+export default function Community({ issues, textcontent }) {
     return (
       <div className="flex w-full flex-col items-center space-y-4 overflow-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
         <div className="flex w-full items-center justify-between">

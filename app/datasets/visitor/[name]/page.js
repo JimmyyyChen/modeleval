@@ -7,7 +7,7 @@ export default function Home({ params: { name } }) {
       title={`${name}的数据集`}
       datasets={datasets}
       datasetLabels={datasetLabels}
-      isVisitor={true}
+      isvisitor={true}
     />
   );
 }

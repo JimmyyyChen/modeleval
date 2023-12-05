@@ -6,7 +6,7 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/solid";
 
-export default function UserInfo({ isVisitor, username, email, organization, stars }) {
+export default function UserInfo({ isvisitor, username, email, organization, stars }) {
   return (
     <div className="h-full w-full flex flex-col items-center space-y-8 rounded-2xl border border-gray-200 bg-white px-4 py-12 text-left text-primary shadow-lg">
       <div className="h-36 w-36 rounded-full bg-blue-500 transition duration-300 ease-in-out md:h-48 md:w-48"></div>
@@ -37,7 +37,7 @@ export default function UserInfo({ isVisitor, username, email, organization, sta
           </div>
         </div>
       </div>
-      {isVisitor ? (
+      {isvisitor ? (
         <></>
       ) : (
         <Link
