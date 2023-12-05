@@ -50,6 +50,7 @@ model Dataset {
   questionType         Boolean               @default(false) // 0: choice, 1: short answer
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
+  userId               String // the user who upload the dataset,get from auth() in CLERK
 }
 
 model ChoiceQuestion {
