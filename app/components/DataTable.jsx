@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function DataTable({ items, isVisitor }) {
+export default function DataTable({ items, isvisitor }) {
   const pages = Math.ceil(items.length / 10);
   return (
     <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
@@ -23,7 +23,7 @@ export default function DataTable({ items, isVisitor }) {
                 <td>
                   <Link
                     href={
-                      isVisitor
+                      isvisitor
                         ? `/datasets/details/visitor/${item.name}`
                         : `/datasets/details/${item.name}`
                     }
