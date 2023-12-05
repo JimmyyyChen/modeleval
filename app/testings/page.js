@@ -22,7 +22,7 @@ export default async function TestingsPage() {
   return (
     <div className="flex w-full flex-col space-y-4">
       {/* Add Demo Testing */}
-      <Link className="btn btn-secondary rounded-full shadow-md" href="/testings/new-testing">
+      <Link className="btn btn-secondary rounded-full shadow-md w-28" href="/testings/new-testing">
         <PlusIcon className="h-6 w-6" />
         新测试
       </Link>
