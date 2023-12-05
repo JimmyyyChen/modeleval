@@ -2,7 +2,7 @@
 
 import { datasets, issues } from "./data";
 import Community from "@/app/components/Community";
-import UserInfo from "../../UserInfo";
+import UserInfo from "../../../components/UserInfo";
 import UserDatasets from "../../UserDatasets";
 
 export default function Home({ params: { name } }) {
@@ -24,10 +24,9 @@ export default function Home({ params: { name } }) {
             <UserDatasets isVisitor={true} datasets={datasets} username={name} />
           </div>
 
-          <div className="flex w-full flex-1 pt-2">
+          <div className="flex w-full flex-1 pt-2 text-2xl">
             <Community
               issues={issues}
-              fontsize="text-2xl"
               textcontent={`${name}的留言区`}
             />
           </div>
