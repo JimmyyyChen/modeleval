@@ -7,7 +7,7 @@ export default function TestingDisplayPage({ params }) {
   const testingId = params.id;
 
   // TODO: 是否事客观测试
-  const isAutomatedTest = true;
+  const type = testingId == 1 ? "automatedEvaluation" : "huamnEvaluation";
 
   return (
     <div className="flex w-full flex-col space-y-5">
@@ -32,8 +32,8 @@ export default function TestingDisplayPage({ params }) {
       <TestingModelInfo />
       <TestingModelInfo />
       <h2 className="text-2xl font-bold">已完成测试的模型</h2>
-      <CompletedTesting />
-      <CompletedTesting />
+      <CompletedTesting type={type} />
+      <CompletedTesting type={type} />
     </div>
   );
 }
