@@ -6,13 +6,15 @@ import {
   MinusIcon,
 } from "@heroicons/react/24/solid";
 
-export default function UserDatasets({ isVisitor, datasets, username }) {
+export default function UserDatasets({ isvisitor, datasets, username }) {
   return (
     <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-primary shadow-lg">
       <div className="flex w-full flex-col items-center justify-between space-y-2 lg:flex-row lg:space-y-0">
-        <div className="text-2xl font-bold">我的数据集</div>
+        <div className="text-2xl font-bold">
+          {isvisitor ? `${username}的数据集` : "我的数据集"}
+        </div>
         <div className="flex flex-col space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0">
-          {isVisitor ? (
+          {isvisitor ? (
             <></>
           ) : (
             <>
@@ -37,7 +39,7 @@ export default function UserDatasets({ isVisitor, datasets, username }) {
             <Link
               className="flex h-full w-full flex-col justify-center rounded-xl border border-gray-200 bg-white p-4 text-primary shadow-lg transition duration-300 ease-in-out hover:bg-stone-100 hover:shadow-xl"
               href={
-                isVisitor
+                isvisitor
                   ? `/datasets/details/visitor/${item.name}`
                   : `/datasets/details/${item.name}`
               }
@@ -58,7 +60,7 @@ export default function UserDatasets({ isVisitor, datasets, username }) {
           <Link
             className="flex h-full w-full flex-col justify-center rounded-xl border border-gray-200 bg-white p-4 text-primary shadow-lg transition duration-300 ease-in-out hover:bg-stone-100 hover:shadow-xl"
             href={
-              isVisitor ? `/datasets/visitor/${username}` : "/datasets/self"
+              isvisitor ? `/datasets/visitor/${username}` : "/datasets/self"
             }
           >
             <div className="flex w-full flex-col items-center justify-between">

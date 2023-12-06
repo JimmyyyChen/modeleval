@@ -1,10 +1,10 @@
-export default function CheckCondition({ labels }) {
+export default function CheckCondition({ title, labels }) {
   return (
     <div className="flex w-full h-full flex-col rounded-xl border border-gray-200 bg-white shadow-lg">
       <form className="flex w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:flex-row lg:space-x-2 lg:space-y-0">
         <input
           className="input input-bordered w-5/6"
-          placeholder="搜索数据集"
+          placeholder={`搜索${title}`}
         />
         {/* TODO: Add post link */}
         <button className="btn btn-primary w-16 text-white">搜索</button>
