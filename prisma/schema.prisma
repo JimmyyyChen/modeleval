@@ -25,17 +25,18 @@ model Testing {
 model Label {
   labelid   Int       @id @default(autoincrement())
   labelName String    @unique
-  Models    Models[]
+  Models    Model[]
   Dataset   Dataset[]
 }
 
-model Models {
+model Model {
   modelid     Int     @id @default(autoincrement())
   modelName   String  @unique
   label_list  Label[]
   description String  @default("this is a model for testing")
   downloadN   Int     @default(0)
   likeN       Int     @default(0)
+  Tasks      Task[]
 }
 
 model Dataset {
@@ -51,6 +52,7 @@ model Dataset {
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
   userId               String // the user who upload the dataset,get from auth() in CLERK
+  Tasks                Task[]
 }
 
 model ChoiceQuestion {
@@ -58,6 +60,7 @@ model ChoiceQuestion {
   question      String
   choices       Choice[]
   correctAnswer String
+  modelAnswer   String?
   Dataset       Dataset[]
 }
 
@@ -65,6 +68,7 @@ model ShortAnswerQuestion {
   id           Int       @id @default(autoincrement())
   question     String
   sampleAnswer String
+  modelAnswer  String?
   Dataset      Dataset[]
 }
 
@@ -73,4 +77,19 @@ model Choice {
   content          String
   ChoiceQuestion   ChoiceQuestion? @relation(fields: [choiceQuestionId], references: [id])
   choiceQuestionId Int?
+}
+
+model Task {
+  id  Int  @id @default(autoincrement())
+  userId String
+  taskName String
+  startTime DateTime
+  endTime DateTime?
+  questionType Int // 0: ChoiceQuestion, 1: ShortAnswerQuestion
+  modelIds String
+  models Model[]
+  datasetId Int
+  dataset Dataset @relation(fields: [datasetId], references: [id])
+  state Int // 0: not start, 1: running, 2: paused, 3: finished
+  progress Float
 }
