@@ -1,18 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function GET(request, { params }) {
     try {
-        let models = await prisma.model.findMany({
-            orderBy: {
-                modelid: "asc",
+        let dataset = await prisma.Dataset.findMany({
+            where: {
+                datasetName: params.name
             },
             include: {
                 label_list: true,
+                ChoiceQuestions: true,
+                ShortAnswerQuestions: true,
             }
         });
-        //names = names.map((name) => name.name)
-        return new NextResponse(JSON.stringify(models), {
+        return new NextResponse(JSON.stringify(dataset), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });
