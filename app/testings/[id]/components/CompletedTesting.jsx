@@ -105,11 +105,11 @@ export default function CompletedTesting({ type }) {
         <DataGrid
           // choose rows and columns based on type
           rows={
-            type === "huamnEvaluation"
+            type == 1 // human evaluation
               ? exampleHumanEvalRows
               : exampleAutoEvalRows
           }
-          columns={type === "huamnEvaluation" ? humanEvalCol : autoEvalCol}
+          columns={type == 1 ? humanEvalCol : autoEvalCol}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },
