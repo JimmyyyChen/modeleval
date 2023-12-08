@@ -93,23 +93,58 @@ const exampleHumanEvalRows = [
   },
 ];
 
-export default function CompletedTesting({ type }) {
+const comparativeEvalCol = [
+  { field: "id", headerName: "ID", minWidth: 50, flex: 0.1 },
+  { field: "score", headerName: "分数", minWidth: 80, flex: 0.1 },
+  { field: "type", headerName: "类型", minWidth: 150, flex: 0.15 },
+  { field: "question", headerName: "问题", minWidth: 300, flex: 1 },
+  { field: "generatedAnswer", headerName: "生成答案", minWidth: 300, flex: 1 },
+];
+
+const exampleComparativeEvalRows = [
+  {
+    id: 1,
+    score: 1,
+    type: "事实问答",
+    question: "谁是蝙蝠侠",
+    generatedAnswer:
+      "蝙蝠侠（Batman）是一位虚构的超级英雄，首次出现在美国DC漫画的《侦探漫画#27》（1939年5月）。蝙蝠侠是由艺术家鲍勃·凯恩和作家比尔·芬格创造的。蝙蝠侠的真实身份是布鲁斯·韦恩（Bruce Wayne），他是一个富有的企业家、慈善家和继承了庞大家产的亿万富翁。在经历了童年时期亲眼目睹父母被枪杀的悲剧后，他发誓要为正义而战，保护哥谭市（Gotham City）的市民免受犯罪分子的侵害。他通过智慧、技巧、武器和先进的技术手段来打击犯罪。虽然蝙蝠侠没有超能力，但他的力量、敏捷、智慧和意志力使他成为了一位出色的超级英雄。",
+  },
+  {
+    id: 2,
+    score: 0,
+    type: "事实问答",
+    question: "1955 年谁是美国总统",
+    generatedAnswer:
+      "1955年的美国总统是德怀特·D·艾森豪威尔（Dwight D. Eisenhower）。艾森豪威尔在1953年至1961年间担任美国总统，任内共服务了两个任期。在成为总统之前，他是一名杰出的军事领导人，曾担任盟军在欧洲战场的最高统帅，带领盟军赢得了二战的胜利。",
+  },
+];
+
+export default function ResultTable({ type }) {
+  let rows = [];
+  let columns = [];
+  if (type == 0) {
+    rows = exampleAutoEvalRows;
+    columns = autoEvalCol;
+  } else if (type == 1) {
+    rows = exampleHumanEvalRows;
+    columns = humanEvalCol;
+  } else if (type == 2) {
+    rows = exampleComparativeEvalRows;
+    columns = comparativeEvalCol;
+  }
   return (
     <div className="collapse collapse-arrow border bg-white">
       <input type="checkbox" />
       <div className="collapse-title flex items-center space-x-3">
         <div className="font-mono text-xl font-bold">GPT-4</div>
-        <div className="font-medium text-gray-400">正确率66% • 用时xx分钟</div>
+        <div className="font-medium text-gray-400">正确率66%</div>
       </div>
       <div className="collapse-content overflow-x-auto">
         <DataGrid
           // choose rows and columns based on type
-          rows={
-            type == 1 // human evaluation
-              ? exampleHumanEvalRows
-              : exampleAutoEvalRows
-          }
-          columns={type == 1 ? humanEvalCol : autoEvalCol}
+          rows={rows}
+          columns={columns}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },
