@@ -54,23 +54,25 @@ model Dataset {
 }
 
 model ChoiceQuestion {
-  id            Int       @id @default(autoincrement())
-  question      String
+  id            Int      @id @default(autoincrement())
+  question      String   @db.Text
   choices       Choice[]
   correctAnswer String
-  Dataset       Dataset[]
+  Dataset       Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId     Int?
 }
 
 model ShortAnswerQuestion {
-  id           Int       @id @default(autoincrement())
-  question     String
-  sampleAnswer String
-  Dataset      Dataset[]
+  id           Int      @id @default(autoincrement())
+  question     String   @db.Text
+  sampleAnswer String   @db.Text
+  Dataset      Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId    Int?
 }
 
 model Choice {
   id               Int             @id @default(autoincrement())
-  content          String
+  content          String          @db.Text
   ChoiceQuestion   ChoiceQuestion? @relation(fields: [choiceQuestionId], references: [id])
   choiceQuestionId Int?
 }
