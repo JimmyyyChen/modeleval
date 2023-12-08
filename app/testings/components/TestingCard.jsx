@@ -4,6 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+import Link from "next/link";
+
 import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function TestingCard({
@@ -16,7 +18,8 @@ export default function TestingCard({
   completedTaskCount,
   type,
 }) {
-  const deleteTesting = async () => {
+  const deleteTesting = async (event) => {
+    event.preventDefault();
     try {
       await axios.delete(`/api/testings/remove/${id}`);
     } catch (error) {
@@ -45,7 +48,11 @@ export default function TestingCard({
   }
 
   return (
-    <div className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-3 shadow-md sm:flex sm:space-y-0">
+    // TODO: testing/[id]
+    <Link
+      href="/testings/1"
+      className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-5 shadow-md hover:bg-gray-50 focus:ring focus:ring-gray-200 sm:flex sm:space-y-0"
+    >
       <div
         className="radial-progress"
         style={{ "--value": progress, "--size": "3.3rem" }}
@@ -71,17 +78,13 @@ export default function TestingCard({
       </div>
 
       <div className="ml-auto space-x-1">
-        <button className="btn btn-circle btn-ghost" onClick={deleteTesting}>
+        <button className="btn btn-circle btn-ghost " onClick={deleteTesting}>
           <XMarkIcon className="h-5 w-5" />
         </button>
         <button className="btn btn-circle btn-ghost">
           <PauseIcon className="h-5 w-5" />
         </button>
-        <button className="btn btn-neutral rounded-full ">
-          <PlayIcon className="h-5 w-5" />
-          {type}
-        </button>
       </div>
-    </div>
+    </Link>
   );
 }
