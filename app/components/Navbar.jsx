@@ -24,7 +24,7 @@ function classNames(...classes) {
 export default function Navbar() {
   const pathname = usePathname();
   return (
-    <Disclosure as="nav" className="bg-transparent">
+    <Disclosure as="nav" className="bg-transparent container">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8">
