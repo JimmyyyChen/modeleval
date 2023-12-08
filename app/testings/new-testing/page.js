@@ -83,7 +83,7 @@ export default function NewTestingPage() {
         <label className="label cursor-pointer space-x-3">
           <input
             type="checkbox"
-            checked="checked"
+            defaultChecked="checked"
             className="checkbox-primary checkbox"
           />
           <span className="label-text font-bold">全选</span>
