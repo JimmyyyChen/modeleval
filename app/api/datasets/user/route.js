@@ -1,19 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-
-export async function GET(request, { params }) {
-    const modelName = params.modelname;
+import { auth } from "@clerk/nextjs";
+export async function GET(request) {
+    let { userId } = auth()
+    if (userId == null) userId = "Administrator";
     try {
-        let model = await prisma.Model.findMany({
+        let dataset = await prisma.Dataset.findMany({
             where: {
-                modelName: modelName
+                userId: userId
             },
             include: {
                 label_list: true,
+                ChoiceQuestions: true,
+                ShortAnswerQuestions: true,
             }
         });
-        //names = names.map((name) => name.name)
-        return new NextResponse(JSON.stringify(model), {
+        return new NextResponse(JSON.stringify(dataset), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });
