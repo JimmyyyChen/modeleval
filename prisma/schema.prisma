@@ -23,13 +23,15 @@ model Testing {
 }
 
 model Label {
-  labelid   Int       @id @default(autoincrement())
-  labelName String    @unique
-  Models    Models[]
-  Dataset   Dataset[]
+  labelid       Int      @id @default(autoincrement())
+  labelName     String   @unique
+  Model         Model?   @relation(fields: [modelsModelid], references: [modelid])
+  Dataset       Dataset? @relation(fields: [datasetId], references: [id])
+  modelsModelid Int?
+  datasetId     Int?
 }
 
-model Models {
+model Model {
   modelid     Int     @id @default(autoincrement())
   modelName   String  @unique
   label_list  Label[]
@@ -50,7 +52,7 @@ model Dataset {
   questionType         Boolean               @default(false) // 0: choice, 1: short answer
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
-  userId               String // the user who upload the dataset,get from auth() in CLERK
+  userId               String                @default("Administrator") // the user who upload the dataset,get from auth() in CLERK
 }
 
 model ChoiceQuestion {

@@ -66,7 +66,7 @@ export async function POST(request) {
         const stats = fs.statSync('temp/temp_dataset2.txt');
         const fileSize = (stats.size / 1024 / 1024).toFixed(4);
         let { userId } = auth();                      //获取userID
-        if (userId == null) userId = "Administor";
+        if (userId == null) userId = "Administrator";
         let question_type;
         if (results[0].choices || results[1].choices) {                 //客观集的情况
             question_type = false;

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
     try {
-        let models = await prisma.Models.findMany({
+        let models = await prisma.Model.findMany({
             orderBy: {
                 modelid: "asc",
             },
