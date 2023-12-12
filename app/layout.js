@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <html lang="zh">
         <body className="flex min-h-screen flex-col items-center justify-between">
           <Navbar/>
-          <main className="container flex flex-1 flex-col items-center px-12 py-6">
+          <main className="container flex flex-1 flex-col items-center px-6 py-6">
             {children}
           </main>
           <Footer />
