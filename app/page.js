@@ -6,7 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 export default function HomePage() {
   return (
-    <div className="text-left">
+    <div className="w-full text-left space-y-3">
       <div className="flex flex-col items-center sm:flex-row">
         <img src="/logo.png" alt="logo" className="h-24" />
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -29,32 +29,76 @@ export default function HomePage() {
         </div>
       </SignedOut>
 
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-      />
+      <h2 className="text-3xl font-bold">
+        模型能力评测榜单
+      </h2>
+
+      <div className="overflow-x-auto">
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10]}
+        />
+      </div>
     </div>
   );
 }
 
 const columns = [
-  { field:"id", headerName: "ID", width: 70},
-  { field: "dataset", headerName: "数据集", width: 130 },
-  { field: "GPT4_automated", headerName: "GPT4客观测试", width: 130 },
-  { field: "GPT3_automated", headerName: "GPT3.5客观测试", width: 130 },
-  { field: "GPT4_human", headerName: "GPT4主观测试", width: 130 },
-  { field: "GPT3_human", headerName: "GPT3.5主观测试", width: 130 },
-  { field: "GPT4_comparative", headerName: "GPT4对抗测试", width: 130 },
-  { field: "GPT3_comparative", headerName: "GPT3.5对抗测试", width: 130 },
+  { field: "id", headerName: "ID", minWidth: 30, flex: 1 },
+  { field: "dataset", headerName: "数据集", minWidth: 120, flex: 2 },
+  {
+    field: "GPT4_automated",
+    headerName: "GPT4客观测试",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "GPT3_automated",
+    headerName: "GPT3.5客观测试",
+    minWidth: 120,
+    flex: 2,
+  },
+  { field: "GPT4_human", headerName: "GPT4主观测试", minWidth: 120, flex: 2 },
+  { field: "GPT3_human", headerName: "GPT3.5主观测试", minWidth: 120, flex: 2 },
+  {
+    field: "GPT4_comparative",
+    headerName: "GPT4对抗测试",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "GPT3_comparative",
+    headerName: "GPT3.5对抗测试",
+    minWidth: 120,
+    flex: 2,
+  },
 ];
 
 const rows = [
-  { id: 1, dataset: "mmlu_select", GPT4_automated: "0.5", GPT3_automated: "0.6", GPT4_human: "untested", GPT3_human: "untested", GPT4_comparative: "untested", GPT3_comparative: "untested" },
-  { id: 2, dataset: "zbench_common", GPT4_automated: "untested", GPT3_automated: "untested", GPT4_human: "0.7", GPT3_human: "0.8", GPT4_comparative: "0.9", GPT3_comparative: "0.9"}
-]
+  {
+    id: 1,
+    dataset: "mmlu_select",
+    GPT4_automated: "0.5",
+    GPT3_automated: "0.6",
+    GPT4_human: "untested",
+    GPT3_human: "untested",
+    GPT4_comparative: "untested",
+    GPT3_comparative: "untested",
+  },
+  {
+    id: 2,
+    dataset: "zbench_common",
+    GPT4_automated: "untested",
+    GPT3_automated: "untested",
+    GPT4_human: "0.7",
+    GPT3_human: "0.8",
+    GPT4_comparative: "0.9",
+    GPT3_comparative: "0.9",
+  },
+];
