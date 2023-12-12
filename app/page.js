@@ -1,15 +1,16 @@
 "use client";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
 
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { DataGrid } from "@mui/x-data-grid";
 
 export default function HomePage() {
   return (
-    <div className="w-full text-left space-y-3">
+    <div className="w-full space-y-3 text-left">
       <div className="flex flex-col items-center sm:flex-row">
         <img src="/logo.png" alt="logo" className="h-24" />
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+        <h1 className="font-['Monaco'] text-4xl font-bold tracking-tight text-primary  sm:text-6xl">
           ModelEval
         </h1>
       </div>
@@ -29,21 +30,42 @@ export default function HomePage() {
         </div>
       </SignedOut>
 
-      <h2 className="text-3xl font-bold">
-        模型能力评测榜单
-      </h2>
+      {/* 当登录时显示新建测试按钮 */}
+      <SignedIn>
+        <Link
+          className="btn btn-accent w-max rounded-full shadow-md"
+          href="/testings/new-testing"
+        >
+          <PlusIcon className="h-6 w-6" />
+          新建测试
+        </Link>
+      </SignedIn>
 
-      <div className="overflow-x-auto">
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-        />
+      <div className="h-5"></div>
+
+      <div className="space-y-5 rounded-3xl bg-stone-50 p-6 shadow-lg">
+        <h2 className="text-2xl font-bold text-primary">模型能力评测榜单</h2>
+
+        <div className="overflow-x-auto">
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            hideFooter
+            pageSizeOptions={[5, 10]}
+            disableRowSelectionOnClick
+            sx={{
+              borderColor: "transparent",
+              "& .MuiDataGrid-cell:hover": {
+                color: "primary.main",
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   );
