@@ -4,12 +4,13 @@ import Link from "next/link";
 
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { DataGrid } from "@mui/x-data-grid";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
     <div className="w-full space-y-3 text-left">
       <div className="flex flex-col items-center sm:flex-row">
-        <img src="/logo.png" alt="logo" className="h-24" />
+        <Image src="/logo.png" alt="logo" width={100} height={100} />
         <h1 className="font-['Monaco'] text-4xl font-bold tracking-tight text-primary  sm:text-6xl">
           ModelEval
         </h1>
