@@ -23,12 +23,15 @@ model Testing {
 }
 
 model Label {
-  labelid   Int       @id @default(autoincrement())
-  labelName String    @unique
-  Models    Model[]
-  Dataset   Dataset[]
+  labelid       Int      @id @default(autoincrement())
+  labelName     String   @unique
+  Model         Model?   @relation(fields: [modelsModelid], references: [modelid])
+  Dataset       Dataset? @relation(fields: [datasetId], references: [id])
+  modelsModelid Int?
+  datasetId     Int?
 }
 
+model Model {
 model Model {
   modelid     Int     @id @default(autoincrement())
   modelName   String  @unique
@@ -56,23 +59,25 @@ model Dataset {
 }
 
 model ChoiceQuestion {
-  id            Int       @id @default(autoincrement())
-  question      String
+  id            Int      @id @default(autoincrement())
+  question      String   @db.Text
   choices       Choice[]
   correctAnswer String
-  Dataset       Dataset[]
+  Dataset       Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId     Int?
 }
 
 model ShortAnswerQuestion {
-  id           Int       @id @default(autoincrement())
-  question     String
-  sampleAnswer String
-  Dataset      Dataset[]
+  id           Int      @id @default(autoincrement())
+  question     String   @db.Text
+  sampleAnswer String   @db.Text
+  Dataset      Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId    Int?
 }
 
 model Choice {
   id               Int             @id @default(autoincrement())
-  content          String
+  content          String          @db.Text
   ChoiceQuestion   ChoiceQuestion? @relation(fields: [choiceQuestionId], references: [id])
   choiceQuestionId Int?
 }

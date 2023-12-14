@@ -9,7 +9,8 @@ import {
   BeakerIcon,
   CubeIcon,
 } from "@heroicons/react/24/solid";
-import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { UserButton, SignedIn } from "@clerk/nextjs";
+import Image from "next/image";
 
 const navigation = [
   { name: "数据集", icon: CircleStackIcon, href: "/datasets" },
@@ -24,7 +25,7 @@ function classNames(...classes) {
 export default function Navbar() {
   const pathname = usePathname();
   return (
-    <Disclosure as="nav" className="bg-transparent container">
+    <Disclosure as="nav" className="container bg-transparent">
       {({ open }) => (
         <>
           <div className="mx-auto px-2 sm:px-6 lg:px-8">
@@ -44,8 +45,9 @@ export default function Navbar() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
-                    <img
-                      className="h-12 w-auto"
+                    <Image
+                      width={48}
+                      height={48}
                       src="/logo.png"
                       alt="ModalEval Logo"
                     />

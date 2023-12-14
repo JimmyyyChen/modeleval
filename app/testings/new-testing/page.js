@@ -50,12 +50,40 @@ export default function NewTestingPage() {
       </div>
       <DatasetOption isSelected={true} />
       <DatasetOption isSelected={false} />
+      <h2 className="text-xl font-bold ">选择测试方式</h2>
+      {/* 客观测试 主观测试 对抗测试 三选一 */}
+      <form className="flex justify-between">
+        <label className="label space-x-3">
+          <input
+            type="radio"
+            name="method"
+            className="radio-primary radio"
+          />
+          <span className="label-text font-bold">客观测试</span>
+        </label>
+        <label className="label space-x-3">
+          <input
+            type="radio"
+            name="method"
+            className="radio-primary radio"
+          />
+          <span className="label-text font-bold">主观测试</span>
+        </label>
+        <label className="label space-x-3">
+          <input
+            type="radio"
+            name="method"
+            className="radio-primary radio"
+          />
+          <span className="label-text font-bold">对抗测试</span>
+        </label>
+      </form>
       <h2 className="text-xl font-bold">选择模型</h2>
       <div className="form-control w-max px-6 ">
         <label className="label cursor-pointer space-x-3">
           <input
             type="checkbox"
-            checked="checked"
+            defaultChecked="checked"
             className="checkbox-primary checkbox"
           />
           <span className="label-text font-bold">全选</span>
