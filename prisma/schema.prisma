@@ -60,7 +60,6 @@ model ChoiceQuestion {
   question      String
   choices       Choice[]
   correctAnswer String
-  modelAnswer   String?
   Dataset       Dataset[]
 }
 
@@ -68,7 +67,6 @@ model ShortAnswerQuestion {
   id           Int       @id @default(autoincrement())
   question     String
   sampleAnswer String
-  modelAnswer  String?
   Dataset      Dataset[]
 }
 
@@ -83,13 +81,20 @@ model Task {
   id  Int  @id @default(autoincrement())
   userId String
   taskName String
-  startTime DateTime
+  startTime DateTime @default(now())
   endTime DateTime?
   questionType Int // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  modelIds String
+  modelIds Json
   models Model[]
   datasetId Int
   dataset Dataset @relation(fields: [datasetId], references: [id])
+  answers Json @default("{}")
   state Int // 0: not start, 1: running, 2: paused, 3: finished
   progress Float
 }
+  // { "modelId": 
+  //  {
+  //    "questionId": "modelAnswer",
+  //    ···        
+  //  }
+  // }

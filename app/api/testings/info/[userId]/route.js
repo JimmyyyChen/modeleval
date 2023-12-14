@@ -1,22 +1,25 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { stringify } from "postcss";
 
 export async function GET(request, { params }) {
   try {
     // 获取request中的userId
-    const userId = parseInt(params.userId);
+    const userId = params.userId;
+    console.log(userId);
+    console.log("this");
     const allTasks = await prisma.task.findMany({
       orderBy: {
-        createdAt: "desc",
+        id: "desc",
       },
       include: {
-        dataset: true,
-        modelsId: true,
+        dataset: true
       },
       where: {
         userId: userId,
       }
     });
+    console.log(allTasks);
     return new NextResponse(JSON.stringify(allTasks), {
       status: 200,
       headers: { "Content-Type": "application/json" },

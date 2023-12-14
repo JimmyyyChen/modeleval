@@ -1,8 +1,8 @@
 # API-TASK
 
-## 模型测评部分(TODO)
+## 模型测评部分
 
-### 获取当前的所有任务(TODO) `GET /api/testing/info/{userId}`
+### 获取当前的所有任务 `GET /api/testings/info/{userId}`
 
 **Request Body:** 无
 
@@ -21,7 +21,7 @@
 - `taskName` (string): 新建测试任务的名称
 - `startTime` (Datetime): 测试开始时间
 - `questionType` (number): 测试类型，客观评测(0)还是主观评测(1), 对抗性评测会有单独的处理API
-- `modelIds` (int[]): 选择的评测模型Id组成的列表
+- `modelIds` (Json): 选择的评测模型Id组成的列表
 - `datasetId` (int): 选择的评测数据集Id
 
 **Response:**
@@ -36,7 +36,7 @@
   - `modelIds` (String): 选择的评测模型Id组成的列表 
   // 由于prisma不支持int数组，考虑使用json或者string来实现类似int数组的效果
   - *`models` (Model[]): 测试任务使用的模型列表 
-  - `datasetId` (int): 数据集的ID
+  - `datasetId` (Json): 数据集的ID
   - *`dataset` (Dataset): 测试任务使用的数据集
   - *`state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
   - *`progress` (float): 任务目前的进度
@@ -56,7 +56,7 @@
   - `startTime` (date): 测试开始时间
   - `endTime` (date, 新创建的测试任务endTime=null): 测试结束时间 
   - `questionType` (string): 测试类型 // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  - `modelIds` (String): 选择的评测模型Id组成的列表 
+  - `modelIds` (Json): 选择的评测模型Id组成的列表 
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (int): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集
@@ -78,7 +78,7 @@
   - `startTime` (date): 测试开始时间
   - `endTime` (date, 新创建的测试任务endTime=null): 测试结束时间 
   - `questionType` (string): 测试类型 // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  - `modelIds` (String): 选择的评测模型Id组成的列表 
+  - `modelIds` (Json): 选择的评测模型Id组成的列表 
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (int): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集
@@ -100,7 +100,7 @@
   - `startTime` (date): 测试开始时间
   - `endTime` (date, 新创建的测试任务endTime=null): 测试结束时间 
   - `questionType` (string): 测试类型 // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  - `modelIds` (String): 选择的评测模型Id组成的列表 
+  - `modelIds` (Json): 选择的评测模型Id组成的列表 
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (int): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集

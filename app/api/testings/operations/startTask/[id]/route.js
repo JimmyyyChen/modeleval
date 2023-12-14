@@ -3,23 +3,44 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getModelAnswer } from "../../../api";
 import { all } from "axios";
+import { data } from "autoprefixer";
 
 export async function POST(request, { params }) {
     try {
-        const json = await request.json();
+        let id = parseInt(params.id);
         const task = await prisma.task.findUnique({
             where: {
-                id: parseInt(params.id),
+                id: id,
             },
+            include: {
+                dataset: {
+                    include: {
+                        ChoiceQuestions: {
+                            include: {
+                                choices: true,
+                            },
+                        },
+                        ShortAnswerQuestions: true,
+                    },
+                },
+                models: true,
+            },  
         });
         task.state = 1;
         const allChoiceQuestions = task.dataset.ChoiceQuestions;
         const allShortAnswerQuestions = task.dataset.ShortAnswerQuestions;
-        let currentModelId, currentQuestionId = recoverFrom(task, task.progress);
+        let answers = {};
+
+        let allModelIds = [];
+        for (let key in task.modelIds) {
+            allModelIds.push(task.modelIds[key]);
+            answers[task.modelIds[key]] = {};
+        }
+
+        let [currentModelId, currentQuestionId] = recoverFrom(task, task.progress);
         // 根据type(0 or 1)类型选择不同的处理方法
         if (task.questionType == 0) {
             // 获取全部的客观选择题
-            const allModelIds = task.modelsId;
             let i, j;
             for (i=currentModelId;i < allModelIds.length;i++) {
                 if (checkState(task, i, j) == false) {
@@ -27,7 +48,7 @@ export async function POST(request, { params }) {
                 }
                 const model = await prisma.model.findUnique({
                     where: {
-                        id: allModelIds[i],
+                        modelid: allModelIds[i],
                     },
                 });
                 for (j=currentQuestionId;j < allChoiceQuestions.length;j++) {
@@ -35,14 +56,15 @@ export async function POST(request, { params }) {
                         break;
                     }
                     const question = allChoiceQuestions[j].question;
+                    console.log(question);
                     let choices;
                     const allChoices = allChoiceQuestions[j].choices;
                     for (let k=0;k < allChoices.length;k++) {
                         choices = choices + allChoices[k].content + '\n';
                     }
                     const answer = await getModelAnswer(model.modelName, question + '\n' + choices);
-                    // 将answer插入到数据库中
-                    allChoiceQuestions[j].modelAnswer = answer;
+                    // 将answer更新到存储变量'answers'中
+                    answers[model.modelid][allChoiceQuestions[j].id] = answer;
                 }
             }
             if (i == allModelIds.length && j == allChoiceQuestions.length){
@@ -51,7 +73,6 @@ export async function POST(request, { params }) {
             }
         }
         else if (task.questionType == 1) {
-            const allModelIds = task.modelsId;
             let i, j;
             for (i=currentModelId;i < allModelIds.length;i++) {
                 if (checkState(task, i, j) == false) {
@@ -68,8 +89,8 @@ export async function POST(request, { params }) {
                     }
                     const question = allShortAnswerQuestions[j].question;
                     const answer = await getModelAnswer(model.modelName, question.question);
-                    // 将answer插入到数据库中
-                    allShortAnswerQuestions[j].modelAnswer = answer;
+                    // 将answer更新到存储变量'answers'中
+                    answers[model.modelid][allShortAnswerQuestions[j].id] = answer;
                 }
             }
             if (i == allModelIds.length && j == allShortAnswerQuestions.length){
@@ -80,10 +101,29 @@ export async function POST(request, { params }) {
 
         const updatedTask = await prisma.task.update({
             where: {
-                id: json.id,
+                id: id,
             },
-            data: task,
-        });
+            include: {
+                dataset: {
+                    include: {
+                        ChoiceQuestions: {
+                            include: {
+                                choices: true,
+                            },
+                        },
+                        ShortAnswerQuestions: true,
+                    },
+                },
+                models: true,
+            },
+            data: {
+                endTime: new Date(),
+                state: task.state,
+                progress: task.progress,
+                answers: answers,
+            }
+        }
+        );
 
         return new NextResponse(JSON.stringify(updatedTask), {
             status: 201,
@@ -96,13 +136,13 @@ export async function POST(request, { params }) {
 } 
 
 function recoverFrom(task, progress) {
-    const modelsLength = task.modelsIds.length;
+    const modelsLength = Object.keys(task.modelIds).length;
     let datasetLength;
     if (task.dataset.questionType == 0) {
-        datasetLength = task.dataset.ChoiceQuestions.length;
+        datasetLength = Object.keys(task.dataset.ChoiceQuestions).length; 
     }
     else if (task.dataset.questionType == 1) {
-        datasetLength = task.dataset.ShortAnswerQuestions.length;
+        datasetLength = Object.keys(task.dataset.ShortAnswerQuestions).length;
     }
     const totalLength = modelsLength * datasetLength; 
     const currentLength = progress * totalLength;

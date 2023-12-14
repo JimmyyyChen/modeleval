@@ -5,36 +5,45 @@ import { NextResponse } from "next/server";
 export async function POST(request, response) {
     try {
         const json = await request.json();
-        const datasetId = json.datasetId;
+        // const datasetId = json.datasetId;
         // 获取数据库中datasetId对应的dataset对象
-        const dataset = await prisma.dataset.findUnique({
-            where: {
-                id: datasetId,
-            },
-        });
-        json.dataset = dataset; // 原request中没有dataset, 而task表需要dataset这个字段
-        // 获取数据库中与json的modelIds对应的所有模型对象
+        // const dataset = await prisma.dataset.findUnique({
+        //     where: {
+        //         id: datasetId,
+        //     },
+        // });
+        // json.dataset = dataset; // 原request中没有dataset, 而task表需要dataset这个字段
+        // 获取数据库中与json的modelIds对应的所有模型对象, modelIds是一个Json对象，需要遍历json对象的键值对，键为序号，值为模型id
         const modelIds = json.modelIds;
-        let models = [];
-        for (let i=0;i < modelIds.length;i++) {
+        let modelLists = [];
+        for (let key in modelIds) {
+            const modelId = modelIds[key];
             const model = await prisma.model.findUnique({
                 where: {
-                    modelid: modelIds[i],
+                    modelid: modelId,
                 },
             });
-            models.push(model);
+            modelLists.push(model);
         }
-        json.models = models; // 原request中没有models, 而task表需要models这个字段
-        // 添加一个null的endTime
-        json.endTime = null;
-        // 添加一个not started的状态state
-        json.state = 0
-        // 添加一个progress进度为0
-        json.progress = 0.0;
-        
+        json.models = modelLists;
+
+        console.log(json);
         const testing = await prisma.task.create({
-            data: json,
-        });    
+            data: {
+                userId: json.userId,
+                taskName: json.taskName,
+                questionType: json.questionType,
+                modelIds: json.modelIds,
+                // models: json.models, 
+                dataset: {
+                    connect: {
+                        id: json.datasetId,
+                    },
+                },
+                state: 0, 
+                progress: 0.0,
+            }
+        });   
         return new NextResponse(JSON.stringify(testing), {
             status: 201,
             headers: { "Content-Type": "application/json" },
