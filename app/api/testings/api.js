@@ -16,7 +16,7 @@ export async function getModelAnswer(modelName, question) {
   
       const modelAnswer= completionResponse.choices[0].message.content;
   
-      return {modelAnswer: modelAnswer};
+      return modelAnswer;
     } catch (error) {
       console.log(error);
       return {error: error.message};
