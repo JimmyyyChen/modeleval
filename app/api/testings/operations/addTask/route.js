@@ -22,19 +22,24 @@ export async function POST(request, response) {
                 where: {
                     modelid: modelId,
                 },
+                include: {
+                    label_list: true,
+                },
             });
             modelLists.push(model);
         }
-        json.models = modelLists;
 
-        console.log(json);
         const testing = await prisma.task.create({
             data: {
                 userId: json.userId,
                 taskName: json.taskName,
                 questionType: json.questionType,
                 modelIds: json.modelIds,
-                // models: json.models, 
+                models: {
+                    connect: modelLists.map((singlemodel) => ({
+                        modelid: singlemodel.modelid,
+                    })),
+                }, 
                 dataset: {
                     connect: {
                         id: json.datasetId,
@@ -42,7 +47,7 @@ export async function POST(request, response) {
                 },
                 state: 0, 
                 progress: 0.0,
-            }
+            },
         });   
         return new NextResponse(JSON.stringify(testing), {
             status: 201,

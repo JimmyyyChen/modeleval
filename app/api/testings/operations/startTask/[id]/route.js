@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { getModelAnswer } from "../../../api";
 import { all } from "axios";
 import { data } from "autoprefixer";
+import { sleep } from "openai/core";
 
 export async function POST(request, { params }) {
     try {
@@ -42,6 +43,7 @@ export async function POST(request, { params }) {
         if (task.questionType == 0) {
             // 获取全部的客观选择题
             let i, j;
+            // 遍历所有需要跑的模型
             for (i=currentModelId;i < allModelIds.length;i++) {
                 if (checkState(task, i, j) == false) {
                     break;
@@ -51,12 +53,12 @@ export async function POST(request, { params }) {
                         modelid: allModelIds[i],
                     },
                 });
+                // 遍历所有的客观选择题
                 for (j=currentQuestionId;j < allChoiceQuestions.length;j++) {
                     if (checkState(task, i, j) == false) {
                         break;
                     }
                     const question = allChoiceQuestions[j].question;
-                    console.log(question);
                     let choices;
                     const allChoices = allChoiceQuestions[j].choices;
                     for (let k=0;k < allChoices.length;k++) {
@@ -98,7 +100,6 @@ export async function POST(request, { params }) {
                     task.endTime = new Date();
             }
         }
-
         const updatedTask = await prisma.task.update({
             where: {
                 id: id,
@@ -120,7 +121,7 @@ export async function POST(request, { params }) {
                 endTime: new Date(),
                 state: task.state,
                 progress: task.progress,
-                answers: answers,
+                answerjson: answers,
             }
         }
         );
@@ -158,6 +159,7 @@ function checkState(task, modelId, questionId) {
     else {
         // 重新存储task的进度
         if (task.dataset.questionType == 0) {
+            console.log("in checkState")
             task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (task.modelsIds.length * task.dataset.ChoiceQuestions.length);
         }
         else if (task.dataset.questionType == 1) {

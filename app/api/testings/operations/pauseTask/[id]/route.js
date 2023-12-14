@@ -5,10 +5,23 @@ import { NextResponse } from "next/server";
 export async function POST(request, { params }) {
     const taskId = parseInt(params.id);
     try {
-        const task = await prisma.testing.update({
+        const task = await prisma.task.findUnique({
             where: {
                 id: taskId,
-        }
+            },
+            include : {
+                dataset: {
+                    include: {
+                        ChoiceQuestions: {
+                            include: {
+                                choices: true,
+                            },
+                        },
+                        ShortAnswerQuestions: true,
+                    },
+                },
+                models: true,
+            },
         });
         
         task.state = 2;
