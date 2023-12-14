@@ -88,7 +88,7 @@ model Task {
   models Model[]
   datasetId Int
   dataset Dataset @relation(fields: [datasetId], references: [id])
-  answers Json @default("{}")
+  answerjson Json @default("{}")
   state Int // 0: not start, 1: running, 2: paused, 3: finished
   progress Float
 }
