@@ -32,7 +32,6 @@ model Label {
 }
 
 model Model {
-model Model {
   modelid     Int     @id @default(autoincrement())
   modelName   String  @unique
   label_list  Label[]
