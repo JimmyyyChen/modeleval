@@ -27,7 +27,17 @@ export async function POST(request, { params }) {
                 models: true,
             },  
         });
-        task.state = 1;
+
+        // 更新task的开始状态
+        const _ = await prisma.task.update({
+            where: {
+                id: id,
+            },
+            data: {
+                state: 1,
+            },
+        });
+
         const allChoiceQuestions = task.dataset.ChoiceQuestions;
         const allShortAnswerQuestions = task.dataset.ShortAnswerQuestions;
         let answers = {};
@@ -46,6 +56,7 @@ export async function POST(request, { params }) {
             // 遍历所有需要跑的模型
             for (i=currentModelId;i < allModelIds.length;i++) {
                 if (checkState(task, i, j) == false) {
+                    console.log("in model checkState");
                     break;
                 }
                 const model = await prisma.model.findUnique({
@@ -56,6 +67,7 @@ export async function POST(request, { params }) {
                 // 遍历所有的客观选择题
                 for (j=currentQuestionId;j < allChoiceQuestions.length;j++) {
                     if (checkState(task, i, j) == false) {
+                        console.log("in question checkState");
                         break;
                     }
                     const question = allChoiceQuestions[j].question;
@@ -71,8 +83,11 @@ export async function POST(request, { params }) {
             }
             if (i == allModelIds.length && j == allChoiceQuestions.length){
                     task.state = 3;
-                    task.endTime = new Date();
-            }
+                }
+                else {
+                    task.state = 2;
+                }
+            task.endTime = new Date();
         }
         else if (task.questionType == 1) {
             let i, j;
@@ -152,18 +167,24 @@ function recoverFrom(task, progress) {
     return [currentModelId, currentQuestionId];
 }
 
-function checkState(task, modelId, questionId) {
-    if (task.state == 1) {
+async function checkState(task, modelId, questionId) {
+    const updated_task = await prisma.task.findUnique({
+        where: {
+            id: task.id,
+        },
+    });
+    if (updated_task.state == 1) {
         return true;
     }
     else {
         // 重新存储task的进度
         if (task.dataset.questionType == 0) {
-            console.log("in checkState")
-            task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (task.modelsIds.length * task.dataset.ChoiceQuestions.length);
+            console.log("in function checkState");
+            task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ChoiceQuestions.length);
+            console.log(task.progress);
         }
         else if (task.dataset.questionType == 1) {
-            task.progress = (modelId * task.dataset.ShortAnswerQuestions.length + questionId) / (task.modelsIds.length * task.dataset.ShortAnswerQuestions.length);
+            task.progress = (modelId * task.dataset.ShortAnswerQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ShortAnswerQuestions.length);
         }
         return false;
     }

@@ -9,19 +9,6 @@ export async function POST(request, { params }) {
             where: {
                 id: taskId,
             },
-            include : {
-                dataset: {
-                    include: {
-                        ChoiceQuestions: {
-                            include: {
-                                choices: true,
-                            },
-                        },
-                        ShortAnswerQuestions: true,
-                    },
-                },
-                models: true,
-            },
         });
         
         task.state = 2;
