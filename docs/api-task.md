@@ -65,7 +65,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 暂停一个评测任务 `POST /api/testings/operations/pauseTask/{id}` 
+### (#TODO) 暂停一个评测任务 `POST /api/testings/operations/pauseTask/{id}` 
 
 **Request Body:** 无
 
