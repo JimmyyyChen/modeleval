@@ -6,7 +6,7 @@ import axios from "axios";
 
 import Link from "next/link";
 
-import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { PauseIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function TestingCard({
   id,
@@ -16,7 +16,6 @@ export default function TestingCard({
   endTime,
   taskCount,
   completedTaskCount,
-  type,
 }) {
   const deleteTesting = async (event) => {
     event.preventDefault();
