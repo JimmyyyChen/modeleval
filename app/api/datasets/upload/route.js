@@ -6,11 +6,6 @@ import fs from 'fs'
 import { pipeline } from 'stream';
 import { promisify } from "util";
 import { Readable } from 'stream';
-export const config = {
-    api: {
-        bodyParser: false, // 禁用默认的bodyParser
-    },
-};
 function removeFirstEmptyLine(text) {
     const lines = text.split('\n');
     let temp_name;
