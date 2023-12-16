@@ -129,6 +129,7 @@ export default function NewTaskPage() {
           <input
             type="checkbox"
             className="checkbox-primary checkbox"
+            readOnly={true}
             checked={selectedModels.length === models.length}
             onClick={
               selectedModels.length === models.length
@@ -174,7 +175,7 @@ export default function NewTaskPage() {
         <Link href="/tasks">
           <button className="btn btn-secondary w-max">取消</button>
         </Link>
-        
+
         <Link href="/tasks">
           <button
             className="btn btn-primary w-max"
