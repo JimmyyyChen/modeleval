@@ -10,19 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODO: Testing isn't used now
-model Testing {
-  id                 Int       @id @default(autoincrement())
-  userId             String
-  name               String
-  sizeInMB           Float
-  startTime          DateTime
-  endTime            DateTime?
-  taskCount          Int
-  completedTaskCount Int
-  type               String
-}
-
 model Label {
   labelid       Int      @id @default(autoincrement())
   labelName     String   @unique
