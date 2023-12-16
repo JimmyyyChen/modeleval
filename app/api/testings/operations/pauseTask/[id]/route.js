@@ -1,18 +1,19 @@
+// 实现评测任务的暂停效果
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function POST(request, { params }) {
+    const taskId = parseInt(params.id);
     try {
-        let models = await prisma.model.findMany({
-            orderBy: {
-                modelid: "asc",
+        const task = await prisma.task.findUnique({
+            where: {
+                id: taskId,
             },
-            include: {
-                label_list: true,
-            }
         });
-        //names = names.map((name) => name.name)
-        return new NextResponse(JSON.stringify(models), {
+        
+        task.state = 2;
+
+        return new NextResponse(JSON.stringify(task), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });

@@ -38,6 +38,7 @@ model Model {
   description String  @default("this is a model for testing")
   downloadN   Int     @default(0)
   likeN       Int     @default(0)
+  Tasks      Task[]
 }
 
 model Dataset {
@@ -52,7 +53,8 @@ model Dataset {
   questionType         Boolean               @default(false) // 0: choice, 1: short answer
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
-  userId               String                @default("Administrator") // the user who upload the dataset,get from auth() in CLERK
+  userId               String // the user who upload the dataset,get from auth() in CLERK
+  Tasks                Task[]
 }
 
 model ChoiceQuestion {
@@ -78,3 +80,25 @@ model Choice {
   ChoiceQuestion   ChoiceQuestion? @relation(fields: [choiceQuestionId], references: [id])
   choiceQuestionId Int?
 }
+
+model Task {
+  id  Int  @id @default(autoincrement())
+  userId String
+  taskName String
+  startTime DateTime @default(now())
+  endTime DateTime?
+  questionType Int // 0: ChoiceQuestion, 1: ShortAnswerQuestion
+  modelIds Json
+  models Model[]
+  datasetId Int
+  dataset Dataset @relation(fields: [datasetId], references: [id])
+  answerjson Json @default("{}")
+  state Int // 0: not start, 1: running, 2: paused, 3: finished
+  progress Float
+}
+  // { "modelId": 
+  //  {
+  //    "questionId": "modelAnswer",
+  //    ···        
+  //  }
+  // }
