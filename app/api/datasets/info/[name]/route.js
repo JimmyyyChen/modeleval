@@ -9,7 +9,9 @@ export async function GET(request, { params }) {
             },
             include: {
                 label_list: true,
-                ChoiceQuestions: true,
+                ChoiceQuestions: {
+                    choices: true
+                },
                 ShortAnswerQuestions: true,
             }
         });
