@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const dataset = await prisma.Dataset.findMany();
+        const dataset = await prisma.model.findMany();
         return new NextResponse(JSON.stringify(dataset), {
             status: 201,
             headers: { "Content-Type": "application/json" },

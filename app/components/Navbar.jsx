@@ -14,7 +14,7 @@ import Image from "next/image";
 
 const navigation = [
   { name: "数据集", icon: CircleStackIcon, href: "/datasets" },
-  { name: "测试", icon: BeakerIcon, href: "/testings" },
+  { name: "测试", icon: BeakerIcon, href: "/tasks" },
   { name: "模型", icon: CubeIcon, href: "/llm" },
 ];
 
