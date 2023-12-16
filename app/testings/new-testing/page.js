@@ -169,18 +169,24 @@ export default function NewTestingPage() {
           />
         </div>
       ))}
-      <div className="flex justify-end">
-        <button
-          className="btn btn-primary w-max"
-          onClick={addTesting}
-          disabled={
-            !selectedDataset ||
-            !selectedTestingMethod ||
-            selectedModels.length === 0
-          }
-        >
-          <Link href="/testings">创建新测试</Link>
-        </button>
+      <div className="flex justify-end space-x-3">
+        <Link href="/testings">
+          <button className="btn btn-secondary w-max">取消</button>
+        </Link>
+        
+        <Link href="/testings">
+          <button
+            className="btn btn-primary w-max"
+            onClick={addTesting}
+            disabled={
+              !selectedDataset ||
+              !selectedTestingMethod ||
+              selectedModels.length === 0
+            }
+          >
+            创建新测试
+          </button>
+        </Link>
       </div>
     </div>
   );
