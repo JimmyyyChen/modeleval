@@ -34,7 +34,6 @@ export async function POST(request) {
         let number_of_wrong = 0;
         let wrong_questions = [];
         let total_number = 0;
-        let if_return = 0;            //设置好number_of_wrong再return
         await promisify(pipeline)(request.body, fs.createWriteStream('temp/temp_dataset.txt'));
         let data = fs.readFileSync('temp/temp_dataset.txt', 'utf8');//等待文件读完
         const { newfile, temp_name } = removeFirstEmptyLine(data);
@@ -74,56 +73,14 @@ export async function POST(request) {
                     continue;
                 }
                 final_results.push(results[i]);
-                choices[final_results.length - 1] = results[i].choices.slice(3, -3).split('\", \"').map(str => ({ content: str }));
+                choices[final_results.length - 1] = results[i].choices.slice(3, -3).split('", "').map(str => ({ content: str }));
             }
-            async function createData() {
-                const new_dataset = await prisma.Dataset.create({
-                    data: {
-                        datasetName: temp_name,
-                        sizeInMB: parseFloat(fileSize),
-                        lastUpdate: new Date(),
-                        questionType: question_type,
-                        ChoiceQuestions: {
-                            createMany: {
-                                data: Array.from({ length: final_results.length }, (_, index) => ({
-                                    question: final_results[index].question,
-                                    correctAnswer: final_results[index].answer,
-                                })),
-                            },
-                        },
-                        userId: userId,
-                    },
-                    include: {
-                        ChoiceQuestions: {
-                            include: {
-                                choices: true,
-                            },
-                        },
-                    },
-                })
-                console.log("create finished!");
-
-                var i = 0;
-                for (const choiceQuestion of new_dataset.ChoiceQuestions) {
-
-                    const get_choices = await prisma.Choice.createMany({
-                        data: choices[i].map(ch => ({
-                            content: ch.content,
-                            choiceQuestionId: choiceQuestion.id,
-                        })),
-                    });
-                    i++;
-                }
-                console.log(wrong_questions);
-                console.log(number_of_wrong);
-                console.log(total_number);
-            }
-            createData();
+            createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId);
         }
         else {
             question_type = true;
             total_number = results.length;
-            for (var i = 0; i < results.length; i++) {
+            for (i = 0; i < results.length; i++) {
                 if (!results[i].prompt) {
                     number_of_wrong++;
                     wrong_questions.push(i + 1);
@@ -132,30 +89,7 @@ export async function POST(request) {
                 if (!results[i].answer) results[i].answer = "no sampleAnswer";
                 final_results.push(results[i]);
             }
-            async function createData() {
-                const new_dataset = await prisma.Dataset.create({
-                    data: {
-                        datasetName: temp_name,
-                        sizeInMB: parseFloat(fileSize),
-                        lastUpdate: new Date(),
-                        questionType: question_type,
-                        ShortAnswerQuestions: {
-                            createMany: {
-                                data: Array.from({ length: final_results.length }, (_, index) => ({
-                                    question: final_results[index].prompt,
-                                    sampleAnswer: final_results[index].answer,
-                                })),
-                            },
-                        },
-                        userId: userId,
-                    },
-                })
-                console.log("create finished!");
-                console.log(wrong_questions);
-                console.log(number_of_wrong);
-                console.log(total_number);
-            }
-            createData();
+            createData(temp_name, fileSize, question_type, final_results, null, wrong_questions, number_of_wrong, total_number, userId);
         }
         if (number_of_wrong == 0) {
             return new NextResponse(JSON.stringify({ success: true, total_number: total_number }), {
@@ -176,5 +110,74 @@ export async function POST(request) {
             status: 500,
             headers: { "Content-Type": "application/json" },
         });
+    }
+}
+
+async function createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId) {
+    if (question_type == 0) {
+        const new_dataset = await prisma.Dataset.create({
+            data: {
+                datasetName: temp_name,
+                sizeInMB: parseFloat(fileSize),
+                lastUpdate: new Date(),
+                questionType: question_type,
+                ChoiceQuestions: {
+                    createMany: {
+                        data: Array.from({ length: final_results.length }, (_, index) => ({
+                            question: final_results[index].question,
+                            correctAnswer: final_results[index].answer,
+                        })),
+                    },
+                },
+                userId: userId,
+            },
+            include: {
+                ChoiceQuestions: {
+                    include: {
+                        choices: true,
+                    },
+                },
+            },
+        })
+        console.log("create finished!");
+
+        var i = 0;
+        for (const choiceQuestion of new_dataset.ChoiceQuestions) {
+
+            await prisma.Choice.createMany({
+                data: choices[i].map(ch => ({
+                    content: ch.content,
+                    choiceQuestionId: choiceQuestion.id,
+                })),
+            });
+            i++;
+        }
+        console.log(wrong_questions);
+        console.log(number_of_wrong);
+        console.log(total_number);
+    }
+    else {
+        await prisma.Dataset.create({
+            data: {
+                datasetName: temp_name,
+                sizeInMB: parseFloat(fileSize),
+                lastUpdate: new Date(),
+                questionType: question_type,
+                ShortAnswerQuestions: {
+                    createMany: {
+                        data: Array.from({ length: final_results.length }, (_, index) => ({
+                            question: final_results[index].prompt,
+                            sampleAnswer: final_results[index].answer,
+                        })),
+                    },
+                },
+                userId: userId,
+            },
+        })
+        console.log("create finished!");
+        console.log(wrong_questions);
+        console.log(number_of_wrong);
+        console.log(total_number);
+
     }
 }
