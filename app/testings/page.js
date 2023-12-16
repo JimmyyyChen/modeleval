@@ -2,15 +2,15 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
-import TestingCard from "./components/TestingCard";
+import TaskCard from "./components/TestingCard";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default async function TestingsPage() {
   // get userId from clerk
   const { userId } = auth();
 
-  // get all testings from prisma
-  const testings = await prisma.testing.findMany({
+  // get all testings from prisma (we can directly access prisma because we are not using "use client")
+  const tasks = await prisma.task.findMany({
     where: {
       userId: userId,
     },
@@ -31,24 +31,17 @@ export default async function TestingsPage() {
       <Link className="btn" href="/testings/2">
         TODO: 对抗测试展示页面
       </Link>
-      <Link className="btn btn-secondary rounded-full shadow-md w-max" href="/testings/new-testing">
+      <Link
+        className="btn btn-secondary w-max rounded-full shadow-md"
+        href="/testings/new-testing"
+      >
         <PlusIcon className="h-6 w-6" />
         新测试
       </Link>
 
       {/* print all testings */}
-      {testings.map((testing) => (
-        <TestingCard
-          id={testing.id}
-          name={testing.name}
-          type={testing.type}
-          sizeInMB={testing.sizeInMB}
-          taskCount={testing.taskCount}
-          completedTaskCount={testing.completedTaskCount}
-          startTime={testing.startTime}
-          endTime={testing.endTime}
-          key={testing.id}
-        />
+      {tasks.map((task) => (
+        <TaskCard task={task} key={task.id} />
       ))}
     </div>
   );
