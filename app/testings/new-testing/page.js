@@ -56,6 +56,7 @@ export default function NewTestingPage() {
         taskName: `${selectedDataset.datasetName} ${selectedTestingMethod}`,
         startTime: new Date(), // current time
         questionType: 0, // TODO
+        // TODO:method
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });
