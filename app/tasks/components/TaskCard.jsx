@@ -16,10 +16,10 @@ export default function TaskCard({ task }) {
   const startTime = task.startTime;
   const endTime = task.endTime;
 
-  const deleteTesting = async (event) => {
+  const deleteTask = async (event) => {
     event.preventDefault();
     try {
-      await axios.delete(`/api/testings/operations/deleteTask/${id}`);
+      await axios.delete(`/api/tasks/operations/deleteTask/${id}`);
     } catch (error) {
       console.error(error);
     }
@@ -42,9 +42,9 @@ export default function TaskCard({ task }) {
   }
 
   return (
-    // TODO: testing/[id]
+    // TODO: task/[id]
     <Link
-      href={`/testings/${id}`}
+      href={`/tasks/${id}`}
       className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-5 shadow-md hover:bg-gray-50 focus:ring focus:ring-gray-200 sm:flex sm:space-y-0"
     >
       <div
@@ -70,7 +70,7 @@ export default function TaskCard({ task }) {
       </div>
 
       <div className="ml-auto space-x-1">
-        <button className="btn btn-circle btn-ghost " onClick={deleteTesting}>
+        <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
           <XMarkIcon className="h-5 w-5" />
         </button>
         <button className="btn btn-circle btn-ghost">

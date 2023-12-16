@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-export default function TestingDatasetInfo({dataset}) {
+export default function TaskDatasetInfo({dataset}) {
   const description = dataset.description;
   // TODO
   const questionType = dataset.questionType ? "问答题" : "选择题";
