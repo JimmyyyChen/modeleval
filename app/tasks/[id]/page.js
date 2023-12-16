@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 // import Link from "next/link";
 
-import TestingDatasetInfo from "./components/TestingDatasetInfo";
-import TestingModelInfo from "./components/TestingModelInfo";
-// import ResultTable from "./components/CompletedTesting";
+import TaskDatasetInfo from "./components/TaskDatasetInfo";
+import TaskModelInfo from "./components/TaskModelInfo";
+// import ResultTable from "./components/ResultTable";
 // import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
 
-export default async function TestingDisplayPage({ params }) {
-  // TODO: fetch testing info by id
+export default async function TaskDisplayPage({ params }) {
+  // TODO: fetch task info by id
   const taskId = parseInt(params.id);
 
   const task = await prisma.task.findUnique({
@@ -78,10 +78,10 @@ export default async function TestingDisplayPage({ params }) {
       )} */}
 
       <h2 className="text-2xl font-bold">数据集</h2>
-      <TestingDatasetInfo dataset={dataset} />
+      <TaskDatasetInfo dataset={dataset} />
       <h2 className="text-2xl font-bold">模型</h2>
       {models.map((model) => (
-        <TestingModelInfo model={model} key={model.id} />
+        <TaskModelInfo model={model} key={model.id} />
       ))}
       <h2 className="text-2xl font-bold">已完成测试的模型</h2>
       TODO

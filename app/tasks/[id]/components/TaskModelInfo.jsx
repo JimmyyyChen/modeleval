@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-export default function TestingModelInfo({ model }) {
+export default function TeModelInfo({ model }) {
   const modelName = model.modelName;
   const description = model.description;
 

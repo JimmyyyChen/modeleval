@@ -5,25 +5,6 @@ import OpenAI from "openai"; // Need to install
 
 process.env.OPENAI_API_KEY = 'yaonm';
 
-// // add a new testing
-// export async function POST(request) {
-//   try {
-//     const json = await request.json();
-//     const testing = await prisma.testing.create({
-//       data: json,
-//     });
-//     console.log(testing);
-
-//     return new NextResponse(JSON.stringify(testing), {
-//       status: 201,
-//       headers: { "Content-Type": "application/json" },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return new NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }
-
 export async function POST(request) {
   try {
     const client = new OpenAI({baseURL:"http://111.202.73.146:10510/v1", apiKey: process.env.OPENAI_API_KEY});
@@ -45,7 +26,7 @@ export async function POST(request) {
     const json = await request.json();
     json.name = completionResponse.choices[0].message.content;
     console.log(json);
-    const clinet_response = await prisma.testing.create({
+    const clinet_response = await prisma.task.create({
       data: json,
     });
 

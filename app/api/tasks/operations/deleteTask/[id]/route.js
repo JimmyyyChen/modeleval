@@ -1,17 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// delete a testing
+// delete a task
 export async function DELETE(request, { params }) {
-  const testingId = parseInt(params.id);
+  const taskId = parseInt(params.id);
   try {
-    const testing = await prisma.task.delete({
+    const task = await prisma.task.delete({
       where: {
-        id: testingId,
+        id: taskId,
       },
     });
 
-    return new NextResponse(JSON.stringify(testing), {
+    return new NextResponse(JSON.stringify(task), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });

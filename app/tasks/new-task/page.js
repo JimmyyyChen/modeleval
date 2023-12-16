@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import DatasetOption from "./components/DatasetOption";
 import ModelOption from "./components/ModelOption";
 
-export default function NewTestingPage() {
+export default function NewTaskPage() {
   const router = useRouter();
   const { userId } = useAuth();
 
@@ -17,7 +17,7 @@ export default function NewTestingPage() {
   const [models, setModels] = useState([]);
 
   const [selectedDataset, setSelectedDataset] = useState(null);
-  const [selectedTestingMethod, setSelectedTestingMethod] = useState(null);
+  const [selectedTaskMethod, setSelectedTaskMethod] = useState(null);
   const [selectedModels, setSelectedModels] = useState([]);
 
   useEffect(() => {
@@ -42,18 +42,18 @@ export default function NewTestingPage() {
     fetchModels();
   }, []);
 
-  const addTesting = async () => {
+  const addTask = async () => {
     if (
       !selectedDataset ||
-      !selectedTestingMethod ||
+      !selectedTaskMethod ||
       selectedModels.length === 0
     ) {
       return;
     }
     try {
-      await axios.post("/api/testings/operations/addTask", {
+      await axios.post("/api/tasks/operations/addTask", {
         userId: userId,
-        taskName: `${selectedDataset.datasetName} ${selectedTestingMethod}`,
+        taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
         questionType: 0, // TODO
         // TODO:method
@@ -100,7 +100,7 @@ export default function NewTestingPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
-            onChange={() => setSelectedTestingMethod("客观测试")}
+            onChange={() => setSelectedTaskMethod("客观测试")}
           />
           <span className="label-text font-bold">客观测试</span>
         </label>
@@ -109,7 +109,7 @@ export default function NewTestingPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
-            onChange={() => setSelectedTestingMethod("主观测试")}
+            onChange={() => setSelectedTaskMethod("主观测试")}
           />
           <span className="label-text font-bold">主观测试</span>
         </label>
@@ -118,7 +118,7 @@ export default function NewTestingPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
-            onChange={() => setSelectedTestingMethod("对抗测试")}
+            onChange={() => setSelectedTaskMethod("对抗测试")}
           />
           <span className="label-text font-bold">对抗测试</span>
         </label>
@@ -171,17 +171,17 @@ export default function NewTestingPage() {
         </div>
       ))}
       <div className="flex justify-end space-x-3">
-        <Link href="/testings">
+        <Link href="/tasks">
           <button className="btn btn-secondary w-max">取消</button>
         </Link>
         
-        <Link href="/testings">
+        <Link href="/tasks">
           <button
             className="btn btn-primary w-max"
-            onClick={addTesting}
+            onClick={addTask}
             disabled={
               !selectedDataset ||
-              !selectedTestingMethod ||
+              !selectedTaskMethod ||
               selectedModels.length === 0
             }
           >
