@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO: Testing isn't used now
 model Testing {
   id                 Int       @id @default(autoincrement())
   userId             String
