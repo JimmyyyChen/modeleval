@@ -21,16 +21,6 @@ export default async function TestingsPage() {
 
   return (
     <div className="flex w-full flex-col space-y-4">
-      {/* Add Demo Testing */}
-      <Link className="btn" href="/testings/0">
-        TODO: 客观测试展示页面
-      </Link>
-      <Link className="btn" href="/testings/1">
-        TODO: 主观测试展示页面
-      </Link>
-      <Link className="btn" href="/testings/2">
-        TODO: 对抗测试展示页面
-      </Link>
       <Link
         className="btn btn-secondary w-max rounded-full shadow-md"
         href="/testings/new-testing"
@@ -43,6 +33,13 @@ export default async function TestingsPage() {
       {tasks.map((task) => (
         <TaskCard task={task} key={task.id} />
       ))}
+
+      {/* if no tasks */}
+      {tasks.length == 0 && (
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <p className="text-gray-500">无测试</p>
+        </div>
+      )}
     </div>
   );
 }

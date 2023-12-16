@@ -13,7 +13,7 @@ export default function TaskCard({ task }) {
   const taskName = task.taskName;
   const progress = task.progress;
   const completed = progress === 1;
-  const startTime = new Date(task.startTime);
+  const startTime = task.startTime;
   const endTime = task.endTime;
 
   const deleteTesting = async (event) => {
@@ -32,9 +32,7 @@ export default function TaskCard({ task }) {
   // const progress = Math.round((completedTaskCount / taskCount) * 100);
   // const completed = completedTaskCount === taskCount;
 
-  const formatedStartTime = startTime.toLocaleTimeString("en-US", {
-    hour12: false,
-  });
+  const formatedStartTime = startTime.toLocaleString();
 
   let formatedEndTime = "";
   if (endTime) {
