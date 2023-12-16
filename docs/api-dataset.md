@@ -39,7 +39,7 @@
 
 **Response:**
 
-- 成功 (`201`): 返回数据集对象的信息：
+- 成功 (`200`): 返回数据集对象的信息：
   - `id` (Int): 数据集ID
   - `datasetName` (String): 数据集名称
   - `description`(String): 数据集简介
@@ -63,7 +63,7 @@
 
 **Response:**
 
-- 成功 (`201`): 返回数据集对象的信息：
+- 成功 (`200`): 返回数据集对象的信息：
   - `id` (Int): 数据集ID
   - `datasetName` (String): 数据集名称
   - `description`(String): 数据集简介

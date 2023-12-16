@@ -32,13 +32,14 @@ model Label {
 }
 
 model Model {
-  modelid     Int     @id @default(autoincrement())
-  modelName   String  @unique
+  modelid     Int       @id @default(autoincrement())
+  modelName   String    @unique
   label_list  Label[]
-  description String  @default("this is a model for testing")
-  downloadN   Int     @default(0)
-  likeN       Int     @default(0)
-  Tasks      Task[]
+  description String    @default("this is a model for testing")
+  downloadN   Int       @default(0)
+  likeN       Int       @default(0)
+  Tasks       Task[]
+  Comment     Comment[]
 }
 
 model Dataset {
@@ -55,6 +56,7 @@ model Dataset {
   ShortAnswerQuestions ShortAnswerQuestion[]
   userId               String // the user who upload the dataset,get from auth() in CLERK
   Tasks                Task[]
+  Comment              Comment[]
 }
 
 model ChoiceQuestion {
@@ -82,23 +84,31 @@ model Choice {
 }
 
 model Task {
-  id  Int  @id @default(autoincrement())
-  userId String
-  taskName String
-  startTime DateTime @default(now())
-  endTime DateTime?
+  id           Int       @id @default(autoincrement())
+  userId       String
+  taskName     String
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
   questionType Int // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  modelIds Json
-  models Model[]
-  datasetId Int
-  dataset Dataset @relation(fields: [datasetId], references: [id])
-  answerjson Json @default("{}")
-  state Int // 0: not start, 1: running, 2: paused, 3: finished
-  progress Float
+  modelIds     Json
+  models       Model[]
+  datasetId    Int
+  dataset      Dataset   @relation(fields: [datasetId], references: [id])
+  answerjson   Json      @default("{}")
+  state        Int // 0: not start, 1: running, 2: paused, 3: finished
+  progress     Float
 }
-  // { "modelId": 
-  //  {
-  //    "questionId": "modelAnswer",
-  //    ···        
-  //  }
-  // }
+
+model Comment {
+  id          Int      @id @default(autoincrement())
+  content     String   @db.Text
+  //likeN   Int    @default(0)        //暂时不开发这项功能
+  commentTime DateTime @default(now())
+  lastUpdate  DateTime @default(now())
+  type        Int // 0: model, 1: dataset,maybe add 2: task,3:user in the future
+  model       Model?   @relation(fields: [modelId], references: [modelid])
+  modelId     Int?
+  dataset     Dataset? @relation(fields: [datasetId], references: [id])
+  datasetId   Int?
+  userId      String
+}
