@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function POST(request, response) {
+export async function POST(request) {
     try {
         const json = await request.json();
         // const datasetId = json.datasetId;
@@ -39,16 +39,16 @@ export async function POST(request, response) {
                     connect: modelLists.map((singlemodel) => ({
                         modelid: singlemodel.modelid,
                     })),
-                }, 
+                },
                 dataset: {
                     connect: {
                         id: json.datasetId,
                     },
                 },
-                state: 0, 
+                state: 0,
                 progress: 0.0,
             },
-        });   
+        });
         return new NextResponse(JSON.stringify(testing), {
             status: 201,
             headers: { "Content-Type": "application/json" },
