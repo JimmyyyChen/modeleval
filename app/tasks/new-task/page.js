@@ -55,7 +55,7 @@ export default function NewTaskPage() {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
-        questionType: 0, // TODO
+        questionType: 0, // TODO: no need, we could get it from dataset
         // TODO:method
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,

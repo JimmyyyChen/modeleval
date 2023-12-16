@@ -4,7 +4,6 @@ import Link from "next/link";
 export default function DatasetOption({ dataset, isSelected }) {
   const description = dataset.description;
   const datasetName = dataset.datasetName;
-  // TODO: there should be 3 questionType
   const questionType = dataset.questionType ? "问答题" : "选择题";
   const sizeInMB = dataset.sizeInMB;
   // dataset.lastUpdate is something like "2023-12-16T07:22:34.433Z"
