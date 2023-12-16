@@ -42,7 +42,6 @@ export default function TaskCard({ task }) {
   }
 
   return (
-    // TODO: task/[id]
     <Link
       href={`/tasks/${id}`}
       className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-5 shadow-md hover:bg-gray-50 focus:ring focus:ring-gray-200 sm:flex sm:space-y-0"

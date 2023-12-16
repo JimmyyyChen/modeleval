@@ -7,7 +7,6 @@ import TaskModelInfo from "./components/TaskModelInfo";
 // import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
 
 export default async function TaskDisplayPage({ params }) {
-  // TODO: fetch task info by id
   const taskId = parseInt(params.id);
 
   const task = await prisma.task.findUnique({
@@ -28,7 +27,7 @@ export default async function TaskDisplayPage({ params }) {
   // TODO: 客观测试 主观测试, 对抗测试
   // const method = "客观测试";
 
-  // TODO
+  // TODO: progress
   // let currentProgress = "";
   // if (type == 0) {
   //   currentProgress =
@@ -55,7 +54,6 @@ export default async function TaskDisplayPage({ params }) {
         <p className="text-gray-500">{startTime}开始</p>
       </div>
 
-      {/* TODO */}
       <p>TODO:主观测试与对抗测试跳转 </p>
       {/* {type == 1 && (
         <Link
@@ -84,7 +82,7 @@ export default async function TaskDisplayPage({ params }) {
         <TaskModelInfo model={model} key={model.id} />
       ))}
       <h2 className="text-2xl font-bold">已完成测试的模型</h2>
-      TODO
+      TODO:已完成测试的模型
       {/* <ResultTable type={type} />
       <ResultTable type={type} /> */}
     </div>
