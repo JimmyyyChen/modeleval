@@ -15,6 +15,7 @@ export default function ModelOption({ model, isSelected }) {
         <input
           type="checkbox"
           className="checkbox-primary checkbox"
+          readOnly={true}
           checked={isSelected}
           readOnly
         />
