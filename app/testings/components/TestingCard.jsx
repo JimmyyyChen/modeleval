@@ -20,7 +20,7 @@ export default function TestingCard({
   const deleteTesting = async (event) => {
     event.preventDefault();
     try {
-      await axios.delete(`/api/testings/remove/${id}`);
+      await axios.delete(`/api/testings/operations/deleteTask/${id}`);
     } catch (error) {
       console.error(error);
     }

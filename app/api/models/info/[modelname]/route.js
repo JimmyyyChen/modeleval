@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(request, { params }) {
     const modelName = params.modelname;
     try {
-        let model = await prisma.Model.findMany({
+        let model = await prisma.model.findMany({
             where: {
                 modelName: modelName
             },

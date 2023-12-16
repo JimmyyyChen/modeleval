@@ -41,10 +41,10 @@ export async function POST(request) {
       ],
       max_tokens: 20,
     });
-    console.log(completionResponse.choices[0].message.content);
 
     const json = await request.json();
     json.name = completionResponse.choices[0].message.content;
+    console.log(json);
     const clinet_response = await prisma.testing.create({
       data: json,
     });
