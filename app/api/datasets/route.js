@@ -7,13 +7,15 @@ export async function GET() {
             include: {
                 label_list: true,
                 ChoiceQuestions: {
-                    choices: true
+                    include: {
+                        choices: true
+                    }
                 },
                 ShortAnswerQuestions: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
