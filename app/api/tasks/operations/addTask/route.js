@@ -29,7 +29,7 @@ export async function POST(request) {
             modelLists.push(model);
         }
 
-        const testing = await prisma.task.create({
+        const task = await prisma.task.create({
             data: {
                 userId: json.userId,
                 taskName: json.taskName,
@@ -49,7 +49,7 @@ export async function POST(request) {
                 progress: 0.0,
             },
         });
-        return new NextResponse(JSON.stringify(testing), {
+        return new NextResponse(JSON.stringify(task), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });

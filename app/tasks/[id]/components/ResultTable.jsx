@@ -1,7 +1,7 @@
 "use client";
 import { DataGrid } from "@mui/x-data-grid";
 
-// TODO
+// TODO: examples
 const autoEvalCol = [
   { field: "id", headerName: "ID", width: 50 },
   { field: "isCorrect", headerName: "是否正确", width: 70 },
@@ -15,7 +15,6 @@ const autoEvalCol = [
   { field: "optionD", headerName: "选项 D", width: 100 },
 ];
 
-// TODO: examples
 const exampleAutoEvalRows = [
   {
     id: 1,

@@ -2,7 +2,7 @@
 
 ## 模型测评部分
 
-### 获取当前的所有任务 `GET /api/testings/info/{userId}`
+### 获取当前的所有任务 `GET /api/tasks/info/{userId}`
 
 **Request Body:** 无
 
@@ -13,7 +13,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 添加新的评测任务 `POST /api/testings/operations/addTask`
+### 添加新的评测任务 `POST /api/tasks/operations/addTask`
 
 **Request Body:**
 
@@ -43,7 +43,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 启动/继续运行一个评测任务 `POST /api/testings/operations/startTask/{id}`
+### 启动/继续运行一个评测任务 `POST /api/tasks/operations/startTask/{id}`
 
 **Request Body:** 无
 
@@ -65,7 +65,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### (#TODO) 暂停一个评测任务 `POST /api/testings/operations/pauseTask/{id}` 
+### (#TODO) 暂停一个评测任务 `POST /api/tasks/operations/pauseTask/{id}` 
 
 **Request Body:** 无
 
@@ -87,7 +87,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 删除评测任务 `DELETE /api/testings/operations/deleteTask/{id}`
+### 删除评测任务 `DELETE /api/tasks/operations/deleteTask/{id}`
 
 **Request Body:** 无
 

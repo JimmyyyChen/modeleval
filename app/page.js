@@ -35,7 +35,7 @@ export default function HomePage() {
       <SignedIn>
         <Link
           className="btn btn-accent w-max rounded-full shadow-md"
-          href="/testings/new-testing"
+          href="/tasks/new-task"
         >
           <PlusIcon className="h-6 w-6" />
           新建测试

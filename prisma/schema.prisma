@@ -10,18 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Testing {
-  id                 Int       @id @default(autoincrement())
-  userId             String
-  name               String
-  sizeInMB           Float
-  startTime          DateTime
-  endTime            DateTime?
-  taskCount          Int
-  completedTaskCount Int
-  type               String
-}
-
 model Label {
   labelid       Int      @id @default(autoincrement())
   labelName     String   @unique
@@ -35,7 +23,7 @@ model Model {
   modelid     Int     @id @default(autoincrement())
   modelName   String  @unique
   label_list  Label[]
-  description String  @default("this is a model for testing")
+  description String  @default("this is a model for task")
   downloadN   Int     @default(0)
   likeN       Int     @default(0)
   Tasks      Task[]
@@ -44,7 +32,7 @@ model Model {
 model Dataset {
   id                   Int                   @id @default(autoincrement())
   datasetName          String
-  description          String                @default("this is a dataset for testing")
+  description          String                @default("this is a dataset for task")
   sizeInMB             Float
   lastUpdate           DateTime
   starCount            Int                   @default(0)

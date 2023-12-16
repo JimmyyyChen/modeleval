@@ -1,13 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-export default function TestingDatasetInfo() {
-  let demoDescription =
-    " 这里是关于数据集的描述，这里是关于数据集的描述，这里是关于数据集的描述，这里是关于数据集的描述，这里是关于数据集的描述，这里是关于数据集的描述，这里是关于数据集的描述.";
-
-  if (demoDescription.length > 50) {
-    demoDescription = demoDescription.slice(0, 50) + "...";
-  }
+export default function TaskDatasetInfo({dataset}) {
+  const description = dataset.description;
+  const questionType = dataset.questionType ? "问答题" : "选择题";
+  const sizeInMB = dataset.sizeInMB;
+  const lastUpdate = dataset.lastUpdate.toLocaleString();
 
   return (
     <div className="w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6">
@@ -19,10 +17,10 @@ export default function TestingDatasetInfo() {
         </Link>
       </h2>
 
-      <p className="text-sm text-gray-500">{demoDescription}</p>
+      <p className="text-sm text-gray-500">{description}</p>
 
       <div className="ml-auto space-x-1 font-medium text-gray-800">
-        选择问题 • 101KB • 2023/12/31 23:59
+        {questionType} • {sizeInMB} MB • {lastUpdate}
       </div>
     </div>
   );
