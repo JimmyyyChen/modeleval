@@ -112,7 +112,6 @@ model Comment {
   datasetId   Int?
   userId      String
 }
-<<<<<<< HEAD
   // { "modelId": 
   //  {
   //    "questionId": "modelAnswer",
@@ -124,12 +123,10 @@ model Adversarial {
   id Int @id @default(autoincrement())
   userId String
   taskName String
-  startTime DateTime @default(now())
+  startTime DateTime @default(now())  
   endTime DateTime?
   modelIds Json
   datasetId Int
   taskOneId Int
   taskTwoId Int
 }
-=======
->>>>>>> 4117bcad8aab86bcceed19b25352a7bda85484ba
