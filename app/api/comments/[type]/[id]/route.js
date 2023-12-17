@@ -3,21 +3,18 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
     try {
-        let dataset = await prisma.Dataset.findMany({
+        let type = parseInt(params.type);
+        let id = parseInt(params.id);
+        let comments = await prisma.Comment.findMany({
             where: {
-                datasetName: params.name
+                type: type,
+                id: id
             },
-            include: {
-                label_list: true,
-                ChoiceQuestions: {
-                    include: {
-                        choices: true
-                    }
-                },
-                ShortAnswerQuestions: true,
-            }
+            orderBy: {
+                commentTime: "desc"
+            },
         });
-        return new NextResponse(JSON.stringify(dataset), {
+        return new NextResponse(JSON.stringify(comments), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });

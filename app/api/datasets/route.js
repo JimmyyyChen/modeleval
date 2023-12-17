@@ -3,17 +3,19 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        let models = await prisma.model.findMany({
-            orderBy: {
-                modelid: "asc",
-            },
+        let dataset = await prisma.Dataset.findMany({
             include: {
                 label_list: true,
+                ChoiceQuestions: {
+                    include: {
+                        choices: true
+                    }
+                },
+                ShortAnswerQuestions: true,
             }
         });
-        //names = names.map((name) => name.name)
-        return new NextResponse(JSON.stringify(models), {
-            status: 201,
+        return new NextResponse(JSON.stringify(dataset), {
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {

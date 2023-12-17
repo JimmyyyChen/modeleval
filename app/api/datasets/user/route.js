@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-export async function GET(request) {
+export async function GET() {
     let { userId } = auth()
     if (userId == null) userId = "Administrator";
     try {
@@ -11,12 +11,16 @@ export async function GET(request) {
             },
             include: {
                 label_list: true,
-                ChoiceQuestions: true,
+                ChoiceQuestions: {
+                    include: {
+                        choices: true
+                    }
+                },
                 ShortAnswerQuestions: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {

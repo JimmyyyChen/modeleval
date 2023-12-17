@@ -14,7 +14,7 @@ export async function POST(request, { params }) {
                 ShortAnswerQuestions: true,
             }
         });
-        if (!dataset.id) {
+        if (!dataset) {
             return new NextResponse(JSON.stringify({ success: false, message: "dataset not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -61,21 +61,22 @@ export async function POST(request, { params }) {
                 body["label_list"] = body["label_list"].map(str => ({ labelName: str, datasetId: parseInt(params.id) }));
             }
         }
-        const deleteFormerLabel = await prisma.Label.deleteMany({
+        await prisma.Label.deleteMany({
             where: {
                 datasetId: parseInt(params.id)
             },
         });
-        const createNewLabel = await prisma.Label.createMany({
+        await prisma.Label.createMany({
             data: body["label_list"],
         });
-        const updatedDataset = await prisma.Dataset.update({
+        await prisma.Dataset.update({
             where: {
                 id: parseInt(params.id)
             },
             data: {
                 datasetName: dataset["datasetName"],
                 description: dataset["description"],
+                lastUpdate: new Date(),
             }
         })
         return new NextResponse(JSON.stringify({ success: true }), {

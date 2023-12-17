@@ -3,7 +3,7 @@ import {
   datasetInfo,
   datasetBadges,
   datasetItems,
-  pages,
+  //pages,
   issues,
 } from "./data";
 import Community from "@/app/components/Community";
