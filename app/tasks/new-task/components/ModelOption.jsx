@@ -17,7 +17,6 @@ export default function ModelOption({ model, isSelected }) {
           className="checkbox-primary checkbox"
           readOnly={true}
           checked={isSelected}
-          readOnly
         />
 
         <p className=" font-mono text-xl font-bold">{modelName}</p>
