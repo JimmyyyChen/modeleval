@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { stringify } from "postcss";
 
 export async function GET(request, { params }) {
   try {
