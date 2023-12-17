@@ -6,8 +6,6 @@ export async function GET(request, { params }) {
   try {
     // 获取request中的userId
     const userId = params.userId;
-    console.log(userId);
-    console.log("this");
     const allTasks = await prisma.task.findMany({
       orderBy: {
         id: "desc",

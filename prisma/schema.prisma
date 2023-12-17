@@ -102,3 +102,15 @@ model Task {
   //    ···        
   //  }
   // }
+
+model Adversarial {
+  id Int @id @default(autoincrement())
+  userId String
+  taskName String
+  startTime DateTime @default(now())
+  endTime DateTime?
+  modelIds Json
+  datasetId Int
+  taskOneId Int
+  taskTwoId Int
+}
