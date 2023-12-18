@@ -1,3 +1,4 @@
+"use client";
 import DataTable from "../components/DataTable";
 import CheckCondition from "../components/CheckCondition";
 
