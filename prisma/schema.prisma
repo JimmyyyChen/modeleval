@@ -10,18 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Testing {
-  id                 Int       @id @default(autoincrement())
-  userId             String
-  name               String
-  sizeInMB           Float
-  startTime          DateTime
-  endTime            DateTime?
-  taskCount          Int
-  completedTaskCount Int
-  type               String
-}
-
 model Label {
   labelid       Int      @id @default(autoincrement())
   labelName     String   @unique
@@ -40,18 +28,20 @@ model Model {
   likeN       Int       @default(0)
   Tasks       Task[]
   Comment     Comment[]
+  ScoreObj    Float   @default(0.0)   // 平均客观题得分
+  ScoreSub    Float   @default(0.0)   // 平均主观题得分
 }
 
 model Dataset {
   id                   Int                   @id @default(autoincrement())
   datasetName          String
-  description          String                @default("this is a dataset for testing")
+  description          String                @default("this is a dataset for task")
   sizeInMB             Float
   lastUpdate           DateTime
   starCount            Int                   @default(0)
   downloadCount        Int                   @default(0)
   label_list           Label[]
-  questionType         Boolean               @default(false) // 0: choice, 1: short answer
+  questionType         Int               // 0: choice, 1: short answer
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
   userId               String // the user who upload the dataset,get from auth() in CLERK
@@ -97,6 +87,7 @@ model Task {
   answerjson   Json      @default("{}")
   state        Int // 0: not start, 1: running, 2: paused, 3: finished
   progress     Float
+  scoresjson   Json      @default("{}") // 与模型Id一一对应, 保存每个模型的得分
 }
 
 model Comment {
@@ -127,6 +118,20 @@ model Adversarial {
   endTime DateTime?
   modelIds Json
   datasetId Int
-  taskOneId Int
-  taskTwoId Int
+  taskJson Json @default("{}")
+  scoresJson Json @default("{}")
+}
+
+
+model Score {
+  id Int @id @default(autoincrement())
+  taskId Int?
+  adversarialId Int?
+  score Float @default(0.0)
+  scoreType Int // 0: obj, 1: sub, 2: adversarial
+  mainModelId Int
+  datasetId Int
+  adModelId Int?
+  correctCount Int // 回答正确的条目数
+  totalCount Int  // 总回答问题次数
 }

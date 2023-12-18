@@ -53,6 +53,28 @@
   - `userId` (userId): 数据集的作者
 - 失败 (`500`): 返回错误信息。
 
+## 获取所有数据集信息 `GET /api/datasets`
+
+**Request Body**
+
+无
+
+**Response:**
+
+- 成功 (`201`): 返回数据集对象的**数组**，每个数据集对象的信息如下：
+  - `id` (Int): 数据集ID
+  - `datasetName` (String): 数据集名称
+  - `description`(String): 数据集简介
+  - `lastUpdate` (DateTime): 最后更新时间
+  - `starCount` (Int): 数据集收藏数
+  - `downloadCount` (Int): 数据集的下载次数
+  - `label_list` ([`Label`]): 数据集的标签列表
+  - `questionType` (Boolean): 数据集的题型，客观题(0)还是主观题(1)
+  - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
+  - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
+  - `userId` (userId): 数据集的作者
+- 失败 (`500`): 返回错误信息。
+
 ### 获取个人数据集信息 `GET /api/datasets/user`
 
 **Request Body**
