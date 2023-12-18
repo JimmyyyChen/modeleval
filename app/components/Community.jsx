@@ -5,7 +5,7 @@ export default function Community({ issues, textcontent }) {
     return (
       <div className="flex w-full flex-col items-center space-y-4 overflow-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
         <div className="flex w-full items-center justify-between">
-          <div className={`font-bold text-primary`}>
+          <div className="font-bold text-primary">
             {textcontent}
           </div>
           <div>
