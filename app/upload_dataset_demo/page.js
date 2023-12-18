@@ -32,6 +32,7 @@ const IndexPage = () => {
 
     return (
         <div>
+            <h1>TODO:这是个测试页面，注意适配的csv应该为网络学堂提供的mmlu_select.csv的格式</h1>
             <input type="file" accept=".csv" onChange={handleFileChange} />
             <button onClick={handleUpload}>Upload CSV</button>
         </div>
