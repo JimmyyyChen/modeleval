@@ -1,8 +1,7 @@
 "use client";
-import { datasetLabels } from "./data";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import DatasetDisplay from "./DatasetDisplay";
+import DatasetDisplay from "./components/DatasetDisplay";
 
 export default function Home() {
   const [datasets, setDatasets] = useState(null);
@@ -11,8 +10,14 @@ export default function Home() {
     const fetchDatasets = async () => {
       try {
         const response = await axios.get("/api/datasets");
-        setDatasets(response.data);
+        if (response.status >= 200 && response.status < 300) {
+          setDatasets(response.data);
+        } else {
+          setDatasets(undefined);
+          console.error("Error fetching data:", response.status);
+        }
       } catch (error) {
+        setDatasets(undefined);
         console.error("Error fetching data:", error);
       }
     };
@@ -24,7 +29,6 @@ export default function Home() {
     <DatasetDisplay
       title="数据集"
       datasets={datasets}
-      datasetLabels={datasetLabels}
       isvisitor={true}
     />
   );
