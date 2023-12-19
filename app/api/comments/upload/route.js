@@ -1,10 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
+import { getUsername } from "@/lib/getUsername";
 export async function POST(request) {
     try {
         let { userId } = auth()
-        if (userId == null) userId = "Administator";
+        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+        let username = "Administrator";
+        if (userId == null) userId = "Administrator";
+        else {
+            username = await getUsername(userId);
+            if (username == null) username = "Administrator";
+        }
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
         let type = body["type"];
@@ -34,6 +41,7 @@ export async function POST(request) {
                     type: type,
                     modelId: id,
                     content: content,
+                    username: username,
                 }
             });
         }
@@ -55,6 +63,7 @@ export async function POST(request) {
                     type: type,
                     datasetId: id,
                     content: content,
+                    username: username,
                 }
             });
         }
