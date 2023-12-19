@@ -1,10 +1,31 @@
 "use client";
-import { datasets, datasetLabels } from "./data";
-import ModelDisplay from "./ModelDisplay";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import ModelDisplay from "./components/ModelDisplay";
 
-// TODO: 组件化
 export default function Home() {
+  const [models, setModels] = useState(null);
+
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await axios.get("/api/models");
+        if (response.status >= 200 && response.status < 300) {
+          setModels(response.data);
+        } else {
+          setModels(undefined);
+          console.error("Error fetching data:", response.status);
+        }
+      } catch (error) {
+        setModels(undefined);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchModels();
+  }, []);
+
   return (
-    <ModelDisplay title="模型" models={datasets} modelLabels={datasetLabels} />
+    <ModelDisplay title="模型" models={models} />
   );
 }

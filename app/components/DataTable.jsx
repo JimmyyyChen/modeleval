@@ -13,8 +13,6 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -66,7 +64,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 
 
-
 export default function DataTable({ items, type, isvisitor }) {
   const headCells = [
     {
@@ -99,13 +96,14 @@ export default function DataTable({ items, type, isvisitor }) {
               <StyledTableCell
                 key={headCell.id}
                 sortDirection={orderBy === headCell.id ? order : false}
-                align="center"
+                align={headCell.id.includes("Name") ? "left" : "right"}
               >
                 <TableSortLabel
                   active={orderBy === headCell.id}
                   direction={orderBy === headCell.id ? order : "asc"}
                   onClick={createSortHandler(headCell.id)}
-                  className="font-bold "
+                  className="font-bold"
+                  key={`tablesortlabel-${headCell.id}`}
                 >
                   {headCell.label}
                   {orderBy === headCell.id ? (
@@ -142,14 +140,9 @@ const rows = useMemo(
   [items, type],
 );
 
-if (rows) {
-  console.log(rows);
-}
-
 const [order, setOrder] = useState("asc");
 const [orderBy, setOrderBy] = useState("calories");
 const [page, setPage] = useState(0);
-const [dense, setDense] = useState(false);
 const [rowsPerPage, setRowsPerPage] = useState(10);
 
 const handleRequestSort = (event, property) => {
@@ -167,10 +160,6 @@ const handleChangeRowsPerPage = (event) => {
   setPage(0);
 };
 
-const handleChangeDense = (event) => {
-  setDense(event.target.checked);
-};
-
 // Avoid a layout jump when reaching the last page with empty rows.
 const emptyRows =
   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -184,24 +173,35 @@ const visibleRows = useMemo(
   [order, orderBy, page, rowsPerPage, rows],
 );
 
-if (!items) {
+if (items === null) {
     return (
       <div className="shadow-lg flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary">
         Loading...
+      </div>
+    );
+} else if (items === undefined) {
+    return (
+      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
+        Error loading {type === "datasets" ? "datasets" : "models"}.
+      </div>
+    );
+} else if (items.length === 0) {
+    return (
+      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
+        No {type === "datasets" ? "dataset" : "model"} found.
       </div>
     );
 }
 
 
 return (
-  <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+  <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-lg items-center justify-center">
     <Box className="w-full">
       <Paper className="mb-1 w-full">
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
               order={order}
@@ -217,7 +217,7 @@ return (
                   key={row.id}
                   className="hover:bg-gray-600"
                 >
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="left">
                     <Link
                       href={
                         isvisitor
@@ -231,13 +231,13 @@ return (
                       </div>
                     </Link>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="right">
                     {row.lastUpdate}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="right">
                     {row.starCount}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="right">
                     {row.downloadCount}
                   </StyledTableCell>
                 </StyledTableRow>
@@ -245,7 +245,7 @@ return (
               {emptyRows > 0 && (
                 <StyledTableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}
                 >
                   <StyledTableCell colSpan={6} />
@@ -264,10 +264,6 @@ return (
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   </div>
 );
