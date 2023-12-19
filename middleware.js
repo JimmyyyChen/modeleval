@@ -6,7 +6,6 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
   // "/" and "/api(.*)" are available to everyone
   publicRoutes: ["/", "/api(.*)"],
-  // TODO: remove /api(.*)  in production
 });
 
 export const config = {
