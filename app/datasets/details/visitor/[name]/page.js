@@ -9,7 +9,7 @@ import {
 import Community from "@/app/components/Community";
 import UserInfo from "@/app/components/UserInfo";
 import Badges from "@/app/components/Badges";
-import ItemsDisplay from "../../ItemsDisplay";
+import ItemsDisplay from "./components/ItemsDisplay";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
 
 // TODO: 与其他页面雷同，将页面组件化
