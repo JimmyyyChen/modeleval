@@ -32,14 +32,15 @@ model Label {
 }
 
 model Model {
-  modelid     Int       @id @default(autoincrement())
-  modelName   String    @unique
-  label_list  Label[]
-  description String    @default("this is a model for testing")
-  downloadN   Int       @default(0)
-  likeN       Int       @default(0)
-  Tasks       Task[]
-  Comment     Comment[]
+  modelid       Int       @id @default(autoincrement())
+  modelName     String    @unique
+  label_list    Label[]
+  description   String    @default("this is a model for testing")
+  downloadCount Int       @default(0)
+  lastUpdate    DateTime  @default(now())
+  likeN         Int       @default(0)
+  Tasks         Task[]
+  Comment       Comment[]
 }
 
 model Dataset {
