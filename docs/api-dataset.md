@@ -50,7 +50,8 @@
   - `questionType` (Boolean): 数据集的题型，客观题(0)还是主观题(1)
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
-  - `userId` (userId): 数据集的作者
+  - `userId` (userId): 数据集的作者auth
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
 ## 获取所有数据集信息 `GET /api/datasets`
@@ -72,7 +73,8 @@
   - `questionType` (Boolean): 数据集的题型，客观题(0)还是主观题(1)
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
-  - `userId` (userId): 数据集的作者
+  - `userId` (userId): 数据集的作者auth
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
 ### 获取个人数据集信息 `GET /api/datasets/user`
@@ -97,6 +99,7 @@
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
 ### 删除数据集 `DELETE api/datasets/delete/[id]`
@@ -127,6 +130,12 @@
   - `description`(String): 数据集简介(可选,用户没提供就不传)
   - `label_list` ([String]): 数据集的标签列表(必选,传递的是结果(无论用户是否修改)所有标签名称的列表)
 
+**Response:**
+
+- 成功 (`200`): 表示改动成功：
+- 失败 (`404`): 返回数据集不存在等错误信息。
+- 失败 (`403`): 返回权限不允许等错误信息。
+- 
 ### 改动条目 `POST api/datasets/update/[id]/questions/[id2]`
 
 **Request Body**
