@@ -14,8 +14,11 @@ CREATE TABLE `Model` (
     `modelid` INTEGER NOT NULL AUTO_INCREMENT,
     `modelName` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL DEFAULT 'this is a model for testing',
-    `downloadN` INTEGER NOT NULL DEFAULT 0,
-    `likeN` INTEGER NOT NULL DEFAULT 0,
+    `downloadCount` INTEGER NOT NULL DEFAULT 0,
+    `lastUpdate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `starCount` INTEGER NOT NULL DEFAULT 0,
+    `ScoreObj` DOUBLE NOT NULL DEFAULT 0.0,
+    `ScoreSub` DOUBLE NOT NULL DEFAULT 0.0,
 
     UNIQUE INDEX `Model_modelName_key`(`modelName`),
     PRIMARY KEY (`modelid`)
@@ -30,7 +33,7 @@ CREATE TABLE `Dataset` (
     `lastUpdate` DATETIME(3) NOT NULL,
     `starCount` INTEGER NOT NULL DEFAULT 0,
     `downloadCount` INTEGER NOT NULL DEFAULT 0,
-    `questionType` BOOLEAN NOT NULL DEFAULT false,
+    `questionType` INTEGER NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -78,6 +81,7 @@ CREATE TABLE `Task` (
     `answerjson` JSON NOT NULL,
     `state` INTEGER NOT NULL,
     `progress` DOUBLE NOT NULL,
+    `scoresjson` JSON NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -105,8 +109,24 @@ CREATE TABLE `Adversarial` (
     `endTime` DATETIME(3) NULL,
     `modelIds` JSON NOT NULL,
     `datasetId` INTEGER NOT NULL,
-    `taskOneId` INTEGER NOT NULL,
-    `taskTwoId` INTEGER NOT NULL,
+    `taskJson` JSON NOT NULL,
+    `scoresJson` JSON NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Score` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `taskId` INTEGER NULL,
+    `adversarialId` INTEGER NULL,
+    `score` DOUBLE NOT NULL DEFAULT 0.0,
+    `scoreType` INTEGER NOT NULL,
+    `mainModelId` INTEGER NOT NULL,
+    `datasetId` INTEGER NOT NULL,
+    `adModelId` INTEGER NULL,
+    `correctCount` INTEGER NOT NULL,
+    `totalCount` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -37,6 +37,12 @@ export async function POST(request) {
         await promisify(pipeline)(request.body, fs.createWriteStream('temp/temp_dataset.txt'));
         let data = fs.readFileSync('temp/temp_dataset.txt', 'utf8');//等待文件读完
         const { newfile, temp_name } = removeFirstEmptyLine(data);
+        if (temp_name == null || temp_name.length > 24) {
+            return new NextResponse(JSON.stringify({ success: false, error: 'Invalid dataset name' }), {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         get_from_request += newfile;
         fs.writeFileSync('temp/temp_dataset2.txt', get_from_request, 'utf8')//等待文件去掉头部
         const fileContent = fs.readFileSync('temp/temp_dataset2.txt', 'utf8');
