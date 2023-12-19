@@ -46,6 +46,7 @@ model Dataset {
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
   userId               String // the user who upload the dataset,get from auth() in CLERK
+  username             String                @default("Administrator")
   Tasks                Task[]
   Comment              Comment[]
 }
@@ -103,6 +104,7 @@ model Comment {
   dataset     Dataset? @relation(fields: [datasetId], references: [id])
   datasetId   Int?
   userId      String
+  username    String   @default("Administrator")
 }
 
 // { "modelId": 
