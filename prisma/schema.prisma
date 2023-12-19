@@ -24,8 +24,9 @@ model Model {
   modelName   String  @unique
   label_list  Label[]
   description String  @default("this is a model for task")
-  downloadN   Int     @default(0)
-  likeN       Int     @default(0)
+  downloadCount   Int     @default(0)
+  lastUpdate  DateTime @default(now())
+  starCount   Int     @default(0)
   Tasks      Task[]
 }
 
