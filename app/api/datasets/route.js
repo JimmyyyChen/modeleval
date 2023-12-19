@@ -3,9 +3,19 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const dataset = await prisma.Dataset.findMany();
+        let dataset = await prisma.Dataset.findMany({
+            include: {
+                label_list: true,
+                ChoiceQuestions: {
+                    include: {
+                        choices: true
+                    }
+                },
+                ShortAnswerQuestions: true,
+            }
+        });
         return new NextResponse(JSON.stringify(dataset), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
