@@ -1,88 +1,41 @@
 "use client";
-// import Link from "next/link";
-import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
-function createData(id, name, calories, fat, carbs, protein) {
-  return {
-    id,
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.grey[400],
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-const rows = [
-  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-  createData(2, "Donut", 452, 25.0, 51, 4.9),
-  createData(3, "Eclair", 262, 16.0, 24, 6.0),
-  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-  createData(9, "KitKat", 518, 26.0, 65, 7.0),
-  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-  createData(11, "Marshmallow", 318, 0, 81, 2.0),
-  createData(12, "Nougat", 360, 19.0, 9, 37.0),
-  createData(13, "Oreo", 437, 18.0, 63, 4.0),
-];
-
-const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Dessert (100g serving)",
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.grey[50],
   },
-  {
-    id: "calories",
-    numeric: true,
-    disablePadding: false,
-    label: "Calories",
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
   },
-  {
-    id: "fat",
-    numeric: true,
-    disablePadding: false,
-    label: "Fat (g)",
-  },
-  {
-    id: "carbs",
-    numeric: true,
-    disablePadding: false,
-    label: "Carbs (g)",
-  },
-  {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Protein (g)",
-  },
-];
+}));
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -112,122 +65,92 @@ const headCells = [
     return stabilizedThis.map((el) => el[0]);
   }
 
-  function EnhancedTableHead(props) {
-    const {
-      order,
-      orderBy,
-      onRequestSort,
-    } = props;
-    const createSortHandler = (property) => (event) => {
-      onRequestSort(event, property);
-    };
 
-    return (
-      <TableHead>
-        <TableRow>
-          {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              sortDirection={orderBy === headCell.id ? order : false}
-              className={`p-4 font-bold ${
-                headCell.numeric ? "text-center" : "text-left"
-              } `}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-
-  EnhancedTableHead.propTypes = {
-    onRequestSort: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-    orderBy: PropTypes.string.isRequired,
-  };
 
 export default function DataTable({ items, type, isvisitor }) {
-  // const pages = Math.ceil(items.length / 10);
-  // return (
-  //   <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-  //     <div className="flex w-full flex-1 flex-col space-y-4 overflow-auto py-4">
-  //       <table className="table table-zebra table-pin-rows w-full text-center">
-  //         <thead>
-  //           <tr className="border border-gray-200 bg-gray-200 font-bold text-black shadow-md 2xl:text-lg">
-  //             <th></th>
-  //             <td>Name</td>
-  //             <td>Last Updata</td>
-  //             <td>Likes</td>
-  //             <td>Downloads</td>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {/* TODO: Modify the datasets */}
-  //           {items.slice(0, 10).map((item) => (
-  //             <tr key={item.id}>
-  //               <th>{item.id}</th>
-  //               <td>
-  //                 <Link
-  //                   href={
-  //                     isvisitor
-  //                       ? `/${type}/details/visitor/${item.name}`
-  //                       : `/${type}/details/${item.name}`
-  //                   }
-  //                   className="btn btn-outline btn-primary "
-  //                 >
-  //                   <div className="max-w-[6rem] truncate">{item.name}</div>
-  //                 </Link>
-  //               </td>
-  //               <td>{item.last_updata}</td>
-  //               <td>{item.likes}</td>
-  //               <td>{item.downloads}</td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
+  const headCells = [
+    {
+      id: type === "datasets" ? "datasetName" : "modelName",
+      label: "Name",
+    },
+    {
+      id: "lastUpdate",
+      label: "Last Update ",
+    },
+    {
+      id: "starCount",
+      label: "Stars",
+    },
+    {
+      id: "downloadCount",
+      label: "Downloads",
+    },
+  ];
+    function EnhancedTableHead(props) {
+      const { order, orderBy, onRequestSort } = props;
+      const createSortHandler = (property) => (event) => {
+        onRequestSort(event, property);
+      };
 
-  //       <div className="join flex items-center justify-center">
-  //         <input
-  //           key="1"
-  //           className="btn btn-square join-item"
-  //           type="radio"
-  //           name="options"
-  //           aria-label="1"
-  //           defaultChecked
-  //         />
-  //         {Array.from({ length: pages - 1 }, (_, i) => i + 2).map((item) => (
-  //           <input
-  //             key={item}
-  //             className="btn btn-square join-item"
-  //             type="radio"
-  //             name="options"
-  //             aria-label={item}
-  //           />
-  //         ))}
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
+      return (
+        <TableHead>
+          <StyledTableRow>
+            {headCells.map((headCell) => (
+              <StyledTableCell
+                key={headCell.id}
+                sortDirection={orderBy === headCell.id ? order : false}
+                align="center"
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                  className="font-bold "
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </StyledTableCell>
+            ))}
+          </StyledTableRow>
+        </TableHead>
+      );
+    }
+
+    EnhancedTableHead.propTypes = {
+      onRequestSort: PropTypes.func.isRequired,
+      order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+      orderBy: PropTypes.string.isRequired,
+    };
+
+const rows = useMemo(
+  () => {
+    if (!items) return [];
+    return items.map((item) => ({
+      name: type === "datasets" ? item.datasetName : item.modelName,
+      lastUpdate: item.lastUpdate,
+      starCount: item.starCount,
+      downloadCount: item.downloadCount,
+    })
+  )},
+  [items, type],
+);
+
+if (rows) {
+  console.log(rows);
+}
 
 const [order, setOrder] = useState("asc");
 const [orderBy, setOrderBy] = useState("calories");
 const [page, setPage] = useState(0);
 const [dense, setDense] = useState(false);
-const [rowsPerPage, setRowsPerPage] = useState(5);
+const [rowsPerPage, setRowsPerPage] = useState(10);
 
 const handleRequestSort = (event, property) => {
   const isAsc = orderBy === property && order === "asc";
@@ -258,30 +181,22 @@ const visibleRows = useMemo(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage,
     ),
-  [order, orderBy, page, rowsPerPage],
+  [order, orderBy, page, rowsPerPage, rows],
 );
 
-const [datasets, setDatasets] = useState(null);
-
-useEffect(() => {
-  const fetchDatasets = async () => {
-    try {
-      const response = await axios.get("/api/datasets");
-      setDatasets(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  fetchDatasets();
-  console.log(datasets);
-}, []);
+if (!items) {
+    return (
+      <div className="shadow-lg flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary">
+        Loading...
+      </div>
+    );
+}
 
 
 return (
-  <div className="shadow-lgw-full flex h-full w-full flex-col overflow-x-auto rounded-2xl border border-gray-200 bg-white p-6">
+  <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
     <Box className="w-full">
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper className="mb-1 w-full">
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -294,35 +209,47 @@ return (
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.id}
-                    className="hover:bg-gray-200"
-                  >
-                    <TableCell component="th" id={labelId} scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell className="text-center" align="center">{row.calories}</TableCell>
-                    <TableCell align="center">{row.fat}</TableCell>
-                    <TableCell align="center">{row.carbs}</TableCell>
-                    <TableCell align="center">{row.protein}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {visibleRows.map((row) => (
+                <StyledTableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id}
+                  className="hover:bg-gray-600"
+                >
+                  <StyledTableCell align="center">
+                    <Link
+                      href={
+                        isvisitor
+                          ? `/${type}/details/visitor/${row.name}`
+                          : `/${type}/details/${row.name}`
+                      }
+                      className="btn btn-outline btn-primary "
+                    >
+                      <div className="max-w-[6rem] truncate">
+                        {row.name}
+                      </div>
+                    </Link>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.lastUpdate}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.starCount}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.downloadCount}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
               {emptyRows > 0 && (
-                <TableRow
+                <StyledTableRow
                   style={{
                     height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={6} />
-                </TableRow>
+                  <StyledTableCell colSpan={6} />
+                </StyledTableRow>
               )}
             </TableBody>
           </Table>
