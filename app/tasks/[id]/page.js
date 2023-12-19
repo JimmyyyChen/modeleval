@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
-// import Link from "next/link";
+import Link from "next/link";
 
 import TaskDatasetInfo from "./components/TaskDatasetInfo";
 import TaskModelInfo from "./components/TaskModelInfo";
 // import ResultTable from "./components/ResultTable";
-// import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
 
 export default async function TaskDisplayPage({ params }) {
   const taskId = parseInt(params.id);
@@ -23,6 +23,7 @@ export default async function TaskDisplayPage({ params }) {
   const models = task.models;
   const taskName = task.taskName;
   const startTime = task.startTime.toLocaleString();
+  const questionType = dataset.questionType; // 0: ChoiceQuestion, 1: ShortAnswerQuestion
 
   // TODO: 客观测试 主观测试, 对抗测试
   // const method = "客观测试";
@@ -54,10 +55,9 @@ export default async function TaskDisplayPage({ params }) {
         <p className="text-gray-500">{startTime}开始</p>
       </div>
 
-      <p>TODO:主观测试与对抗测试跳转 </p>
-      {/* {type == 1 && (
+      {questionType == 1 && ( // TODO: ShortAnswerQuestion, but it's actually subjective testing. Weird? I know...
         <Link
-          href={`${testingId}/human-evaluation`}
+          href={`${taskId}/human-evaluation`}
           className="btn btn-accent w-max rounded-3xl"
         >
           <EyeIcon className="mr-2 h-5 w-5" />
@@ -65,7 +65,8 @@ export default async function TaskDisplayPage({ params }) {
         </Link>
       )}
 
-      {type == 2 && (
+      {/* TODO: 对抗测试 */}
+      {/* {type == 2 && (
         <Link
           href={`${testingId}/comparative-evaluation`}
           className="btn btn-accent w-max rounded-3xl"
@@ -74,6 +75,8 @@ export default async function TaskDisplayPage({ params }) {
           继续对抗测试
         </Link>
       )} */}
+
+
 
       <h2 className="text-2xl font-bold">数据集</h2>
       <TaskDatasetInfo dataset={dataset} />
