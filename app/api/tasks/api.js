@@ -11,7 +11,7 @@ export async function getModelAnswer(modelName, question) {
         messages: [
             {"role": "user", "content": question},
         ],
-        max_tokens: 100,
+        max_tokens: 50,
       });
   
       const modelAnswer= completionResponse.choices[0].message.content;
@@ -19,7 +19,7 @@ export async function getModelAnswer(modelName, question) {
       return modelAnswer;
     } catch (error) {
       console.log(error);
-      return {error: error.message};
+      return error.message;
     }
   }
   
