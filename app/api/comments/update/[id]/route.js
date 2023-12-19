@@ -1,8 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
+import { getUsername } from "@/lib/getUsername";
 export async function POST(request, { params }) {
     let { userId } = auth()
+    //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+    let username = "Administrator";
+    if (userId == null) userId = "Administrator";
+    else {
+        username = await getUsername(userId);
+        if (username == null) username = "Administrator";
+    }
     try {
         let comment = await prisma.comment.findUnique({
             where: {
@@ -44,7 +52,8 @@ export async function POST(request, { params }) {
                 },
                 data: {
                     content: content,
-                    lastUpdate: new Date()
+                    lastUpdate: new Date(),
+                    username: username,
                 }
             });
         }
