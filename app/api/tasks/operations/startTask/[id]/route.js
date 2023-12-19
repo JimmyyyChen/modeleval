@@ -27,7 +27,6 @@ export async function POST(request, { params }) {
                 models: true,
             },
         });
-
         // 更新task的开始状态
         await prisma.task.update({
             where: {
@@ -56,7 +55,6 @@ export async function POST(request, { params }) {
             // 遍历所有需要跑的模型
             for (i = currentModelId; i < allModelIds.length; i++) {
                 if (checkState(task, i, j) == false) {
-                    console.log("in model checkState");
                     break;
                 }
                 const model = await prisma.model.findUnique({
@@ -67,7 +65,6 @@ export async function POST(request, { params }) {
                 // 遍历所有的客观选择题
                 for (j = currentQuestionId; j < allChoiceQuestions.length; j++) {
                     if (checkState(task, i, j) == false) {
-                        console.log("in question checkState");
                         break;
                     }
                     const question = allChoiceQuestions[j].question;
@@ -97,7 +94,7 @@ export async function POST(request, { params }) {
                 }
                 const model = await prisma.model.findUnique({
                     where: {
-                        id: allModelIds[i],
+                        modelid: allModelIds[i],
                     },
                 });
                 for (j = currentQuestionId; j < allShortAnswerQuestions.length; j++) {
@@ -105,7 +102,7 @@ export async function POST(request, { params }) {
                         break;
                     }
                     const question = allShortAnswerQuestions[j].question;
-                    const answer = await getModelAnswer(model.modelName, question.question);
+                    const answer = await getModelAnswer(model.modelName, question);
                     // 将answer更新到存储变量'answers'中
                     answers[model.modelid][allShortAnswerQuestions[j].id] = answer;
                 }
@@ -115,6 +112,14 @@ export async function POST(request, { params }) {
                 task.endTime = new Date();
             }
         }
+
+        // 如果task已经完成，计算模型回答问题的正确率并保存
+        let scoresJson = task.scoresjson;
+        if (task.state == 3) {
+            scoresJson = await calculateScore(task, answers);
+            console.log(scoresJson);
+        }
+
         const updatedTask = await prisma.task.update({
             where: {
                 id: id,
@@ -137,6 +142,7 @@ export async function POST(request, { params }) {
                 state: task.state,
                 progress: task.progress,
                 answerjson: answers,
+                scoresjson: scoresJson,
             }
         }
         );
@@ -179,13 +185,74 @@ async function checkState(task, modelId, questionId) {
     else {
         // 重新存储task的进度
         if (task.dataset.questionType == 0) {
-            console.log("in function checkState");
             task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ChoiceQuestions.length);
-            console.log(task.progress);
         }
         else if (task.dataset.questionType == 1) {
             task.progress = (modelId * task.dataset.ShortAnswerQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ShortAnswerQuestions.length);
         }
         return false;
     }
+}
+
+// 既能更新task条目中的scorejson，又能更新task对应的score数据库中的得分情况
+export async function calculateScore(task, answers) {
+    console.log(task.dataset.ShortAnswerQuestions);
+    console.log(answers);
+    let scoresJson = {};
+    const allModelIds = Object.values(task.modelIds);
+    let allChoiceQuestions;
+    let allShortAnswerQuestions;
+    if (task.questionType == 0) {
+        allChoiceQuestions = task.dataset.ChoiceQuestions;
+    }
+    else {
+        allShortAnswerQuestions = task.dataset.ShortAnswerQuestions;
+    }
+    for (let i = 0; i < allModelIds.length; i++) {
+        let _correctCount = 0;
+        let _totalCount = 0;
+        const modelId = allModelIds[i];
+        if (task.dataset.questionType == 0) {
+            let correctCount = 0;
+            for (let j = 0; j < allChoiceQuestions.length; j++) {
+                if (allChoiceQuestions[j].answer == answers[modelId][allChoiceQuestions[j].id]) {
+                    correctCount++;
+                }
+            }
+            scoresJson[modelId] = correctCount / allChoiceQuestions.length;
+            _correctCount = correctCount;
+            _totalCount = allChoiceQuestions.length;
+        }
+        else if (task.dataset.questionType == 1) {
+            let correctCount = 0;
+            for (let j = 0; j < allShortAnswerQuestions.length; j++) {
+                if (allShortAnswerQuestions[j].sampleAnswer == answers[modelId][allShortAnswerQuestions[j].id]) {
+                    correctCount++;
+                }
+            }
+            scoresJson[modelId] = correctCount / allShortAnswerQuestions.length;
+            _correctCount = correctCount;
+            _totalCount = allShortAnswerQuestions.length;
+        }
+        // 更新Score数据库中的记录,由于findUnique方法必须要有id，所以需要使用findMany方法
+        const score = await prisma.score.findMany({
+                where: {
+                    taskId: task.id,
+                    mainModelId: modelId,
+                    // scoreType: task.questionType,
+                },
+            });
+        console.log(score);
+        const updatedScore = await prisma.score.update({
+            where: {
+                id: score[0].id,
+            },
+            data: {
+                score: scoresJson[modelId],
+                correctCount: _correctCount,
+                totalCount: _totalCount,
+            },
+        });
+    }
+    return scoresJson;
 }

@@ -14,7 +14,7 @@ export async function POST(request, { params }) {
                 ShortAnswerQuestions: true,
             }
         });
-        if (!dataset.id) {
+        if (!dataset) {
             return new NextResponse(JSON.stringify({ success: false, message: "dataset not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -76,6 +76,7 @@ export async function POST(request, { params }) {
             data: {
                 datasetName: dataset["datasetName"],
                 description: dataset["description"],
+                lastUpdate: new Date(),
             }
         })
         return new NextResponse(JSON.stringify({ success: true }), {
