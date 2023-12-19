@@ -9,7 +9,7 @@ import {
 } from "./data";
 import Community from "@/app/components/Community";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
-import ItemsDisplay from "../ItemsDisplay";
+import ItemsDisplay from "../../visitor/[name]/components/ItemsDisplay";
 
 export default function Home({ params: { name } }) {
   return (
