@@ -14,7 +14,7 @@ export async function POST(request, { params }) {
                 ShortAnswerQuestions: true,
             }
         });
-        if (!dataset.id) {
+        if (!dataset) {
             return new NextResponse(JSON.stringify({ success: false, message: "dataset not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -158,12 +158,15 @@ export async function POST(request, { params }) {
                 }
 
             }
-
-            return new NextResponse(JSON.stringify({ success: true }), {
-                status: 200,
-                headers: { "Content-Type": "application/json" },
-            });
         }
+        await prisma.dataset.update({
+            where: {
+                id: parseInt(params.id)
+            },
+            data: {
+                lastUpdate: new Date()
+            }
+        })
         return new NextResponse(JSON.stringify({ success: true }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
