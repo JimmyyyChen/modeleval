@@ -2,6 +2,8 @@ import {
   UserGroupIcon,
   DeviceTabletIcon,
   RectangleStackIcon,
+  Bars4Icon,
+  FaceSmileIcon,
 } from "@heroicons/react/24/solid";
 export const datasetTypes = [
   {
@@ -149,5 +151,15 @@ export const modelTypes = [
   },
 ];
 export const labels = {
-  "主观": ""
+  "主观": <UserGroupIcon className="h-4 w-4 text-primary" />,
+  "客观": <DeviceTabletIcon className="h-4 w-4 text-primary" />,
+  "<1K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "1K-10K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "10K-100K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "100K-1M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "1M-10M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  ">10M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "事实问答": <Bars4Icon className="h-4 w-4 text-primary" />,
+  "情感分析": <FaceSmileIcon className="h-4 w-4 text-primary" />,
+
 }
