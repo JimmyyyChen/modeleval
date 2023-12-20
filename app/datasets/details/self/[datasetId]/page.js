@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Labels from "@/app/components/Labels";
 import {
-  datasetBadges,
   datasetItems,
   issues,
 } from "./data";
@@ -34,15 +33,21 @@ export default function Home({ params: { datasetId } }) {
   }
   , [datasetId]);
 
+  if (datasetInfo && datasetInfo.label_list) {
+    var labelList = datasetInfo.label_list.map((item) => item.labelName);
+  }
+
   return (
     <>
-      <MainInfoDisplay name={datasetInfo.username} downloadCount={datasetInfo.downloadCount} starCount={datasetInfo.starCount} />
+      <MainInfoDisplay
+        datasetInfo={datasetInfo}
+      />
 
       <div className="mt-6 w-full">
-        <Labels badges={datasetBadges} />
+        <Labels labelList={labelList} />
       </div>
 
-      <div className="mt-6 flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
+      <div className="flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
         <div className="flex h-full w-full flex-col space-y-4 p-4 sm:w-1/3">
           <button className="btn btn-primary w-full text-white">
             上传条目

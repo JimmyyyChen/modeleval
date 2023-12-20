@@ -34,13 +34,15 @@ export default function Home() {
   useEffect(() => {
     const fetchUserDatasets = async () => {
       try {
-        const { userId } = userInfo;
-        const response = await axios.get(`/api/datasets/user/${userId}`);
-        if (response.status >= 200 && response.status < 300) {
-          setDatasets(response.data);
-        } else {
-          setDatasets(undefined);
-          console.error("Error fetching data:", response.status);
+        if (userInfo) {
+          const { userId } = userInfo;
+          const response = await axios.get(`/api/datasets/user/${userId}`);
+          if (response.status >= 200 && response.status < 300) {
+            setDatasets(response.data);
+          } else {
+            setDatasets(undefined);
+            console.error("Error fetching data:", response.status);
+          }
         }
       } catch (error) {
         setDatasets(undefined);
@@ -54,12 +56,12 @@ export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col">
-        <div className="flex w-full flex-col md:flex-row">
-          <div className="flex w-full p-6 md:w-1/2 md:pr-3 lg:w-1/3">
+        <div className="flex w-full flex-col lg:flex-row">
+          <div className="flex w-full p-6 lg:w-1/2 lg:pr-3 xl:w-1/3">
             <UserInfo isvisitor={false} userInfo={userInfo} />
           </div>
 
-          <div className="flex w-full flex-col p-6 text-left text-primary md:w-1/2 md:pl-3 lg:w-2/3">
+          <div className="flex w-full flex-col p-6 text-left text-primary lg:w-1/2 lg:pl-3 xl:w-2/3">
             <div className="flex w-full flex-1">
               <UserDatasets
                 isvisitor={false}
