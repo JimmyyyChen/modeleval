@@ -1,3 +1,8 @@
+import {
+  UserGroupIcon,
+  DeviceTabletIcon,
+  RectangleStackIcon,
+} from "@heroicons/react/24/solid";
 export const datasetTypes = [
   {
     id: "type",
@@ -143,3 +148,6 @@ export const modelTypes = [
     ],
   },
 ];
+export const labels = {
+  "主观": ""
+}

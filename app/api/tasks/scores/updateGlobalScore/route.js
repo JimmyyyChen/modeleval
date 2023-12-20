@@ -23,9 +23,12 @@ export async function POST(request, response) {
                 where: {
                     mainModelId: model[i].modelid,
                     scoreType: 0,
+                    progress: { // 要求评测任务已经开始（可以未完成）
+                        not: 0,
+                    }
                 },
             });
-            if (scoreObjs.length == 0) {
+            if (scoreObjs.length == 0) { // 代表该模型没有已经完成的客观题评测
                 ReturnScoreObj[model[i].modelid] = 0;
             }
             else {
@@ -34,7 +37,7 @@ export async function POST(request, response) {
                 for (let j = 0; j < scoreObjs.length; j++) {
                     const scoreObj = scoreObjs[j];
                     correctCount += scoreObj.correctCount;
-                    totalCount += scoreObj.totalCount;
+                    totalCount += scoreObj.progress;
                 }
                 score_obj = correctCount / totalCount;
                 ReturnScoreObj[model[i].modelid] = score_obj;
@@ -46,6 +49,9 @@ export async function POST(request, response) {
                 where: {
                     mainModelId: model[i].modelid,
                     scoreType: 1,
+                    progress: { // 要求评测任务已经开始（可以未完成）
+                        not: 0,
+                    }
                 },
             });
             if (scoreSubs.length == 0) {
@@ -57,7 +63,7 @@ export async function POST(request, response) {
                 for (let j = 0; j < scoreSubs.length; j++) {
                     const scoreSub = scoreSubs[j];
                     correctCount += scoreSub.correctCount;
-                    totalCount += scoreSub.totalCount;
+                    totalCount += scoreSub.progress;
                 }
                 score_sub = correctCount / totalCount;
                 ReturnScoreSub[model[i].modelid] = score_sub;
