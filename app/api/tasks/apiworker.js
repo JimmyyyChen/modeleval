@@ -153,7 +153,7 @@ parentPort.on('message', async (data) => {
 
 // 以下是一些辅助函数
 async function updateAnswerInTask(task, answerjson) {
-    const updatedTask = await prisma.task.update({
+    await prisma.task.update({
         where: {
             id: task.id,
         },
@@ -183,26 +183,26 @@ function recoverFrom(task, progress) {
     return [currentModelId, currentQuestionId];
 }
 
-async function checkState(task, modelId, questionId) {
-    const updated_task = await prisma.task.findUnique({
-        where: {
-            id: task.id,
-        },
-    });
-    if (updated_task.state == 1) {
-        return true;
-    }
-    else {
-        // 重新存储task的进度
-        if (task.dataset.questionType == 0) {
-            task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ChoiceQuestions.length);
-        }
-        else if (task.dataset.questionType == 1) {
-            task.progress = (modelId * task.dataset.ShortAnswerQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ShortAnswerQuestions.length);
-        }
-        return false;
-    }
-}
+// async function checkState(task, modelId, questionId) {
+//     const updated_task = await prisma.task.findUnique({
+//         where: {
+//             id: task.id,
+//         },
+//     });
+//     if (updated_task.state == 1) {
+//         return true;
+//     }
+//     else {
+//         // 重新存储task的进度
+//         if (task.dataset.questionType == 0) {
+//             task.progress = (modelId * task.dataset.ChoiceQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ChoiceQuestions.length);
+//         }
+//         else if (task.dataset.questionType == 1) {
+//             task.progress = (modelId * task.dataset.ShortAnswerQuestions.length + questionId) / (Object.keys(task.modelIds).length * task.dataset.ShortAnswerQuestions.length);
+//         }
+//         return false;
+//     }
+// }
 
 /*
 只用于客观题的自动化评测
@@ -228,7 +228,7 @@ async function calculateScore(task, answerjson) {
         }
         score.score = score.correctCount / score.totalCount;    
         // 更新Score数据库中的记录,由于findUnique方法必须要有id，所以需要使用findMany方法
-        const updated_score = await prisma.score.update({
+        await prisma.score.update({
                 where: {
                     id: score.id,
                 },
@@ -240,7 +240,7 @@ async function calculateScore(task, answerjson) {
             });
         scorejson[modelId] = score.score;
     }
-    const updated_task = await prisma.task.update({
+    await prisma.task.update({
         where: {
             id: task.id,
         },
