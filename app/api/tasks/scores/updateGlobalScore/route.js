@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function POST(request, response) {
+export async function POST(request) {
     try {
         const json = await request.json();
         const modelIdJson = json.modelIds;
@@ -70,7 +70,7 @@ export async function POST(request, response) {
             }
 
             // 3. 在模型数据库中更新得分
-            const nouseOne = await prisma.model.update({
+            await prisma.model.update({
                 where: {
                     modelid: model[i].modelid,
                 },
