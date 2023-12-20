@@ -63,7 +63,7 @@ export async function POST(request) {
         if (userId == null) userId = "Administrator";
         let question_type;
         if (results[0].choices || results[1].choices) {                 //客观集的情况
-            question_type = false;
+            question_type = 0;
             let choices = [];
             total_number = results.length;
             for (var i = 0; i < results.length; i++) {
@@ -78,7 +78,7 @@ export async function POST(request) {
             createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId);
         }
         else {
-            question_type = true;
+            question_type = 1;
             total_number = results.length;
             for (i = 0; i < results.length; i++) {
                 if (!results[i].prompt) {

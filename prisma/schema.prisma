@@ -84,10 +84,23 @@ model Task {
   models       Model[]
   datasetId    Int
   dataset      Dataset   @relation(fields: [datasetId], references: [id])
-  answerjson   Json      @default("{}")
-  state        Int // 0: not start, 1: running, 2: paused, 3: finished
-  progress     Float
-  scoresjson   Json      @default("{}") // 与模型Id一一对应, 保存每个模型的得分
+  state        Int       @default(0) // 0: not start, 1: running, 2: paused, 3: finished
+  progress     Float     @default(0)
+  answerjson   Json      @default("{}") // 需要更新
+  scoresjson   Json      @default("{}") // 需要更新
+  modelscoreIdjson Json  @default("{}") // 不需要改 
+}
+
+model Score {
+  id Int @id @default(autoincrement())
+  taskId Int
+  score Float @default(0.0)
+  scoreType Int // 0: obj, 1: sub, 2: adversarial
+  modelId Int
+  datasetId Int
+  progress Int     @default(0) // 仅用于主观测试和对抗性测试，用于记录用户判断了多少道题
+  correctCount Int @default(0) // 回答正确的条目数
+  totalCount Int   @default(0)// 对应的数据集中问题数量
 }
 
 model Comment {
@@ -102,36 +115,4 @@ model Comment {
   dataset     Dataset? @relation(fields: [datasetId], references: [id])
   datasetId   Int?
   userId      String
-}
-  // { "modelId": 
-  //  {
-  //    "questionId": "modelAnswer",
-  //    ···        
-  //  }
-  // }
-
-model Adversarial {
-  id Int @id @default(autoincrement())
-  userId String
-  taskName String
-  startTime DateTime @default(now())  
-  endTime DateTime?
-  modelIds Json
-  datasetId Int
-  taskJson Json @default("{}")
-  scoresJson Json @default("{}")
-}
-
-
-model Score {
-  id Int @id @default(autoincrement())
-  taskId Int?
-  adversarialId Int?
-  score Float @default(0.0)
-  scoreType Int // 0: obj, 1: sub, 2: adversarial
-  mainModelId Int
-  datasetId Int
-  adModelId Int?
-  correctCount Int // 回答正确的条目数
-  totalCount Int  // 总回答问题次数
 }

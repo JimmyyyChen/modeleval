@@ -7,7 +7,7 @@ export async function POST(request) {
     try {
         const json = await request.json();
         const modelIds = json.modelIds;
-        let modelLists = []; // 所有模型组成的列表
+        let modelList = []; // 所有模型组成的列表
         for (let key in modelIds) {
             const modelId = modelIds[key];
             const model = await prisma.model.findUnique({
@@ -18,7 +18,7 @@ export async function POST(request) {
                     label_list: true,
                 },
             });
-            modelLists.push(model);
+            modelList.push(model);
         }
         const task = await prisma.task.create({
             data: {
@@ -27,7 +27,7 @@ export async function POST(request) {
                 questionType: json.questionType,
                 modelIds: json.modelIds,
                 models: {
-                    connect: modelLists.map((singlemodel) => ({
+                    connect: modelList.map((singlemodel) => ({
                         modelid: singlemodel.modelid,
                     })),
                 },
@@ -36,25 +36,38 @@ export async function POST(request) {
                         id: json.datasetId,
                     },
                 },
-                state: 0,
-                progress: 0.0,
             },
         });
+
         const totalCount = await calculateTotalCount(json.datasetId);
         // 为每个模型在Score数据库中创建一个模型-数据集-测评类型的对象
-        for (let i = 0; i < modelLists.length; i++) {
+        for (let i = 0; i < modelList.length; i++) {
             const score = await prisma.score.create({
                 data: {
                     taskId: task.id,
                     scoreType: json.questionType,
-                    mainModelId: modelLists[i].modelid,
+                    modelId: modelList[i].modelid,
                     datasetId: json.datasetId,
                     correctCount: 0,
                     totalCount: totalCount,
                 },
             });
+            // 再将这个条目的id加入到task的modelscoreIdjson中
+            task.modelscoreIdjson[modelList[i].modelid] = score.id;
         }
-        return new NextResponse(JSON.stringify(task), {
+
+        // 更新task的modelscoreIdjson和总条目数totalCount
+        const updated_task = await prisma.task.update({
+            where: {
+                id: task.id,
+            },
+            data: {
+                modelscoreIdjson: task.modelscoreIdjson,
+                // totalCount: totalCount,
+            },
+        });
+
+        return new NextResponse(JSON.stringify(updated_task), {
             status: 201,
             headers: { "Content-Type": "application/json" },
         });
