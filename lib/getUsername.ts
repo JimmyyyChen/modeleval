@@ -15,6 +15,7 @@ export async function getUsername(userId: string) {
 export async function getUser(userId: string) {
     try {
         const user = await clerk.users.getUser(userId);
+        console.log(user);
         return user;
     } catch (error) {
         console.error('Error fetching user info:', error);

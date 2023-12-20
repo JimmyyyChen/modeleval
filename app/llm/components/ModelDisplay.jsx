@@ -1,5 +1,5 @@
 "use client";
-import { modelLabels } from "../../constants";
+import { modelTypes } from "../../constants";
 import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 
@@ -14,7 +14,7 @@ export default function ModelDisplay({ title, models }) {
 
       <div className="mt-6 flex w-full flex-wrap space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0">
         <div className="flex w-full flex-1 sm:w-1/3">
-          <CheckCondition title="模型" labels={modelLabels} />
+          <CheckCondition title="模型" labels={modelTypes} />
         </div>
 
         <div className="min-h-full w-full sm:w-2/3">

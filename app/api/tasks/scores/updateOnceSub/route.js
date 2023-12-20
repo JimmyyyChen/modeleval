@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function POST(request, response) {
+export async function POST(request) {
     try{
         const json = await request.json();
         const task = await prisma.task.findUnique({
@@ -38,9 +38,18 @@ export async function POST(request, response) {
                 score[modelId] = scoreItem.score;
                 // 更新task数据库中对应的字段
                 task.scoresjson[modelId] = scoreItem.score;
+                // 更新score数据库中的score字段
+                await prisma.score.update({
+                    where:{
+                        id:scoreItem.id,
+                    },
+                    data:{
+                        score: scoreItem.score,
+                    }
+                });
             }
             // 更新回score数据库
-            const updated_score = await prisma.score.update({
+            await prisma.score.update({
                 where:{
                     id:scoreItem.id,
                 },
@@ -50,9 +59,9 @@ export async function POST(request, response) {
                 }
             });
         }
-        // 如果全部测评完，再更新数据库
+        // 如果全部测评完，再更新task数据库
         if (_progress + 1 == _totalCount) {
-            const updated_task = await prisma.task.update({
+            await prisma.task.update({
                 where: {
                     id: task.id
                 },
