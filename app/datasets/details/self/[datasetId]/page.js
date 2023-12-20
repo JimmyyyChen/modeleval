@@ -1,23 +1,45 @@
 "use client";
-import Badges from "@/app/components/Badges";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Labels from "@/app/components/Labels";
 import {
-  datasetInfo,
   datasetBadges,
   datasetItems,
-  //pages,
   issues,
 } from "./data";
 import Community from "@/app/components/Community";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
-import ItemsDisplay from "../../visitor/[name]/components/ItemsDisplay";
+import ItemsDisplay from "./components/ItemsDisplay";
 
-export default function Home({ params: { name } }) {
+export default function Home({ params: { datasetId } }) {
+  const [datasetInfo, setDatasetInfo] = useState({});
+
+  useEffect(() => {
+    const fetchDatasetInfo = async () => {
+      try {
+        const response = await axios.get(`/api/datasets/info/${datasetId}`);
+        if (response.status >= 200 && response.status < 300) {
+          setDatasetInfo(response.data[0]);
+        } else {
+          setDatasetInfo({});
+          console.error("Error fetching data:", response.statusText);
+        }
+      } catch (error) {
+        setDatasetInfo({});
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDatasetInfo();
+  }
+  , [datasetId]);
+
   return (
     <>
-      <MainInfoDisplay name={name} info={datasetInfo} />
+      <MainInfoDisplay name={datasetInfo.username} downloadCount={datasetInfo.downloadCount} starCount={datasetInfo.starCount} />
 
       <div className="mt-6 w-full">
-        <Badges badges={datasetBadges} />
+        <Labels badges={datasetBadges} />
       </div>
 
       <div className="mt-6 flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">

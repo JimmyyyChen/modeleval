@@ -84,7 +84,7 @@ export default function Navbar() {
                     afterSignOutUrl="/"
                     showName="true"
                     userProfileMode="navigation"
-                    userProfileUrl="/profile"
+                    userProfileUrl="/profile/self"
                     appearance={{
                       variables: {
                         colorPrimary: "#497174",

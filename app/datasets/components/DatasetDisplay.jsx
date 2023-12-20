@@ -1,5 +1,5 @@
 "use client";
-import { datasetLabels } from "../../constants";
+import { datasetTypes } from "../../constants";
 import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 
@@ -14,7 +14,7 @@ export default function Home({ title, datasets, isvisitor }) {
 
       <div className="mt-6 flex w-full flex-wrap space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0">
         <div className="flex w-full flex-1 sm:w-1/3">
-          <CheckCondition title="数据集" labels={datasetLabels} />
+          <CheckCondition title="数据集" labels={datasetTypes} />
         </div>
 
         <div className="min-h-full w-full sm:w-2/3 ">

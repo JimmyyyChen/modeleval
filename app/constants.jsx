@@ -1,4 +1,4 @@
-export const datasetLabels = [
+export const datasetTypes = [
   {
     id: "type",
     label: "类型",
@@ -71,7 +71,7 @@ export const datasetLabels = [
   },
 ];
 
-export const modelLabels = [
+export const modelTypes = [
   {
     id: "type",
     label: "类型",
