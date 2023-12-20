@@ -37,6 +37,15 @@ export async function POST(request, response) {
                 scoreItem.score = scoreItem.correctCount / (scoreItem.totalCount * (modelIdList.length-1) )
                 score[modelId] = scoreItem.score; // 返回变量
                 task.scoresjson[modelId] = scoreItem.score; // 更新task中对应的score
+                // 更新score中的score字段
+                const _ = await prisma.score.update({
+                    where: {
+                        id: scoreItem.id,
+                    },
+                    data: {
+                        score : scoreItem.score,
+                    }
+                });
             }
             // 更新score中的条目
             const updated_score = await prisma.score.update({
@@ -46,7 +55,6 @@ export async function POST(request, response) {
                 data: {
                     correctCount: scoreItem.correctCount, 
                     progress: scoreItem.progress, 
-                    score : scoreItem.score,
                 }
             });
             if (_progress + 1 == _totalCount ){
