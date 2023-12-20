@@ -12,25 +12,32 @@ export default function TaskCard({ task }) {
   const id = task.id;
   const taskName = task.taskName;
   const startTime = task.startTime;
-  const endTime = task.endTime;
+  const [endTime, setEndTime] = useState(null);
   const [progress, setProgress] = useState(0);
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
   useEffect(() => {
+    let isTaskCompleted = false; 
+
     const interval = setInterval(async () => {
+      if (isTaskCompleted) {
+        return () => clearInterval(interval);
+      }
+
       try {
         const response = await axios.get(`/api/tasks/info/taskId/${id}`);
         const data = response.data[0];
         setProgress(data.progress);
-        if (data.progress) {
-          setProgress(data.progress);
+        if (data.progress === 1) {
+          setEndTime(new Date());
+          isTaskCompleted = true;
         }
       } catch (error) {
         console.error(error);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [id]);
 
   const deleteTask = async (event) => {
     event.preventDefault();
@@ -46,13 +53,6 @@ export default function TaskCard({ task }) {
   const router = useRouter();
 
   const formatedStartTime = startTime.toLocaleString();
-
-  let formatedEndTime = "";
-  if (endTime) {
-    formatedEndTime = endTime.toLocaleTimeString("en-US", {
-      hour12: false,
-    });
-  }
 
   return (
     <Link
@@ -75,7 +75,7 @@ export default function TaskCard({ task }) {
         {/* if completed */}
         {progress === 1 ? (
           <p className="text-gray-500">
-            {formatedStartTime} 开始 • {formatedEndTime} 结束
+            {formatedStartTime} 开始 • {endTime.toLocaleTimeString()} 结束
           </p>
         ) : (
           <p className="text-gray-500">{formatedStartTime} 开始</p>
