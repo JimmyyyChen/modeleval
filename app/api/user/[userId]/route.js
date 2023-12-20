@@ -29,7 +29,8 @@ export async function GET(request, { params }) {
             username: user.username,
             email: user.emailAddresses[0].emailAddress,
             organization: organization,
-            stars: stars
+            stars: stars,
+            image_url: user.imageUrl,
         }, { status: 200 })
     } catch (error) {
         console.log(error);
