@@ -6,7 +6,7 @@
 
 **Request Body**
 
-- None
+- 无
 
 **Response:**
 
@@ -23,9 +23,13 @@
 
 ### 获取模型信息 `GET /api/models/info/[modelName]`
 
-**Request Body**
+**Path Info:**
 
 - `modelName` (string?): 模型的名称,可选参数,不输入则返回所有模型信息
+
+**Request Body**
+
+- 无
 
 **Response:**
 

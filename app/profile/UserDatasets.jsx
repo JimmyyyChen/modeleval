@@ -41,7 +41,7 @@ export default function UserDatasets({ isvisitor, datasets, username }) {
               href={
                 isvisitor
                   ? `/datasets/details/visitor/${item.name}`
-                  : `/datasets/details/${item.name}`
+                  : `/datasets/details/self/${item.name}`
               }
             >
               <div className="flex w-full flex-col items-center justify-between">

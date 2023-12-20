@@ -21,7 +21,7 @@ export default function Home({ params: { name } }) {
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab"
+            className="tab font-bold text-primary text-lg"
             aria-label="Tab 1"
             defaultChecked
           />
@@ -36,7 +36,7 @@ export default function Home({ params: { name } }) {
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab"
+            className="tab font-bold text-primary text-lg"
             aria-label="Tab 2"
           />
           <div
@@ -50,7 +50,7 @@ export default function Home({ params: { name } }) {
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab"
+            className="tab font-bold text-primary text-lg"
             aria-label="Tab 3"
           />
           <div

@@ -1,7 +1,9 @@
-import DataTable from "../components/DataTable";
-import CheckCondition from "../components/CheckCondition";
+"use client";
+import { datasetLabels } from "../../constants";
+import DataTable from "../../components/DataTable";
+import CheckCondition from "../../components/CheckCondition";
 
-export default function Home({ title, datasetLabels, datasets, isvisitor }) {
+export default function Home({ title, datasets, isvisitor }) {
   return (
     <>
       {/* TODO: 数据集名称长度 */}
@@ -15,7 +17,7 @@ export default function Home({ title, datasetLabels, datasets, isvisitor }) {
           <CheckCondition title="数据集" labels={datasetLabels} />
         </div>
 
-        <div className="min-h-full w-full sm:w-2/3">
+        <div className="min-h-full w-full sm:w-2/3 ">
           <DataTable items={datasets} type="datasets" isvisitor={isvisitor} />
         </div>
       </div>

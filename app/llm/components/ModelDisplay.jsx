@@ -1,7 +1,9 @@
-import DataTable from "../components/DataTable";
-import CheckCondition from "../components/CheckCondition";
+"use client";
+import { modelLabels } from "../../constants";
+import DataTable from "../../components/DataTable";
+import CheckCondition from "../../components/CheckCondition";
 
-export default function ModelDisplay({ title, modelLabels, models }) {
+export default function ModelDisplay({ title, models }) {
   return (
     <>
       {/* TODO: 数据集名称长度 */}
