@@ -1,8 +1,8 @@
-import OpenAI from "openai"; // Need to install
+const OpenAI = require('openai');
 
 // process.env.OPENAI_API_KEY = 'yaonm';
 
-export async function getModelAnswer(modelName, question) {
+async function getModelAnswer(modelName, question) {
     try {
       const client = new OpenAI({baseURL:"http://111.202.73.146:10510/v1", apiKey: 'yaonm'});
   
@@ -15,11 +15,11 @@ export async function getModelAnswer(modelName, question) {
       });
   
       const modelAnswer= completionResponse.choices[0].message.content;
-  
       return modelAnswer;
     } catch (error) {
       console.log(error);
       return error.message;
     }
   }
-  
+ 
+  module.exports = getModelAnswer;

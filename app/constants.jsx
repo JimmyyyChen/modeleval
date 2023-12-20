@@ -1,4 +1,16 @@
-export const datasetLabels = [
+import {
+  UserGroupIcon,
+  DeviceTabletIcon,
+  RectangleStackIcon,
+  Bars4Icon,
+  FaceSmileIcon,
+  WrenchScrewdriverIcon,
+  SwatchIcon,
+  ClockIcon,
+  TableCellsIcon,
+  BookmarkIcon,
+} from "@heroicons/react/24/solid";
+export const datasetTypes = [
   {
     id: "type",
     label: "类型",
@@ -71,7 +83,7 @@ export const datasetLabels = [
   },
 ];
 
-export const modelLabels = [
+export const modelTypes = [
   {
     id: "type",
     label: "类型",
@@ -143,3 +155,20 @@ export const modelLabels = [
     ],
   },
 ];
+export const labels = {
+  "主观": <UserGroupIcon className="h-4 w-4 text-primary" />,
+  "客观": <DeviceTabletIcon className="h-4 w-4 text-primary" />,
+  "<1K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "1K-10K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "10K-100K": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "100K-1M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "1M-10M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  ">10M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
+  "事实问答": <Bars4Icon className="h-4 w-4 text-primary" />,
+  "情感分析": <FaceSmileIcon className="h-4 w-4 text-primary" />,
+  "自动化程序生成": <WrenchScrewdriverIcon className="h-4 w-4 text-primary" />,
+  "多模态": <SwatchIcon className="h-4 w-4 text-primary" />,
+  "时间序列预测": <ClockIcon className="h-4 w-4 text-primary" />,
+  "表格分类": <TableCellsIcon className="h-4 w-4 text-primary" />,
+  "表格回归": <BookmarkIcon className="h-4 w-4 text-primary" />,
+}

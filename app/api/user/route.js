@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { getUser } from "@/lib/getUsername";
 import { clerkClient } from "@clerk/nextjs";
-export async function GET(request, { params }) {
+import { auth } from "@clerk/nextjs";
+export async function GET(request) {
     try {
-        const user = await getUser(params.userId);
+        const { userId } = auth();
+        const user = await getUser(userId);
         let stars = 0;
         let organization = "individual";
         if (!user) {
