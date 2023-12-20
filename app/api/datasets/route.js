@@ -14,6 +14,7 @@ export async function GET() {
                 ShortAnswerQuestions: true,
             }
         });
+        console.log(dataset);
         return new NextResponse(JSON.stringify(dataset), {
             status: 200,
             headers: { "Content-Type": "application/json" },
