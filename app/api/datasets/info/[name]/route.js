@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
     try {
         let dataset = await prisma.Dataset.findMany({
             where: {
-                datasetName: params.name
+                id: params.name
             },
             include: {
                 label_list: true,
