@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
     async function getUserInfo(userId) {
         try {
             const user = await clerk.users.getUser(userId);
-            console.log(user);
+            console.log(user.privateMetadata.stars);
             return user;
         } catch (error) {
             console.error('Error fetching user info:', error);
