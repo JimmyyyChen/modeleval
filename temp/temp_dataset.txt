@@ -1,4 +1,4 @@
-------WebKitFormBoundaryCI7Y9wtf8HTjwcxf
+------WebKitFormBoundary6xgNuVoZLuIAfFAU
 Content-Disposition: form-data; name="csvFile"; filename="mmlu_select.csv"
 Content-Type: text/csv
 
@@ -202,4 +202,4 @@ The distribution of weights of 16-ounce bags of a particular brand of potato chi
 "Suppose 4% of the population have a certain disease. A laboratory blood test gives a positive reading for 95% of people who have the disease and for 5% of people who do not have the disease. If a person tests positive, what is the probability the person has the disease?",high_school_statistics,"[ ""0.038"", ""0.086"", ""0.442"", ""0.558"" ]",2C
 "Two variables, xand y, seem to be exponentially related. The natural logarithm of each yvalue is taken and the least-squares regression line of ln(y) on xis determined to be ln(y) = 3.2 + 0.42x. What is the predicted value of ywhen x= 7?",high_school_statistics,"[ ""464.05"", ""1380384.27"", ""521.35"", ""6.14"" ]",0A
 
-------WebKitFormBoundaryCI7Y9wtf8HTjwcxf--
+------WebKitFormBoundary6xgNuVoZLuIAfFAU--

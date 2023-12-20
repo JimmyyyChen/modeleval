@@ -6,7 +6,7 @@
 
 **Path info**
 
-- `userId`:clerk定义的一个用户的auth()
+- `userId`:clerk定义的一个用户的auth(),可以忽略该参数以获取当前登录用户的信息
 
 **Request Body**
 
