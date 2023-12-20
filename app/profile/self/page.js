@@ -1,11 +1,36 @@
 "use client";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 import { datasets, issues } from "./data";
 import Community from "@/app/components/Community";
-import UserInfo from "../components/UserInfo";
-import UserDatasets from "./UserDatasets";
+import UserInfo from "../../components/UserInfo";
+import UserDatasets from "../components/UserDatasets";
 
 export default function Home() {
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`/api/user`);
+        if (response.status >= 200 && response.status < 300) {
+          setUserInfo(response.data);
+        } else {
+          setUserInfo(undefined);
+          console.error("Error fetching data:", response.status);
+        }
+      } catch (error) {
+        setUserInfo(undefined);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  console.log(userInfo);
+
   return (
     <>
       <div className="flex w-full flex-col">
@@ -13,6 +38,7 @@ export default function Home() {
           <div className="flex w-full p-6 md:w-1/2 md:pr-3 lg:w-1/3">
             <UserInfo
               isvisitor={false}
+              // userId={user.id}
               username="Admin"
               email="admin@mails.tsinghua.edu.cn"
               organization="@Tsinghua"
@@ -25,7 +51,7 @@ export default function Home() {
               <UserDatasets
                 isvisitor={false}
                 datasets={datasets}
-                username="self"
+                username="Admin"
               />
             </div>
           </div>

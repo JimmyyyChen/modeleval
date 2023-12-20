@@ -1,4 +1,5 @@
-export default function Badges({ badges }) {
+// TODO: Badges -> Labels
+export default function Labels({ type, labelList, badges }) {
   return (
     <div className="test-xs flex flex-row flex-wrap items-center">
       {badges.map((item) => (
