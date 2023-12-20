@@ -14,14 +14,9 @@ CREATE TABLE `Model` (
     `modelid` INTEGER NOT NULL AUTO_INCREMENT,
     `modelName` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL DEFAULT 'this is a model for testing',
-<<<<<<<< HEAD:prisma/migrations/20231220081350_/migration.sql
-    `downloadN` INTEGER NOT NULL DEFAULT 0,
-    `likeN` INTEGER NOT NULL DEFAULT 0,
-========
     `downloadCount` INTEGER NOT NULL DEFAULT 0,
     `lastUpdate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `starCount` INTEGER NOT NULL DEFAULT 0,
->>>>>>>> d6f507de8a3a69ec14be337c0da33b562082d7d3:prisma/migrations/20231219025913_/migration.sql
     `ScoreObj` DOUBLE NOT NULL DEFAULT 0.0,
     `ScoreSub` DOUBLE NOT NULL DEFAULT 0.0,
 
@@ -40,6 +35,7 @@ CREATE TABLE `Dataset` (
     `downloadCount` INTEGER NOT NULL DEFAULT 0,
     `questionType` INTEGER NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
+    `username` VARCHAR(191) NOT NULL DEFAULT 'Administrator',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -86,7 +82,6 @@ CREATE TABLE `Task` (
     `state` INTEGER NOT NULL DEFAULT 0,
     `progress` DOUBLE NOT NULL DEFAULT 0,
     `answerjson` JSON NOT NULL,
-<<<<<<<< HEAD:prisma/migrations/20231220081350_/migration.sql
     `scoresjson` JSON NOT NULL,
     `modelscoreIdjson` JSON NOT NULL,
 
@@ -104,11 +99,6 @@ CREATE TABLE `Score` (
     `progress` INTEGER NOT NULL DEFAULT 0,
     `correctCount` INTEGER NOT NULL DEFAULT 0,
     `totalCount` INTEGER NOT NULL DEFAULT 0,
-========
-    `state` INTEGER NOT NULL,
-    `progress` DOUBLE NOT NULL,
-    `scoresjson` JSON NOT NULL,
->>>>>>>> d6f507de8a3a69ec14be337c0da33b562082d7d3:prisma/migrations/20231219025913_/migration.sql
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -123,40 +113,7 @@ CREATE TABLE `Comment` (
     `modelId` INTEGER NULL,
     `datasetId` INTEGER NULL,
     `userId` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Adversarial` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `userId` VARCHAR(191) NOT NULL,
-    `taskName` VARCHAR(191) NOT NULL,
-    `startTime` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `endTime` DATETIME(3) NULL,
-    `modelIds` JSON NOT NULL,
-    `datasetId` INTEGER NOT NULL,
-    `taskJson` JSON NOT NULL,
-    `scoresJson` JSON NOT NULL,
-<<<<<<<< HEAD:prisma/migrations/20231220081350_/migration.sql
-========
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Score` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `taskId` INTEGER NULL,
-    `adversarialId` INTEGER NULL,
-    `score` DOUBLE NOT NULL DEFAULT 0.0,
-    `scoreType` INTEGER NOT NULL,
-    `mainModelId` INTEGER NOT NULL,
-    `datasetId` INTEGER NOT NULL,
-    `adModelId` INTEGER NULL,
-    `correctCount` INTEGER NOT NULL,
-    `totalCount` INTEGER NOT NULL,
->>>>>>>> d6f507de8a3a69ec14be337c0da33b562082d7d3:prisma/migrations/20231219025913_/migration.sql
+    `username` VARCHAR(191) NOT NULL DEFAULT 'Administrator',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
