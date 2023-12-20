@@ -50,7 +50,8 @@
   - `questionType` (Boolean): 数据集的题型，客观题(0)还是主观题(1)
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
-  - `userId` (userId): 数据集的作者
+  - `userId` (userId): 数据集的作者auth
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
 ## 获取所有数据集信息 `GET /api/datasets`
@@ -61,7 +62,7 @@
 
 **Response:**
 
-- 成功 (`201`): 返回数据集对象的**数组**，每个数据集对象的信息如下：
+- 成功 (`200`): 返回数据集对象的**数组**，每个数据集对象的信息如下：
   - `id` (Int): 数据集ID
   - `datasetName` (String): 数据集名称
   - `description`(String): 数据集简介
@@ -72,16 +73,17 @@
   - `questionType` (Boolean): 数据集的题型，客观题(0)还是主观题(1)
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
-  - `userId` (userId): 数据集的作者
+  - `userId` (userId): 数据集的作者auth
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
-### 获取个人数据集信息 `GET /api/datasets/user`
+### 获取个人数据集信息 `GET /api/datasets/user/[userId]`
 
 **Request Body**
 
-- 用户登录后,后端会直接通过 `auth()`函数获取用户信息,因此不需要传递任何参数.
+- 用户登录后,后端会直接通过 `auth()`函数获取用户信息,因此不需要传递任何参数.如果传递了参数userId,那么会返回对应用户的所有数据集.
 - 特别地,如果用户没有登录,那么会返回默认数据集.这些数据集是初始生成的,他们的UserId默认为 `Administrator`.
-- 省略此处路由的user,将返回所有数据集
+- 省略此处路由的user/[userId],将返回所有数据集
 
 **Response:**
 
@@ -97,6 +99,7 @@
   - `ChoiceQuestions` ([`ChoiceQuestion`]): 客观题集合
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者
+  - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
 ### 删除数据集 `DELETE api/datasets/delete/[id]`
@@ -126,6 +129,13 @@
   - `datasetName` (String): 数据集名称(可选,用户没提供就不传)
   - `description`(String): 数据集简介(可选,用户没提供就不传)
   - `label_list` ([String]): 数据集的标签列表(必选,传递的是结果(无论用户是否修改)所有标签名称的列表)
+
+**Response:**
+
+- 成功 (`200`): 表示改动成功：
+- 失败 (`404`): 返回数据集不存在等错误信息。
+- 失败 (`403`): 返回权限不允许等错误信息。
+- 
 
 ### 改动条目 `POST api/datasets/update/[id]/questions/[id2]`
 

@@ -6,6 +6,7 @@ import fs from 'fs'
 import { pipeline } from 'stream';
 import { promisify } from "util";
 import { Readable } from 'stream';
+import { getUsername } from "@/lib/getUsername";
 function removeFirstEmptyLine(text) {
     const lines = text.split('\n');
     let temp_name;
@@ -37,6 +38,12 @@ export async function POST(request) {
         await promisify(pipeline)(request.body, fs.createWriteStream('temp/temp_dataset.txt'));
         let data = fs.readFileSync('temp/temp_dataset.txt', 'utf8');//等待文件读完
         const { newfile, temp_name } = removeFirstEmptyLine(data);
+        if (temp_name == null || temp_name.length > 24) {
+            return new NextResponse(JSON.stringify({ success: false, error: 'Invalid dataset name' }), {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         get_from_request += newfile;
         fs.writeFileSync('temp/temp_dataset2.txt', get_from_request, 'utf8')//等待文件去掉头部
         const fileContent = fs.readFileSync('temp/temp_dataset2.txt', 'utf8');
@@ -59,8 +66,14 @@ export async function POST(request) {
         });
         const stats = fs.statSync('temp/temp_dataset2.txt');
         const fileSize = (stats.size / 1024 / 1024).toFixed(4);
-        let { userId } = auth();                      //获取userID
+        let { userId } = auth()
+        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+        let username = "Administrator";
         if (userId == null) userId = "Administrator";
+        else {
+            username = await getUsername(userId);
+            if (username == null) username = "Administrator";
+        }
         let question_type;
         if (results[0].choices || results[1].choices) {                 //客观集的情况
             question_type = 0;
@@ -75,7 +88,7 @@ export async function POST(request) {
                 final_results.push(results[i]);
                 choices[final_results.length - 1] = results[i].choices.slice(3, -3).split('", "').map(str => ({ content: str }));
             }
-            createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId);
+            createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId, username);
         }
         else {
             question_type = 1;
@@ -89,7 +102,7 @@ export async function POST(request) {
                 if (!results[i].answer) results[i].answer = "no sampleAnswer";
                 final_results.push(results[i]);
             }
-            createData(temp_name, fileSize, question_type, final_results, null, wrong_questions, number_of_wrong, total_number, userId);
+            createData(temp_name, fileSize, question_type, final_results, null, wrong_questions, number_of_wrong, total_number, userId, username);
         }
         if (number_of_wrong == 0) {
             return new NextResponse(JSON.stringify({ success: true, total_number: total_number }), {
@@ -113,7 +126,7 @@ export async function POST(request) {
     }
 }
 
-async function createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId) {
+async function createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId, username) {
     if (question_type == 0) {
         const new_dataset = await prisma.Dataset.create({
             data: {
@@ -130,6 +143,7 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
                     },
                 },
                 userId: userId,
+                username: username,
             },
             include: {
                 ChoiceQuestions: {
@@ -172,6 +186,7 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
                     },
                 },
                 userId: userId,
+                username: username,
             },
         })
         console.log("create finished!");
