@@ -2,7 +2,7 @@
 
 ## 用户部分
 
-### 获取用户名称  `GET /api/user/[userId]`
+### 获取用户信息  `GET /api/user/[userId]`
 
 **Request Body**
 
@@ -13,6 +13,9 @@
 - 成功 (`200`): 返回：
 
   - `username` (string): 用户名称
+  - `email` (string): 用户邮箱
+  - `organization` (string): 用户公司,默认为Individual
+  - `stars`(Int):用户的数据集被收藏的次数
 - 用户未找到 (`404`): 返回：
 
   - `error` (string): User not found
