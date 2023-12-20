@@ -4,9 +4,13 @@
 
 ### 获取用户信息  `GET /api/user/[userId]`
 
+**Path info**
+
+- `userId`:clerk定义的一个用户的auth()
+
 **Request Body**
 
-- userId:clerk定义的一个用户的auth()
+- 无
 
 **Response:**
 
