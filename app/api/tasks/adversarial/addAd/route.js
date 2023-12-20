@@ -89,11 +89,13 @@ export async function calculateTotalCount(datasetId) {
         }
     });
     let totalCount = 0;
+    console.log(dataset)
     if (dataset.questionType == 0) {
         totalCount = dataset.ChoiceQuestions.length;
     }
-    else if (dataset.questionType == 1) {
+    else {
         totalCount = dataset.ShortAnswerQuestions.length;
     }
+    console.log(totalCount);
     return totalCount;
 }
