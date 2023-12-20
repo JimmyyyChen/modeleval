@@ -1,7 +1,7 @@
 "use client";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
-  datasetInfo,
-  datasetBadges,
   datasetItems,
   //pages,
   issues,
@@ -12,17 +12,42 @@ import Labels from "@/app/components/Labels";
 import ItemsDisplay from "./components/ItemsDisplay";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
 
-export default function Home({ params: { name } }) {
+export default function Home({ params: { datasetId } }) {
+  const [datasetInfo, setDatasetInfo] = useState({});
+
+  useEffect(() => {
+    const fetchDatasetInfo = async () => {
+      try {
+        const response = await axios.get(`/api/datasets/info/${datasetId}`);
+        if (response.status >= 200 && response.status < 300) {
+          setDatasetInfo(response.data[0]);
+        } else {
+          setDatasetInfo({});
+          console.error("Error fetching data:", response.statusText);
+        }
+      } catch (error) {
+        setDatasetInfo({});
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDatasetInfo();
+  }, [datasetId]);
+
+  if (datasetInfo && datasetInfo.label_list) {
+    var labelList = datasetInfo.label_list.map((item) => item.labelName);
+  }
+
   return (
     <>
       <MainInfoDisplay
-        name={name}
+        name={`${datasetInfo.username}/${datasetInfo.datasetName}`}
         downloadCount={datasetInfo.downloadCount}
         starCount={datasetInfo.starCount}
       />
 
       <div className="mt-6 w-full">
-        <Labels badges={datasetBadges} />
+        <Labels labelList={labelList} />
       </div>
 
       <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 sm:flex-row sm:space-y-0 ">

@@ -132,6 +132,7 @@ export default function DataTable({ items, type, isvisitor }) {
   const rows = useMemo(() => {
     if (!items) return [];
     return items.map((item) => ({
+      id: item.id,
       name: type === "datasets" ? item.datasetName : item.modelName,
       lastUpdate: item.lastUpdate,
       starCount: item.starCount,
@@ -217,8 +218,8 @@ export default function DataTable({ items, type, isvisitor }) {
                         key={row.name}
                         href={
                           isvisitor
-                            ? `/${type}/details/visitor/${row.name}`
-                            : `/${type}/details/${row.name}`
+                            ? `/${type}/details/visitor/${row.id}`
+                            : `/${type}/details/self/${row.id}`
                         }
                         className="btn btn-outline btn-primary "
                       >
