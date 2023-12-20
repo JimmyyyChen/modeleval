@@ -10,6 +10,7 @@ export async function GET(request, { params }) {
         id: "desc",
       },
       include: {
+        modelIds: true,
         dataset: true
       },
       where: {

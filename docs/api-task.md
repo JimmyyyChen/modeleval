@@ -30,9 +30,9 @@
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (Json): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集
-  - `answerjson` (Json): 该任务下所有模型的回复
   - `state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
   - `progress` (float): 任务目前的进度
+  - `answerjson` (Json): 该任务下所有模型的回复
   - `scorejson` (Json): 模型们目前的得分
 - 失败 (`500`): 返回错误信息。
 
@@ -43,7 +43,6 @@
 
 - `userId` (string): 用户ID
 - `taskName` (string): 新建测试任务的名称
-- `startTime` (Datetime): 测试开始时间
 - `questionType` (int): 测试类型，客观评测(0)还是主观评测(1)还是对抗性评测(2) 
 - `modelIds` (Json): 选择的评测模型Id组成的列表
 - `datasetId` (int): 选择的评测数据集Id
@@ -61,9 +60,9 @@
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (Json): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集
-  - `answerjson` (Json): 该任务下所有模型的回复
   - `state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
   - `progress` (float): 任务目前的进度
+  - `answerjson` (Json): 该任务下所有模型的回复
   - `scoresjson` (Json): 模型们的得分,初始值为空
 - 失败 (`500`): 返回错误信息。
 
@@ -85,9 +84,9 @@
   - `models` (Model[]): 测试任务使用的模型列表 
   - `datasetId` (Json): 数据集的ID
   - `dataset` (Dataset): 测试任务使用的数据集
-  - `answerjson` (Json): 该任务下所有模型的回复
   - `state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
   - `progress` (float): 任务目前的进度
+  - `answerjson` (Json): 该任务下所有模型的回复
   - `scoresjson` (Json): 模型们的得分
 - 失败 (`500`): 返回错误信息。
 
@@ -139,37 +138,7 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 添加新的对抗性评测任务 `POST /api/tasks/adversarial/addAd`
-
-**Request Body**
-
-- `userId` (string): 用户ID
-- `taskName` (string): 新建测试任务的名称
-- `modelIds` (Json): 选择的评测模型Id组成的列表(允许传入多个模型)
-- `datasetId` (int): 选择的评测数据集Id
-
-**Response Body**
-- 成功 (`201`): 返回新建的对抗性评测任务信息：
-  - `id`(int): 对抗性评测任务的ID
-  - `userId` (string): 发起测试的用户ID
-  - `taskName` (string): 测试任务的名称
-  - `startTime` (date): 测试开始时间
-  - `endTime` (date, 新创建的测试任务endTime=null): 测试结束时间 
-  - `taskJson` (Json, key为模型Id，值为该模型在选取的数据集上的评测任务Id)
-- 失败 (`500`): 返回错误信息。
-
-
-### 开始对抗性评测任务（逐条生成，会自动记录当前进度）`POST /api/tasks/adversarial/startAd/{id}`
-
-**Request Body** 无
-
-**Response Body**
-- 成功 (`201`): 返回两个模型在数据集中下一条数据上的输出结果：
-  - `answers`: (json) 模型们对单条数据的回答,json的键是模型的Id,值是模型的回答
-- 失败 (`500`): 返回错误信息。
-
-
-### 更新模型的全局得分(仅限客观题和主观题) `POST /api/tasks/scores/updateScore`
+### 更新模型的全局得分(仅限客观题和主观题) `POST /api/tasks/scores/updateGlobalScore`
 
 **Request Body** 
 
@@ -195,20 +164,35 @@
 - 失败 (`500`): 返回错误信息。
 
 
-### 获得对抗性评测的得分结果 `POST /api/tasks/scores/adScoreUpdate`
+### 更新一次用户对主观评测的判断 `POST /api/tasks/scores/updateOnceSub`
 
 **Request Body** 
 
-- `adId`(int): 对抗性评测的Id
-- `adResult`(Json): 截至目前的所有对抗性题目的排名结果
-> 例如，有三个模型（Id分别为1，2，3）在两条对抗性数据上进行了评测，第一条数据回答质量排名为：2、3、1.第二条数据回答质量排名为：1、3、2，则传给后端的body应该是：
->
->{
-> "0": [2,3,1]
-> "1": [1,3,2]
->}
+- `id`(int): 主观评测的taskid
+- `index`(int): 对第几条数据的判断
+- `judge`(Json): 用户认为正确与否
+> Json的键为模型Id, 值为模型回答的正确与否 
 
 **Response Body**
-- 成功 (`201`): 返回该轮对抗性评测中所有模型的相对得分：(键为模型Id,值为相对得分)
-  - `adScores`(Json)
-- 失败 (`500`): 返回错误信息。 
+- 成功(`201`): 返回当前评测进度
+  - `totalCount`(int): 一共有多少道题
+  - `progress`(int): 目前已经评测了多少道题
+  - `score`(Json, 可能): 主观评测的得分，只在全部评测完成后返回(也就是totalCount-progress=1的下一次调用)
+> Json的键为模型Id, 值为模型的主观评测得分
+
+### 更新一次用户对对抗性评测的判断 `POST /api/tasks/scores/updateOnceAd`
+
+**Request Body** 
+
+- `id`(int): 对抗性评测的taskid
+- `index`(int): 对第几条数据的判断
+- `rank`(List): 用户对模型回答的排名
+> 例如，有三个模型（Id分别为1，2，3），第一条数据回答质量排名为：2、3、1，则传给后端的rank应该是：
+> [2,3,1]
+
+**Response Body**
+- 成功(`201`): 返回当前评测进度
+  - `totalCount`(int): 一共有多少道题
+  - `progress`(int): 目前已经评测了多少道题
+  - `score`(Json, 可能): 对抗性评测的得分，只在全部评测完成后返回(也就是totalCount-progress=1的下一次调用)
+
