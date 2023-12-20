@@ -1,7 +1,6 @@
 // 添加新的测评任务
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { calculateTotalCount } from "../../adversarial/addAd/route";
 
 export async function POST(request) {
     try {
@@ -75,4 +74,26 @@ export async function POST(request) {
         console.log(error);
         return new NextResponse.json({ error: error.message }, { status: 500 });
     }
+}
+
+// 计算数据集datasetId中的数据条目数
+async function calculateTotalCount(datasetId) {
+    const dataset = await prisma.dataset.findUnique({
+        where: {
+            id: datasetId,
+        },
+        include: {
+            ChoiceQuestions: true,
+            ShortAnswerQuestions: true,
+        }
+    });
+    let totalCount = 0;
+    if (dataset.questionType == 0) {
+        totalCount = dataset.ChoiceQuestions.length;
+    }
+    else {
+        totalCount = dataset.ShortAnswerQuestions.length;
+    }
+    console.log(totalCount);
+    return totalCount;
 }
