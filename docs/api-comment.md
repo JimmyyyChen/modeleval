@@ -21,10 +21,14 @@
 ### 获取留言 `GET /api/comments/[type]/[id]`
 
 获取指定对象的所有留言,按时间顺序排列,最新的在前面
-**Request Body:**
 
+**Path Info:**
 - `type`(Int):0表示model,1表示dataset,2表示user,3表示task(TODO:2&&3)
 - `id`(Int):对应的id,例如type为0时,表示model的id
+
+**Request Body:**
+
+- 无
 
 **Response:**
 
@@ -40,11 +44,11 @@
 
 ### 修改/删除留言 `POST /api/comments/update/[id]`
 
-**Request Body:**
+**Path Info:**
+  - `id`(Int):留言的id(`与上面的id定义不同!`)
 
-- `id`(Int):留言的id(`与上面的id定义不同!`)
-- 除id外,需要用JSON格式上传:
-  - `content`(String):留言内容,为空则删除该留言
+**Request Body:**
+- `content`(String):留言内容,为空则删除该留言
 
 **Response:**
 

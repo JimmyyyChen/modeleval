@@ -31,11 +31,15 @@
   - `wrong_indexes`([Int]): 上传的数据集中格式错误的条目的索引(从1开始)
 - 失败 (`500`): 返回错误信息。
 
-### 获取数据集信息 `GET /api/datasets/info/[name]`
+### 获取数据集信息 `GET /api/datasets/info/[id]`
+
+**Path Info:**
+
+- `id` (Int): 数据集的id
 
 **Request Body**
 
-- `name` (string): 数据集的名称
+- 无
 
 **Response:**
 
@@ -58,7 +62,7 @@
 
 **Request Body**
 
-无
+- 无 
 
 **Response:**
 
@@ -79,11 +83,16 @@
 
 ### 获取个人数据集信息 `GET /api/datasets/user/[userId]`
 
-**Request Body**
+**Path Info:**
 
 - 用户登录后,后端会直接通过 `auth()`函数获取用户信息,因此不需要传递任何参数.如果传递了参数userId,那么会返回对应用户的所有数据集.
 - 特别地,如果用户没有登录,那么会返回默认数据集.这些数据集是初始生成的,他们的UserId默认为 `Administrator`.
 - 省略此处路由的user/[userId],将返回所有数据集
+- `userId` (Int): 用户的id
+
+**Request Body**
+
+-无
 
 **Response:**
 
@@ -104,9 +113,13 @@
 
 ### 删除数据集 `DELETE api/datasets/delete/[id]`
 
-**Request Body**
+**Path Info:**
 
 - `id` (Int): 数据集id号,前端可以先通过其它接口获取,然后保存下这个号码.
+
+**Request Body**
+
+- 无
 
 **Response:**
 
@@ -122,10 +135,11 @@
 
 ### 修改数据集信息(不包含条目) `POST api/datasets/update/[id]`
 
-**Request Body**
+**Path Info:**
 
 - `id` (Int): 数据集id号,前端可以先通过其它接口获取,然后保存下这个号码.
-- 除了上述存在于访问路径的信息外,还应该以 `JSON`格式提供以下键值对:
+
+**Request Body**
   - `datasetName` (String): 数据集名称(可选,用户没提供就不传)
   - `description`(String): 数据集简介(可选,用户没提供就不传)
   - `label_list` ([String]): 数据集的标签列表(必选,传递的是结果(无论用户是否修改)所有标签名称的列表)
@@ -139,17 +153,19 @@
 
 ### 改动条目 `POST api/datasets/update/[id]/questions/[id2]`
 
-**Request Body**
+**Path Info:**
 
 - `id` (string): 数据集的id,获取方式见上
 - `id2` (string): 数据集中的题目的id,获取方式见上,如果此项为 `-1`,则表示新增一条题目.
-  除以上信息外,其余信息应该由 `JSON`格式提供,包括:
+
+**Request Body**
 
   - `question` (string): 题目内容,如果存在请一定提供此项,用户未更改可以不提供
   - `correctAnswer` (string): 客观题答案内容,用户未更改可以不提供
   - `choices` ([string]): 客观题选项内容,用户未更改可以不提供,若更改需要将改动后的所有选项一并提供
   - `sampleAnswer` (string): 主观题样例答案,用户未更改可以不提供
-    **Response:**
+  
+**Response:**
 - 成功 (`200`): 表示改动成功：
 - 失败 (`404`): 返回条目不存在,创建条目信息不完全等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。
