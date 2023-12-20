@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { datasets, issues } from "./data";
+import { issues } from "./data";
 import Community from "@/app/components/Community";
 import UserInfo from "../../components/UserInfo";
 import UserDatasets from "../components/UserDatasets";
@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`/api/user`);
+        const response = await axios.get("/api/user");
         if (response.status >= 200 && response.status < 300) {
           setUserInfo(response.data);
         } else {
@@ -29,21 +29,34 @@ export default function Home() {
     fetchUserInfo();
   }, []);
 
-  console.log(userInfo);
+  const [datasets, setDatasets] = useState(null);
+
+  useEffect(() => {
+    const fetchUserDatasets = async () => {
+      try {
+        const { userId } = userInfo;
+        const response = await axios.get(`/api/datasets/user/${userId}`);
+        if (response.status >= 200 && response.status < 300) {
+          setDatasets(response.data);
+        } else {
+          setDatasets(undefined);
+          console.error("Error fetching data:", response.status);
+        }
+      } catch (error) {
+        setDatasets(undefined);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUserDatasets();
+  }, [userInfo]);
 
   return (
     <>
       <div className="flex w-full flex-col">
         <div className="flex w-full flex-col md:flex-row">
           <div className="flex w-full p-6 md:w-1/2 md:pr-3 lg:w-1/3">
-            <UserInfo
-              isvisitor={false}
-              // userId={user.id}
-              username="Admin"
-              email="admin@mails.tsinghua.edu.cn"
-              organization="@Tsinghua"
-              stars="1200"
-            />
+            <UserInfo isvisitor={false} userInfo={userInfo} />
           </div>
 
           <div className="flex w-full flex-col p-6 text-left text-primary md:w-1/2 md:pl-3 lg:w-2/3">
@@ -51,7 +64,7 @@ export default function Home() {
               <UserDatasets
                 isvisitor={false}
                 datasets={datasets}
-                username="Admin"
+                userInfo={userInfo}
               />
             </div>
           </div>

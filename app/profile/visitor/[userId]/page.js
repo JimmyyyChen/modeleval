@@ -8,26 +8,30 @@ import UserInfo from "../../../components/UserInfo";
 import UserDatasets from "../../components/UserDatasets";
 
 export default function Home({ params: { userId } }) {
-  const [username, setUsername] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserInfo = async () => {
       try {
         const response = await axios.get(`/api/user/${userId}`);
         if (response.status >= 200 && response.status < 300) {
-          setUsername(response.data.username);
+          setUserInfo(response.data);
         } else {
-          setUsername("");
-          console.error("Error fetching data:", response.statusText);
+          setUserInfo(undefined);
+          console.error("Error fetching data:", response.status);
         }
       } catch (error) {
-        setUsername("");
+        setUserInfo(undefined);
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchUserName();
+    fetchUserInfo();
   }, [userId]);
+
+  if (userInfo) {
+    var { username } = userInfo;
+  }
 
   return (
     <>
@@ -36,7 +40,7 @@ export default function Home({ params: { userId } }) {
           <div className="flex w-full p-6 md:w-1/2 md:pr-3 lg:w-1/3">
             <UserInfo
               isvisitor={true}
-              userId={userId}
+              userInfo={userInfo}
             />
           </div>
 
@@ -45,7 +49,7 @@ export default function Home({ params: { userId } }) {
               <UserDatasets
                 isvisitor={true}
                 datasets={datasets}
-                userId={userId}
+                userInfo={userInfo}
               />
             </div>
           </div>
