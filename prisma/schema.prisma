@@ -20,16 +20,17 @@ model Label {
 }
 
 model Model {
-  modelid     Int       @id @default(autoincrement())
-  modelName   String    @unique
-  label_list  Label[]
-  description String    @default("this is a model for testing")
-  downloadN   Int       @default(0)
-  likeN       Int       @default(0)
-  Tasks       Task[]
-  Comment     Comment[]
-  ScoreObj    Float   @default(0.0)   // 平均客观题得分
-  ScoreSub    Float   @default(0.0)   // 平均主观题得分
+  modelid       Int       @id @default(autoincrement())
+  modelName     String    @unique
+  label_list    Label[]
+  description   String    @default("this is a model for testing")
+  downloadCount Int       @default(0)
+  lastUpdate    DateTime  @default(now())
+  starCount     Int       @default(0)
+  Tasks         Task[]
+  Comment       Comment[]
+  ScoreObj      Float     @default(0.0) // 平均客观题得分
+  ScoreSub      Float     @default(0.0) // 平均主观题得分
 }
 
 model Dataset {
@@ -41,10 +42,11 @@ model Dataset {
   starCount            Int                   @default(0)
   downloadCount        Int                   @default(0)
   label_list           Label[]
-  questionType         Int               // 0: choice, 1: short answer
+  questionType         Int // 0: choice, 1: short answer
   ChoiceQuestions      ChoiceQuestion[]
   ShortAnswerQuestions ShortAnswerQuestion[]
   userId               String // the user who upload the dataset,get from auth() in CLERK
+  username             String                @default("Administrator")
   Tasks                Task[]
   Comment              Comment[]
 }
@@ -115,4 +117,5 @@ model Comment {
   dataset     Dataset? @relation(fields: [datasetId], references: [id])
   datasetId   Int?
   userId      String
+  username    String   @default("Administrator")
 }
