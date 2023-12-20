@@ -50,6 +50,7 @@ export default function Navbar() {
                       height={48}
                       src="/logo.png"
                       alt="ModalEval Logo"
+                      priority="true"
                     />
                   </Link>
                 </div>
@@ -84,7 +85,7 @@ export default function Navbar() {
                     afterSignOutUrl="/"
                     showName="true"
                     userProfileMode="navigation"
-                    userProfileUrl="/profile"
+                    userProfileUrl="/profile/self"
                     appearance={{
                       variables: {
                         colorPrimary: "#497174",
