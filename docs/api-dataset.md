@@ -77,13 +77,13 @@
   - `username` (String): 数据集的作者用户名
 - 失败 (`500`): 返回错误信息。
 
-### 获取个人数据集信息 `GET /api/datasets/user`
+### 获取个人数据集信息 `GET /api/datasets/user/[userId]`
 
 **Request Body**
 
-- 用户登录后,后端会直接通过 `auth()`函数获取用户信息,因此不需要传递任何参数.
+- 用户登录后,后端会直接通过 `auth()`函数获取用户信息,因此不需要传递任何参数.如果传递了参数userId,那么会返回对应用户的所有数据集.
 - 特别地,如果用户没有登录,那么会返回默认数据集.这些数据集是初始生成的,他们的UserId默认为 `Administrator`.
-- 省略此处路由的user,将返回所有数据集
+- 省略此处路由的user/[userId],将返回所有数据集
 
 **Response:**
 
@@ -136,6 +136,7 @@
 - 失败 (`404`): 返回数据集不存在等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。
 - 
+
 ### 改动条目 `POST api/datasets/update/[id]/questions/[id2]`
 
 **Request Body**
