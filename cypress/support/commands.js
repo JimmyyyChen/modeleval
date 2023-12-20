@@ -35,9 +35,7 @@ Cypress.Commands.add(`signOut`, () => {
   
     cy.window()
       .should((window) => {
-        // eslint-disable-next-line jest/valid-expect
         expect(window).to.not.have.property(`Clerk`, undefined);
-        // eslint-disable-next-line jest/valid-expect
         expect(window.Clerk.isReady()).to.eq(true);
       })
       .then(async (window) => {
