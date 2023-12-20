@@ -4,6 +4,11 @@ import {
   RectangleStackIcon,
   Bars4Icon,
   FaceSmileIcon,
+  WrenchScrewdriverIcon,
+  SwatchIcon,
+  ClockIcon,
+  TableCellsIcon,
+  BookmarkIcon,
 } from "@heroicons/react/24/solid";
 export const datasetTypes = [
   {
@@ -161,5 +166,9 @@ export const labels = {
   ">10M": <RectangleStackIcon className="h-4 w-4 text-primary" />,
   "事实问答": <Bars4Icon className="h-4 w-4 text-primary" />,
   "情感分析": <FaceSmileIcon className="h-4 w-4 text-primary" />,
-
+  "自动化程序生成": <WrenchScrewdriverIcon className="h-4 w-4 text-primary" />,
+  "多模态": <SwatchIcon className="h-4 w-4 text-primary" />,
+  "时间序列预测": <ClockIcon className="h-4 w-4 text-primary" />,
+  "表格分类": <TableCellsIcon className="h-4 w-4 text-primary" />,
+  "表格回归": <BookmarkIcon className="h-4 w-4 text-primary" />,
 }
