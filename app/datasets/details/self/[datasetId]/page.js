@@ -1,16 +1,14 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Labels from "@/app/components/Labels";
 import {
   datasetItems,
-  //pages,
   issues,
 } from "./data";
 import Community from "@/app/components/Community";
-import UserInfo from "@/app/components/UserInfo";
-import Labels from "@/app/components/Labels";
-import ItemsDisplay from "./components/ItemsDisplay";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
+import ItemsDisplay from "./components/ItemsDisplay";
 
 export default function Home({ params: { datasetId } }) {
   const [datasetInfo, setDatasetInfo] = useState({});
@@ -32,7 +30,8 @@ export default function Home({ params: { datasetId } }) {
     };
 
     fetchDatasetInfo();
-  }, [datasetId]);
+  }
+  , [datasetId]);
 
   if (datasetInfo && datasetInfo.label_list) {
     var labelList = datasetInfo.label_list.map((item) => item.labelName);
@@ -41,23 +40,28 @@ export default function Home({ params: { datasetId } }) {
   return (
     <>
       <MainInfoDisplay
-        name={`${datasetInfo.username}/${datasetInfo.datasetName}`}
-        downloadCount={datasetInfo.downloadCount}
-        starCount={datasetInfo.starCount}
+        datasetInfo={datasetInfo}
       />
 
       <div className="mt-6 w-full">
         <Labels labelList={labelList} />
       </div>
 
-      <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 sm:flex-row sm:space-y-0 ">
-        <div className="h-full w-full p-4 sm:w-2/3">
-          <ItemsDisplay items={datasetItems} />
+      <div className="flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0 ">
+        <div className="flex h-full w-full flex-col space-y-4 p-4 sm:w-1/3">
+          <button className="btn btn-primary w-full text-white">
+            上传条目
+          </button>
+          <button className="btn btn-primary w-full text-white">
+            改动条目
+          </button>
+          <button className="btn btn-primary w-full text-white">
+            删除条目
+          </button>
         </div>
 
-        {/* TODO: 面板高度问题 */}
-        <div className="h-full w-full p-4 sm:w-1/3">
-          <UserInfo isvisitor={true} />
+        <div className="h-full w-full p-4 sm:w-2/3">
+          <ItemsDisplay items={datasetItems} />
         </div>
       </div>
 

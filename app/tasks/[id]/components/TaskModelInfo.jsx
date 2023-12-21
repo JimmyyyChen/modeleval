@@ -10,7 +10,7 @@ export default function TeModelInfo({ model }) {
       <h2 className="flex flex-wrap items-center space-x-3 ">
         <p className=" font-mono text-xl font-bold">{modelName}</p>
         {/* TODO: link to corresponded model */}
-        <Link className="link-primary link text-sm" href="/llm">
+        <Link className="link-primary link text-sm" href={`/llm/details/visitor/${modelName}/`}>
           查看更多
         </Link>
       </h2>

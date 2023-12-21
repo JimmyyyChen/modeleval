@@ -2,41 +2,47 @@
 import { datasetInfo, datasetBadges, issues } from "./data";
 
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
-import Badges from "@/app/components/Badges";
+import Labels from "@/app/components/Labels";
 import Community from "@/app/components/Community";
 
 // TODO: 与其他页面雷同，将页面组件化
 export default function Home({ params: { name } }) {
   return (
     <>
-      <MainInfoDisplay name={name} info={datasetInfo} />
+      <MainInfoDisplay
+        name={name}
+        downloadCount={-1}
+        starCount={datasetInfo.starCount}
+      />
 
       <div className="mt-6 w-full">
-        <Badges badges={datasetBadges} />
+        <Labels badges={datasetBadges} />
       </div>
 
+      {/* TODO: 简介面板初始化不成功 */}
       <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 p-4 sm:flex-row sm:space-y-0 ">
         <div role="tablist" className="tabs tabs-lifted h-full w-full">
           <input
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab font-bold text-primary text-lg"
-            aria-label="Tab 1"
+            className="tab whitespace-nowrap text-lg font-bold text-primary"
+            aria-label="简介"
             defaultChecked
           />
           <div
             role="tabpanel"
-            className="tab-content rounded-box border-base-300 bg-base-100 p-6 shadow-lg"
+            className="tab-content truncate rounded-box border-base-300 bg-base-100 p-6 shadow-lg"
           >
-            Tab content 1
+            Tab content
+            1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
           </div>
 
           <input
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab font-bold text-primary text-lg"
+            className="tab whitespace-nowrap text-lg font-bold text-primary"
             aria-label="Tab 2"
           />
           <div
@@ -50,7 +56,7 @@ export default function Home({ params: { name } }) {
             type="radio"
             name="my_tabs_2"
             role="tab"
-            className="tab font-bold text-primary text-lg"
+            className="tab whitespace-nowrap text-lg font-bold text-primary"
             aria-label="Tab 3"
           />
           <div

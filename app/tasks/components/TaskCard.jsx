@@ -2,19 +2,40 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
 import Link from "next/link";
 
-import { PauseIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function TaskCard({ task }) {
   const id = task.id;
   const taskName = task.taskName;
-  const progress = task.progress;
-  const completed = progress === 1;
   const startTime = task.startTime;
-  const endTime = task.endTime;
+  const [endTime, setEndTime] = useState(task.endTime);
+  const [progress, setProgress] = useState(task.progress);
+
+  // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
+  useEffect(() => {
+
+    const interval = setInterval(async () => {
+      if (progress === 1) {
+        return () => clearInterval(interval);
+      }
+
+      try {
+        const response = await axios.get(`/api/tasks/info/taskId/${id}`);
+        const data = response.data[0];
+        setProgress(data.progress);
+        if (data.progress === 1) {
+          setEndTime(new Date());
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [id, progress]);
 
   const deleteTask = async (event) => {
     event.preventDefault();
@@ -29,17 +50,7 @@ export default function TaskCard({ task }) {
 
   const router = useRouter();
 
-  // const progress = Math.round((completedTaskCount / taskCount) * 100);
-  // const completed = completedTaskCount === taskCount;
-
   const formatedStartTime = startTime.toLocaleString();
-
-  let formatedEndTime = "";
-  if (endTime) {
-    formatedEndTime = endTime.toLocaleTimeString("en-US", {
-      hour12: false,
-    });
-  }
 
   return (
     <Link
@@ -48,10 +59,10 @@ export default function TaskCard({ task }) {
     >
       <div
         className="radial-progress"
-        style={{ "--value": progress, "--size": "3.3rem" }}
+        style={{ "--value": Math.round(progress * 100), "--size": "3.3rem" }}
         role="progressbar"
       >
-        {progress}%
+        {Math.round(progress * 100)}%
       </div>
 
       {/* space */}
@@ -59,9 +70,10 @@ export default function TaskCard({ task }) {
 
       <div>
         <h2 className="text-xl font-bold">{taskName}</h2>
-        {completed ? (
+        {/* if completed */}
+        {progress === 1 ? (
           <p className="text-gray-500">
-            {formatedStartTime} 开始 • {formatedEndTime} 结束
+            {formatedStartTime} 开始 • {endTime.toLocaleTimeString()} 结束
           </p>
         ) : (
           <p className="text-gray-500">{formatedStartTime} 开始</p>
@@ -72,9 +84,10 @@ export default function TaskCard({ task }) {
         <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
           <XMarkIcon className="h-5 w-5" />
         </button>
-        <button className="btn btn-circle btn-ghost">
+        {/* TODO */}
+        {/* <button className="btn btn-circle btn-ghost">
           <PauseIcon className="h-5 w-5" />
-        </button>
+        </button> */}
       </div>
     </Link>
   );
