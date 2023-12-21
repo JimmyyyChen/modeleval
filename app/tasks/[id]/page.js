@@ -4,7 +4,7 @@ import Link from "next/link";
 import TaskDatasetInfo from "./components/TaskDatasetInfo";
 import TaskModelInfo from "./components/TaskModelInfo";
 import ProgressBar from "./components/ProgressBar";
-// import ResultTable from "./components/ResultTable";
+import ResultTable from "./components/ResultTable";
 // import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
 import { EyeIcon } from "@heroicons/react/24/solid";
 
@@ -74,10 +74,8 @@ export default async function TaskDisplayPage({ params }) {
       {models.map((model) => (
         <TaskModelInfo model={model} key={model.id} />
       ))}
-      <h2 className="text-2xl font-bold">已完成测试的模型</h2>
-      TODO:已完成测试的模型
-      {/* <ResultTable type={type} />
-      <ResultTable type={type} /> */}
+      <h2 className="text-2xl font-bold">测试结果</h2>
+      <ResultTable task={task} />
     </div>
   );
 }
