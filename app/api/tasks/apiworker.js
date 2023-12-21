@@ -27,13 +27,16 @@ parentPort.on('message', async (data) => {
         });
 
         let answerjson = {};
+        let judgejson = {};
         const ChoiceQuestions = task.dataset.ChoiceQuestions;
         const ShortAnswerQuestions = task.dataset.ShortAnswerQuestions;
         let modelIds = [];
         for (let key in task.modelIds) {
             modelIds.push(task.modelIds[key]);
             answerjson[task.modelIds[key]] = {};
+            judgejson[task.modelIds[key]] = {};
         }
+        
         
         let [currentModelId, currentQuestionId] = recoverFrom(task, task.progress);
         // 根据type(0 or 1)类型选择不同的处理方法
@@ -77,7 +80,8 @@ parentPort.on('message', async (data) => {
                 task.progress = 1;
                 task.state = 3;
                 // 只有客观评测的得分是自动评测的, 因此也只有这里会更新score数据库
-                task.scoresjson = await calculateScore(task, answerjson);
+                [task.scoresjson, task.judgejson] = await calculateScore(task, answerjson, judgejson);
+                console.log(task.judgejson);    
             }
             else {
                 task.state = 2;
@@ -142,6 +146,7 @@ parentPort.on('message', async (data) => {
                 progress: task.progress,
                 answerjson: answerjson,
                 scoresjson: task.scoresJson,
+                judgejson: judgejson,
             }
         }
         );
@@ -208,7 +213,7 @@ function recoverFrom(task, progress) {
 只用于客观题的自动化评测
 根据answerjson，更新task对应score数据库中的条目，并且更新task的scoresjson
 */
-async function calculateScore(task, answerjson) {
+async function calculateScore(task, answerjson, judgejson) {
     let scorejson = {};
     const modelIds = Object.values(task.modelIds);
     const ChoiceQuestions = task.dataset.ChoiceQuestions;
@@ -224,6 +229,11 @@ async function calculateScore(task, answerjson) {
             score.progress += 1;
             if (ChoiceQuestions[j].answer == answerjson[modelId][ChoiceQuestions[j].id]) {
                 score.correctCount += 1;
+                // 向judgejson中更新该条目的正确性
+                judgejson[modelId][ChoiceQuestions[j].id] = true;
+            }
+            else {
+                judgejson[modelId][ChoiceQuestions[j].id] = false;
             }
         }
         score.score = score.correctCount / score.totalCount;    
@@ -248,5 +258,5 @@ async function calculateScore(task, answerjson) {
             scoresjson: scorejson,
         },
     });
-    return scorejson;
+    return [scorejson, judgejson];
 }
