@@ -21,7 +21,7 @@ export default function ModelOption({ model, isSelected }) {
 
         <p className=" font-mono text-xl font-bold">{modelName}</p>
         {/* TODO: link to corresponded model */}
-        <Link className="link-primary link text-sm" href="/llm">
+        <Link className="link-primary link text-sm" href={`/llm/details/visitor/${modelName}/`}>
           查看更多
         </Link>
       </h2>
