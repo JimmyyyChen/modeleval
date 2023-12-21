@@ -34,6 +34,7 @@
   - `progress` (float): 任务目前的进度
   - `answerjson` (Json): 该任务下所有模型的回复
   - `scorejson` (Json): 模型们目前的得分
+  - `judgejson` (Json): 模型们在每道题目上回答的正确性与否
 - 失败 (`500`): 返回错误信息。
 
 
@@ -64,6 +65,7 @@
   - `progress` (float): 任务目前的进度
   - `answerjson` (Json): 该任务下所有模型的回复
   - `scoresjson` (Json): 模型们的得分,初始值为空
+  - `judgejson` (Json): 模型们在每道题目上回答的正确性与否
 - 失败 (`500`): 返回错误信息。
 
 
@@ -122,6 +124,7 @@
   - `state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
   - `progress` (float): 任务目前的进度
   - `scoresjson` (Json): 模型们的得分
+  - `judgejson` (Json): 模型们在每道题目上回答的正确性与否
 - 失败 (`500`): 返回错误信息。
 
 

@@ -31,6 +31,10 @@ export async function POST(request) {
             // 如果模型在该条数据上的回答是正确的，则正确题目数+1
             if (json.judge[modelId] == true) {
                 scoreItem.correctCount += 1;
+                task.judgejson[modelId][json.index] = true; // 修改task中的judgejson中对该条目正确的判断
+            }
+            else {
+                task.judgejson[modelId][json.index] = false;
             }
             scoreItem.progress += 1;
             if (scoreItem.progress == scoreItem.totalCount) {  // 如果已经全部判定完毕 
@@ -67,6 +71,7 @@ export async function POST(request) {
                 },
                 data:{
                     scoresjson: task.scoresjson,
+                    judgejson: task.judgejson, // 更新task中的judgejson
                 }
             });
         }

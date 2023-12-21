@@ -90,6 +90,7 @@ model Task {
   progress     Float     @default(0)
   answerjson   Json      @default("{}") // 需要更新
   scoresjson   Json      @default("{}") // 需要更新
+  judgejson    Json @default("{}") // 需要更新，记录每道题的正确性与否
   modelscoreIdjson Json  @default("{}") // 不需要改 
 }
 
