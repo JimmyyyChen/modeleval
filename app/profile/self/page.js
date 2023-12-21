@@ -53,6 +53,9 @@ export default function Home() {
     fetchUserDatasets();
   }, [userInfo]);
 
+  console.log(userInfo);
+  console.log(datasets);
+
   return (
     <>
       <div className="flex w-full flex-col">

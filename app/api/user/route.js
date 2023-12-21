@@ -28,6 +28,7 @@ export async function GET(request) {
         }
         else organization = user.privateMetadata.organization;
         return NextResponse.json({
+            userId: userId,
             username: user.username,
             email: user.emailAddresses[0].emailAddress,
             organization: organization,

@@ -75,7 +75,7 @@ export async function POST(request) {
             if (username == null) username = "Administrator";
         }
         let question_type;
-        if (results[0].choices || results[1].choices) {                 //客观集的情况
+        if (results[0].choices || results[1].choices) {                 //即将创建数据集
             question_type = 0;
             let choices = [];
             total_number = results.length;
@@ -127,6 +127,12 @@ export async function POST(request) {
 }
 
 async function createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId, username) {
+    let size_label = "<1K";
+    if (final_results.length > 10000000) size_label = ">10M";
+    else if (final_results.length > 1000000) size_label = "1M-10M";
+    else if (final_results.length > 100000) size_label = "100K-1M";
+    else if (final_results.length > 10000) size_label = "10K-100K";
+    else if (final_results.length > 1000) size_label = "1K-10K";
     if (question_type == 0) {
         const new_dataset = await prisma.Dataset.create({
             data: {
@@ -134,12 +140,17 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
                 sizeInMB: parseFloat(fileSize),
                 lastUpdate: new Date(),
                 questionType: question_type,
+                label_list: {
+                    createMany: {
+                        data: [{ labelName: size_label, }, { labelName: "客观" }]
+                    }
+                },
                 ChoiceQuestions: {
                     createMany: {
                         data: Array.from({ length: final_results.length }, (_, index) => ({
                             question: final_results[index].question,
                             correctAnswer: final_results[index].answer,
-                        })),
+                        }))
                     },
                 },
                 userId: userId,
@@ -177,6 +188,11 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
                 sizeInMB: parseFloat(fileSize),
                 lastUpdate: new Date(),
                 questionType: question_type,
+                label_list: {
+                    createMany: {
+                        data: [{ labelName: size_label, }, { labelName: "主观" }]
+                    }
+                },
                 ShortAnswerQuestions: {
                     createMany: {
                         data: Array.from({ length: final_results.length }, (_, index) => ({
