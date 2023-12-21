@@ -1,5 +1,5 @@
 "use client"
-
+import axios from 'axios';
 import { useState } from 'react';
 import { ArrowUpOnSquareIcon } from "@heroicons/react/24/solid";
 import { redirect } from 'next/dist/server/api-utils';
@@ -16,18 +16,18 @@ export default function IndexPagePage() {
         formData.append('csvFile', file);
 
         try {
-            const response = await fetch('/api/datasets/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            const response = await axios.post('/api/datasets/upload', formData);
             //TODO
             console.log(response);
             if (response.status == 200) {
                 alert('文件上传成功!共成功上传了' + response.data["total_number"] + '条数据');
-                //window.location.href = '/profile';
+                window.location.href = '/profile/self';
             }
             if (response.status == 206) {
-                alert('文件上传成功')
+                alert('文件部分上传成功,共上传了' + response.data["total_number"] + '条数据，但是其中有' + response.data["wrong_number"] + '条数据格式错误');
+            }
+            if (response.status == 500) {
+                alert('文件上传失败，请检查文件格式是否正确，文件大小是否超过10MB，文件名是否含有中文');
             }
         } catch (error) {
             console.error('Error uploading CSV file:', error);
