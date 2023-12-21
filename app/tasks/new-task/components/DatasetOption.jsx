@@ -25,7 +25,7 @@ export default function DatasetOption({ dataset, isSelected }) {
 
         <p className=" font-mono text-xl font-bold">{datasetName}</p>
         {/* TODO: link to corresponded dataset */}
-        <Link className="link-primary link text-sm" href="/datasets">
+        <Link className="link-primary link text-sm" href={`/datasets/details/visitor/${datasetName}/`}>
           查看更多
         </Link>
       </h2>

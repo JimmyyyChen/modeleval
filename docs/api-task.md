@@ -74,20 +74,7 @@
 **Response:**
 
 - 成功 (`201`): 返回刚刚启动/运行的评测任务对象信息：
-  - `id`(int): 测试任务的ID
-  - `userId` (string): 发起测试的用户ID
-  - `taskName` (string): 测试任务的名称
-  - `startTime` (date): 测试开始时间
-  - `endTime` (date, 新创建的测试任务endTime=null): 测试结束时间 
-  - `questionType` (string): 测试类型 // 0: ChoiceQuestion, 1: ShortAnswerQuestion
-  - `modelIds` (Json): 选择的评测模型Id组成的列表 
-  - `models` (Model[]): 测试任务使用的模型列表 
-  - `datasetId` (Json): 数据集的ID
-  - `dataset` (Dataset): 测试任务使用的数据集
-  - `state` (int): 任务目前的状态（0: not start, 1: running, 2: paused, 3: finished）
-  - `progress` (float): 任务目前的进度
-  - `answerjson` (Json): 该任务下所有模型的回复
-  - `scoresjson` (Json): 模型们的得分
+  - `symbol`(int): 是否正常启动
 - 失败 (`500`): 返回错误信息。
 
 

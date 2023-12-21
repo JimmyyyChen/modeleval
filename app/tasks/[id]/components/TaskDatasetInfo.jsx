@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 export default function TaskDatasetInfo({dataset}) {
+  const datasetName = dataset.datasetName;
   const description = dataset.description;
   const questionType = dataset.questionType ? "问答题" : "选择题";
   const sizeInMB = dataset.sizeInMB;
@@ -10,9 +11,9 @@ export default function TaskDatasetInfo({dataset}) {
   return (
     <div className="w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6">
       <h2 className="flex flex-wrap items-center space-x-3 ">
-        <p className=" font-mono text-xl font-bold">mmlu_select</p>
+        <p className=" font-mono text-xl font-bold">{datasetName}</p>
         {/* TODO: link to corresponded dataset */}
-        <Link className="link-primary link text-sm" href="/datasets">
+        <Link className="link-primary link text-sm" href={`/datasets/details/visitor/${datasetName}/`}>
           查看更多
         </Link>
       </h2>

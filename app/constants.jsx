@@ -155,6 +155,7 @@ export const modelTypes = [
     ],
   },
 ];
+
 export const labels = {
   "主观": <UserGroupIcon className="h-4 w-4 text-primary" />,
   "客观": <DeviceTabletIcon className="h-4 w-4 text-primary" />,
