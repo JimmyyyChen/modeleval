@@ -53,8 +53,11 @@ export default function NewTaskPage() {
     ) {
       return;
     }
+
+    let taskId;
+
     try {
-      await axios.post("/api/tasks/operations/addTask", {
+      const response = await axios.post("/api/tasks/operations/addTask", {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
@@ -62,6 +65,16 @@ export default function NewTaskPage() {
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });
+
+      taskId = response.data.id;
+      console.log("DEBUG: taskId is", taskId);
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      // start the task
+      await axios.post(`/api/tasks/operations/startTask/${taskId}`);
     } catch (error) {
       console.log(error);
     }
