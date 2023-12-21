@@ -33,7 +33,6 @@ export default function IndexPagePage() {
             console.error('Error uploading CSV file:', error);
         }
     };
-
     return (
         <div className="relative w-full h-full">
             <div className="h-96 w-3/4 absolute left-1/2 top-12 border-2 border-gray-200 transform -translate-x-1/2 font-mono text-sm text-gray-500">
