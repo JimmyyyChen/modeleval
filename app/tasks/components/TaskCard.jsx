@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export default function TaskCard({ task }) {
   const id = task.id;
@@ -17,7 +17,6 @@ export default function TaskCard({ task }) {
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
   useEffect(() => {
-
     const interval = setInterval(async () => {
       if (progress === 1) {
         return () => clearInterval(interval);
@@ -57,13 +56,17 @@ export default function TaskCard({ task }) {
       href={`/tasks/${id}`}
       className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-5 shadow-md hover:bg-gray-50 focus:ring focus:ring-gray-200 sm:flex sm:space-y-0"
     >
-      <div
-        className="radial-progress"
-        style={{ "--value": Math.round(progress * 100), "--size": "3.3rem" }}
-        role="progressbar"
-      >
-        {Math.round(progress * 100)}%
-      </div>
+      {progress === 1 ? (
+        <CheckCircleIcon className="h-10 w-10 text-green-500" />
+      ) : (
+        <div
+          className="radial-progress"
+          style={{ "--value": Math.round(progress * 100), "--size": "3.3rem" }}
+          role="progressbar"
+        >
+          {Math.round(progress * 100)}%
+        </div>
+      )}
 
       {/* space */}
       <div className="w-3"></div>
