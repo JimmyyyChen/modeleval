@@ -80,7 +80,8 @@ parentPort.on('message', async (data) => {
                 task.progress = 1;
                 task.state = 3;
                 // 只有客观评测的得分是自动评测的, 因此也只有这里会更新score数据库
-                task.scoresjson, task.judgejson = await calculateScore(task, answerjson, judgejson);
+                [task.scoresjson, task.judgejson] = await calculateScore(task, answerjson, judgejson);
+                console.log(task.judgejson);    
             }
             else {
                 task.state = 2;
@@ -145,7 +146,7 @@ parentPort.on('message', async (data) => {
                 progress: task.progress,
                 answerjson: answerjson,
                 scoresjson: task.scoresJson,
-                judgejson: task.judgejson,
+                judgejson: judgejson,
             }
         }
         );
@@ -257,5 +258,5 @@ async function calculateScore(task, answerjson, judgejson) {
             scoresjson: scorejson,
         },
     });
-    return {scorejson, judgejson};
+    return [scorejson, judgejson];
 }

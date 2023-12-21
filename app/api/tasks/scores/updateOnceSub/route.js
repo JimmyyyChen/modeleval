@@ -65,6 +65,7 @@ export async function POST(request) {
         }
         // 如果全部测评完，再更新task数据库
         if (_progress + 1 == _totalCount) {
+            console.log(task.judgejson)
             await prisma.task.update({
                 where: {
                     id: task.id
