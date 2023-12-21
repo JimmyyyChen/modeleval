@@ -26,18 +26,14 @@ parentPort.on('message', async (data) => {
             },
         });
 
-        let answerjson = {};
-        let judgejson = {};
+        let answerjson = task.answerjson;
         const ChoiceQuestions = task.dataset.ChoiceQuestions;
         const ShortAnswerQuestions = task.dataset.ShortAnswerQuestions;
         let modelIds = [];
         for (let key in task.modelIds) {
             modelIds.push(task.modelIds[key]);
-            answerjson[task.modelIds[key]] = {};
-            judgejson[task.modelIds[key]] = {};
         }
-        
-        
+                
         let [currentModelId, currentQuestionId] = recoverFrom(task, task.progress);
         // 根据type(0 or 1)类型选择不同的处理方法
         if (task.questionType == 0) {
@@ -60,15 +56,26 @@ parentPort.on('message', async (data) => {
                     // if (checkState(task, i, j) == false) {
                         // break;
                     // }
+                    answerjson[model.modelid]["answers"][j] = {};
                     const question = ChoiceQuestions[j].question;
+                    answerjson[model.modelid]["answers"][j]["question"] = question;
                     const allChoices = ChoiceQuestions[j].choices;
-                    let choices;
-                    for (let k = 0; k < allChoices.length; k++) {
-                        choices = choices + allChoices[k].content + '\n';
-                    }
+                    let choices = "";
+                    // console.log(allChoices);
+                    choices = choices + allChoices[0].content + '\n';
+                    answerjson[model.modelid]["answers"][j]["optionA"] = allChoices[0].content;
+                    choices = choices + allChoices[1].content + '\n';
+                    answerjson[model.modelid]["answers"][j]["optionB"] = allChoices[1].content;
+                    choices = choices + allChoices[2].content + '\n';
+                    answerjson[model.modelid]["answers"][j]["optionC"] = allChoices[2].content;
+                    choices = choices + allChoices[3].content + '\n';
+                    answerjson[model.modelid]["answers"][j]["optionD"] = allChoices[3].content;
+                    
                     const answer = await getModelAnswer(model.modelName, prompt+'\n'+question+'\n'+choices);
+
                     // 将answer更新到存储变量'answerjson'中
-                    answerjson[model.modelid][ChoiceQuestions[j].id] = answer;
+                    answerjson[model.modelid]["answers"][j]["generatedAnswer"] = answer;
+                    answerjson[model.modelid]["answers"][j]["correctAnswer"] = ChoiceQuestions[j].correctAnswer;
                     // 每跑完一条更新一下本地的进度
                     task.progress = (i * ChoiceQuestions.length + j) / (modelIds.length * ChoiceQuestions.length);
                     console.log("task progress:" + task.progress);
@@ -80,8 +87,7 @@ parentPort.on('message', async (data) => {
                 task.progress = 1;
                 task.state = 3;
                 // 只有客观评测的得分是自动评测的, 因此也只有这里会更新score数据库
-                [task.scoresjson, task.judgejson] = await calculateScore(task, answerjson, judgejson);
-                console.log(task.judgejson);    
+                task.scoresjson = await calculateScore(task, answerjson);
             }
             else {
                 task.state = 2;
@@ -102,12 +108,16 @@ parentPort.on('message', async (data) => {
                     // if (checkState(task, i, j) == false) {
                     //     break;
                     // }
+                    answerjson[model.modelid]["answers"][j] = {};
                     const question = ShortAnswerQuestions[j].question;
+                    answerjson[model.modelid]["answers"][j]["question"] = question;
                     const answer = await getModelAnswer(model.modelName, question);
                     // 将answer更新到存储变量'answers'中
-                    answerjson[model.modelid][ShortAnswerQuestions[j].id] = answer;
+                    answerjson[model.modelid]["answers"][j]["generatedAnswer"] = answer;
+                    answerjson[model.modelid]["answers"][j]["correctAnswer"] = ShortAnswerQuestions[j].sampleAnswer;
                     // 更新本地的进度
                     task.progress = (i * ShortAnswerQuestions.length + j) / (modelIds.length * ShortAnswerQuestions.length);
+                    console.log("task progress:" + task.progress);
                     // 向task数据库更新一下
                     await updateAnswerInTask(task, answerjson);
                 }
@@ -145,8 +155,7 @@ parentPort.on('message', async (data) => {
                 state: task.state,
                 progress: task.progress,
                 answerjson: answerjson,
-                scoresjson: task.scoresJson,
-                judgejson: judgejson,
+                scoresjson: task.scoresjson,
             }
         }
         );
@@ -213,7 +222,7 @@ function recoverFrom(task, progress) {
 只用于客观题的自动化评测
 根据answerjson，更新task对应score数据库中的条目，并且更新task的scoresjson
 */
-async function calculateScore(task, answerjson, judgejson) {
+async function calculateScore(task, answerjson) {
     let scorejson = {};
     const modelIds = Object.values(task.modelIds);
     const ChoiceQuestions = task.dataset.ChoiceQuestions;
@@ -227,13 +236,12 @@ async function calculateScore(task, answerjson, judgejson) {
         // 在该模型-数据集对应的score条目中，更新progress和correctCount
         for (let j = score.progress; j < ChoiceQuestions.length; j++) {
             score.progress += 1;
-            if (ChoiceQuestions[j].answer == answerjson[modelId][ChoiceQuestions[j].id]) {
+            if (ChoiceQuestions[j].correctAnswer == answerjson[modelId][ChoiceQuestions[j].id]) {
                 score.correctCount += 1;
-                // 向judgejson中更新该条目的正确性
-                judgejson[modelId][ChoiceQuestions[j].id] = true;
+                answerjson[modelId]["answers"][j]["isCorrect"] = true;
             }
             else {
-                judgejson[modelId][ChoiceQuestions[j].id] = false;
+                answerjson[modelId]["answers"][j]["isCorrect"] = false;
             }
         }
         score.score = score.correctCount / score.totalCount;    
@@ -256,7 +264,8 @@ async function calculateScore(task, answerjson, judgejson) {
         },
         data: {
             scoresjson: scorejson,
+            answerjson: answerjson,
         },
     });
-    return [scorejson, judgejson];
+    return scorejson;
 }
