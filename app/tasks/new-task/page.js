@@ -20,6 +20,9 @@ export default function NewTaskPage() {
   const [selectedTaskMethod, setSelectedTaskMethod] = useState(null);
   const [selectedModels, setSelectedModels] = useState([]);
 
+  const canAddTask =
+    selectedDataset && selectedTaskMethod && selectedModels.length > 0;
+
   useEffect(() => {
     const fetchDatasets = async () => {
       try {
@@ -50,16 +53,28 @@ export default function NewTaskPage() {
     ) {
       return;
     }
+
+    let taskId;
+
     try {
-      await axios.post("/api/tasks/operations/addTask", {
+      const response = await axios.post("/api/tasks/operations/addTask", {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
-        questionType: 0, // TODO: no need, we could get it from dataset
-        // TODO:method
+        questionType: selectedDataset.questionType, // TODO: no need to store this in the database
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });
+
+      taskId = response.data.id;
+      console.log("DEBUG: taskId is", taskId);
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      // start the task
+      await axios.post(`/api/tasks/operations/startTask/${taskId}`);
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +115,10 @@ export default function NewTaskPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
+            disabled={
+              (selectedDataset && selectedDataset.questionType === 1) ||
+              !selectedDataset
+            }
             onChange={() => setSelectedTaskMethod("客观测试")}
           />
           <span className="label-text font-bold">客观测试</span>
@@ -109,6 +128,10 @@ export default function NewTaskPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
+            disabled={
+              (selectedDataset && selectedDataset.questionType === 0) ||
+              !selectedDataset
+            }
             onChange={() => setSelectedTaskMethod("主观测试")}
           />
           <span className="label-text font-bold">主观测试</span>
@@ -118,6 +141,10 @@ export default function NewTaskPage() {
             type="radio"
             name="method"
             className="radio-primary radio"
+            disabled={
+              (selectedDataset && selectedDataset.questionType === 0) ||
+              !selectedDataset
+            }
             onChange={() => setSelectedTaskMethod("对抗测试")}
           />
           <span className="label-text font-bold">对抗测试</span>
@@ -175,20 +202,17 @@ export default function NewTaskPage() {
         <Link href="/tasks">
           <button className="btn btn-secondary w-max">取消</button>
         </Link>
-
-        <Link href="/tasks">
-          <button
-            className="btn btn-primary w-max"
-            onClick={addTask}
-            disabled={
-              !selectedDataset ||
-              !selectedTaskMethod ||
-              selectedModels.length === 0
-            }
-          >
+        {canAddTask ? (
+          <Link href="/tasks">
+            <button className="btn btn-primary w-max" onClick={addTask}>
+              创建新测试
+            </button>
+          </Link>
+        ) : (
+          <button className="btn btn-primary w-max" disabled>
             创建新测试
           </button>
-        </Link>
+        )}
       </div>
     </div>
   );
