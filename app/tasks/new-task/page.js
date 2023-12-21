@@ -46,13 +46,10 @@ export default function NewTaskPage() {
   }, []);
 
   const addTask = async () => {
-    if (
-      !selectedDataset ||
-      !selectedTaskMethod ||
-      selectedModels.length === 0
-    ) {
+    if (!canAddTask) {
       return;
     }
+    
     try {
       await axios.post("/api/tasks/operations/addTask", {
         userId: userId,
