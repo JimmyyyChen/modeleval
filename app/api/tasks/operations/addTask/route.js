@@ -7,8 +7,10 @@ export async function POST(request) {
         const json = await request.json();
         const modelIds = json.modelIds;
         let modelList = []; // 所有模型组成的列表
+        let answerjson = {};
         for (let key in modelIds) {
             const modelId = modelIds[key];
+            answerjson[modelId] = {};
             const model = await prisma.model.findUnique({
                 where: {
                     modelid: modelId,
@@ -17,6 +19,8 @@ export async function POST(request) {
                     label_list: true,
                 },
             });
+            answerjson[modelId]["modelName"] = model.modelName;
+            answerjson[modelId]["answers"] = [];
             modelList.push(model);
         }
         const task = await prisma.task.create({
@@ -35,6 +39,7 @@ export async function POST(request) {
                         id: json.datasetId,
                     },
                 },
+                answerjson: answerjson,
             },
         });
 
