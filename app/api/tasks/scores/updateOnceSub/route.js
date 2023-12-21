@@ -31,10 +31,10 @@ export async function POST(request) {
             // 如果模型在该条数据上的回答是正确的，则正确题目数+1
             if (json.judge[modelId] == true) {
                 scoreItem.correctCount += 1;
-                task.judgejson[modelId][json.index] = true; // 修改task中的judgejson中对该条目正确的判断
+                task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
             }
-            else {
-                task.judgejson[modelId][json.index] = false;
+            else{
+                task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
             }
             scoreItem.progress += 1;
             if (scoreItem.progress == scoreItem.totalCount) {  // 如果已经全部判定完毕 
@@ -62,17 +62,24 @@ export async function POST(request) {
                     correctCount: scoreItem.correctCount,
                 }
             });
+            // 把answerjson更新回task数据库
+            await prisma.task.update({
+                where:{
+                    id: task.id,
+                },
+                data:{
+                    answerjson: task.answerjson,
+                }
+            });
         }
         // 如果全部测评完，再更新task数据库
         if (_progress + 1 == _totalCount) {
-            console.log(task.judgejson)
             await prisma.task.update({
                 where: {
                     id: task.id
                 },
                 data:{
                     scoresjson: task.scoresjson,
-                    judgejson: task.judgejson, // 更新task中的judgejson
                 }
             });
         }
