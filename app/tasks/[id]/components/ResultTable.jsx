@@ -118,7 +118,7 @@ import { DataGrid } from "@mui/x-data-grid";
 //   },
 // ];
 
-export default function ResultTable({score  , modelName, answers }) {
+export default function ResultTable({ score, modelName, answers }) {
   // TODO: 从answerjson中提取数据
   const columns = [
     { field: "isCorrect", headerName: "是否正确", width: 70 },
@@ -149,9 +149,9 @@ export default function ResultTable({score  , modelName, answers }) {
   return (
     <div className="collapse collapse-arrow border bg-white">
       <input type="checkbox" />
-      <div className="collapse-title flex items-center space-x-3">
+      <div className="collapse-title flex items-center space-x-3 ">
         <div className="font-mono text-xl font-bold">{modelName}</div>
-        <div className="font-medium text-gray-400">得分 {score}</div>
+        <div className="font-bold text-primary">{score} 分</div>
       </div>
       <div className="collapse-content overflow-x-auto">
         <DataGrid
