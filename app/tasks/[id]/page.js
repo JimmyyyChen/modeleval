@@ -104,6 +104,7 @@ export default function TaskDisplayPage({ params }) {
             key={key}
             score={scoresjson[key]}
             modelName={answerjson[key].modelName}
+            questionType={questionType}
             answers={answerjson[key].answers}
           />
         ))
