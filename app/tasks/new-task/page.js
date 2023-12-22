@@ -83,11 +83,17 @@ export default function NewTaskPage() {
       <div className="flex items-center space-x-3">
         <h2 className="text-xl font-bold ">选择数据集</h2>
         <p>或</p>
-        {/* TODO: create new dataset */}
         <Link className="link-primary link" href="/upload_dataset_demo">
           上传数据集
         </Link>
       </div>
+
+      {/* if no dataset is uploaded */}
+      {datasets.length == 0 && (
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <p className="text-gray-500">无数据集</p>
+        </div>
+      )}
 
       {datasets.map((dataset) => (
         <div
