@@ -2,41 +2,41 @@ const { parentPort } = require('worker_threads');
 const { PrismaClient } = require('@prisma/client');
 const getModelAnswer = require("./api.js");
 const getModelAnswerBlock = require("./api.js");
-const amqp = require('amqplib');
-const EventEmitter = require('events');
-const eventEmitter = new EventEmitter();
+// const amqp = require('amqplib');
+// const EventEmitter = require('events');
+// const eventEmitter = new EventEmitter();
 
 
 const prisma = new PrismaClient();
 // RabbitMQ连接设置
-const amqpUrl = 'amqp://localhost'; // 根据实际情况修改RabbitMQ服务器地址
-const queue = 'task_control'; // 控制命令队列名称
+// const amqpUrl = 'amqp://localhost'; // 根据实际情况修改RabbitMQ服务器地址
+// const queue = 'task_control'; // 控制命令队列名称
 
 // 全局变量，用于存储当前任务的暂停状态
 let pauseTask = {"taskId": "", "state": "run"};
 
-async function connectRabbitMQ() {
-    const connection = await amqp.connect(amqpUrl);
-    const channel = await connection.createChannel();
+// async function connectRabbitMQ() {
+    //const connection = await amqp.connect(amqpUrl);
+    //const channel = await connection.createChannel();
     
-    await channel.assertQueue(queue, { durable: false });
-    console.log(" [*] Waiting for messages in %s.", queue);
+    //await channel.assertQueue(queue, { durable: false });
+    //console.log(" [*] Waiting for messages in %s.", queue);
     
-    channel.consume(queue, function(msg) {
-        console.log(" [x] Received %s", msg.content.toString());
-        pauseTask= JSON.parse(msg.content.toString());
-        eventEmitter.emit('pauseTaskUpdated', pauseTask);
-    }, { noAck: true });
-}
+    //channel.consume(queue, function(msg) {
+        //console.log(" [x] Received %s", msg.content.toString());
+        //pauseTask= JSON.parse(msg.content.toString());
+        //eventEmitter.emit('pauseTaskUpdated', pauseTask);
+    //}, { noAck: true });
+//}
 // 启动RabbitMQ连接
-connectRabbitMQ();
+//connectRabbitMQ();
 // 事件监听
-eventEmitter.on('pauseTaskUpdated', (updatedPauseTask) => {
+//eventEmitter.on('pauseTaskUpdated', (updatedPauseTask) => {
     // 可以在这里处理更新后的pauseTask
     // 例如，调用checkPauseTask或其他相关函数
-    console.log("pauseTask has been updated: ", updatedPauseTask);
+    //console.log("pauseTask has been updated: ", updatedPauseTask);
     // 您可以在这里加入调用checkPauseTask的逻辑
-});
+//});
 
 parentPort.on('message', async (data) => {
     try {
