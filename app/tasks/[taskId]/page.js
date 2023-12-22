@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -97,7 +96,7 @@ export default function TaskDisplayPage({ params }) {
         </Link>
       )} */}
 
-      <h2 className="text-2xl font-bold">评测结果</h2>
+      <h2 className="text-2xl font-bold">评测</h2>
       {areAnswersGenerated ? (
         Object.keys(answerjson).map((modelId) => (
           <ResultTable
