@@ -6,17 +6,15 @@ import axios from "axios";
 import TaskDatasetInfo from "./components/TaskDatasetInfo";
 import TaskModelInfo from "./components/TaskModelInfo";
 import ResultTable from "./components/ResultTable";
-// import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
-import { EyeIcon } from "@heroicons/react/24/solid";
 
 export default function TaskDisplayPage({ params }) {
   const taskId = parseInt(params.taskId);
   const [task, setTask] = useState({});
-  const [isTaskComplete, setIsTaskComplete] = useState(false);
+  const [areAnswersGenerated, setAreAnswersGenerated] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (isTaskComplete === 1) {
+      if (areAnswersGenerated === 1) {
         return () => clearInterval(interval);
       }
 
@@ -25,14 +23,14 @@ export default function TaskDisplayPage({ params }) {
         const data = response.data[0];
         setTask(data);
         if (data.progress === 1) {
-          setIsTaskComplete(true);
+          setAreAnswersGenerated(true);
         }
       } catch (error) {
         console.error(error);
       }
     }, 1000); // 1s
     return () => clearInterval(interval);
-  }, [isTaskComplete, taskId]);
+  }, [areAnswersGenerated, taskId]);
 
   // return loading if task is not loaded
   if (!task.id) {
@@ -76,7 +74,8 @@ export default function TaskDisplayPage({ params }) {
         </p>
       </div>
 
-      {questionType == 1 &&
+      {/* TODO */}
+      {/* {questionType == 1 &&
         progress == 1 && ( // TODO: ShortAnswerQuestion, but it's actually subjective testing. Weird? I know...
           <Link
             href={`${taskId}/human-evaluation`}
@@ -85,7 +84,7 @@ export default function TaskDisplayPage({ params }) {
             <EyeIcon className="mr-2 h-5 w-5" />
             进行主观评测
           </Link>
-        )}
+        )} */}
 
       {/* TODO: 对抗测试 */}
       {/* {type == 2 && (
@@ -99,14 +98,21 @@ export default function TaskDisplayPage({ params }) {
       )} */}
 
       <h2 className="text-2xl font-bold">评测结果</h2>
-      {isTaskComplete ? (
-        Object.keys(answerjson).map((key) => (
+      {areAnswersGenerated ? (
+        Object.keys(answerjson).map((modelId) => (
           <ResultTable
-            key={key}
-            score={scoresjson[key]}
-            modelName={answerjson[key].modelName}
+            key={modelId}
+            score={scoresjson[modelId]}
+            modelName={answerjson[modelId].modelName}
+            evalRef={
+              questionType === 1
+                ? `/tasks/human-evaluation/${taskId}-${modelId}`
+                : questionType === 2
+                  ? `/tasks/comparative-evaluation/${taskId}-${modelId}`
+                  : null
+            }
             questionType={questionType}
-            answers={answerjson[key].answers}
+            answers={answerjson[modelId].answers}
           />
         ))
       ) : (

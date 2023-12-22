@@ -1,4 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
+import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
+
+import Link from "next/link";
 
 const columnsOptions = [
   // autoEvalCol
@@ -30,12 +33,52 @@ const columnsOptions = [
 
 export default function ResultTable({
   score,
+  evalRef,
   modelName,
   questionType,
   answers,
 }) {
   // questionType: 0: 客观评测, 1: 主观评测, 2: 对抗评测
   const columns = columnsOptions[questionType];
+
+  let resultStatus;
+  let evalButton = null;
+  if (score === undefined) {
+    if (questionType === 0) {
+      resultStatus = "正在自动客观评测";
+    } else if (questionType === 1) {
+      resultStatus = "等待人工主观评测";
+
+      evalButton = (
+        <Link
+          className="group btn btn-accent w-max rounded-3xl transition-all duration-300"
+          href={evalRef}
+        >
+          <EyeIcon className="h-5 w-5" />
+          <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
+            进行主观评测
+          </p>
+        </Link>
+      );
+    } else if (questionType === 2) {
+      resultStatus = "等待对抗评测";
+      evalButton = (
+        <Link
+          className="group btn btn-accent w-max rounded-3xl transition-all duration-300"
+          href={evalRef}
+        >
+          <ScaleIcon className="h-5 w-5" />
+          <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
+            进行对抗评测
+          </p>
+        </Link>
+      );
+    } else {
+      throw new Error("Invalid question type");
+    }
+  } else {
+    resultStatus = `已完成评测, 获得 ${score} 分`;
+  }
 
   let rows;
 
@@ -74,25 +117,28 @@ export default function ResultTable({
   }
 
   return (
-    <div className="collapse collapse-arrow border bg-white">
-      <input type="checkbox" />
-      <div className="collapse-title flex items-center space-x-3 ">
-        <div className="font-mono text-xl font-bold">{modelName}</div>
-        {/* show it when score exists */}
-        {score && <div className="font-bold text-primary">{score} 分</div>}
+    <div className="flex space-x-3">
+      <div className="collapse collapse-arrow border bg-white">
+        <input type="checkbox" />
+        <div className="collapse-title flex items-center space-x-3 ">
+          <div className="font-mono text-xl font-bold">{modelName}</div>
+          {/* show it when score exists */}
+          <div className="font-bold text-primary">{resultStatus}</div>
+        </div>
+        <div className="collapse-content overflow-x-auto">
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+          />
+        </div>
       </div>
-      <div className="collapse-content overflow-x-auto">
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-        />
-      </div>
+      {evalButton}
     </div>
   );
 }
