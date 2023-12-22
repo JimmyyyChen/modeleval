@@ -1,7 +1,3 @@
-"use client";
-import { useState, useEffect } from "react";
-import axios from "axios";
-
 import { DataGrid } from "@mui/x-data-grid";
 
 // TODO: examples
@@ -122,57 +118,43 @@ import { DataGrid } from "@mui/x-data-grid";
 //   },
 // ];
 
-export default function ResultTable({ task }) {
-  const id = task.id;
-  // const questionType = task.questionType; // 客观:0, 主观:1, 对抗:2
-  // const dataset = task.dataset;
-  // const [answerjson, setAnswerjson] = useState(task.answerjson);
-  const [progress, setProgress] = useState(task.progress);
-
-  // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (progress === 1) {
-        return () => clearInterval(interval);
-      }
-
-      try {
-        const response = await axios.get(`/api/tasks/info/taskId/${id}`);
-        const data = response.data[0];
-        setProgress(data.progress);
-        if (data.progress === 1) {
-          // setAnswerjson(data.answerjson);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [id, progress]);
-
-
-  if (progress !== 1) {
-    return (
-      <div className="flex flex-col items-center space-y-4">
-        请等待测试完成
-      </div>
-    )
-  }
-
+export default function ResultTable({score  , modelName, answers }) {
   // TODO: 从answerjson中提取数据
-  const rows=[]
-  const columns=[]
+  const columns = [
+    { field: "isCorrect", headerName: "是否正确", width: 70 },
+    { field: "question", headerName: "问题", width: 300 },
+    { field: "generatedAnswer", headerName: "生成答案", width: 120 },
+    { field: "correctAnswer", headerName: "正确答案", width: 120 },
+    { field: "optionA", headerName: "选项 A", width: 100 },
+    { field: "optionB", headerName: "选项 B", width: 100 },
+    { field: "optionC", headerName: "选项 C", width: 100 },
+    { field: "optionD", headerName: "选项 D", width: 100 },
+  ];
+
+  // iterate through answers
+  const rows = answers.map((answer, index) => {
+    return {
+      id: index,
+      isCorrect: answer.isCorrect ? "✅" : "❌",
+      question: answer.question,
+      generatedAnswer: answer.generatedAnswer,
+      correctAnswer: answer.correctAnswer,
+      optionA: answer.optionA,
+      optionB: answer.optionB,
+      optionC: answer.optionC,
+      optionD: answer.optionD,
+    };
+  });
 
   return (
     <div className="collapse collapse-arrow border bg-white">
       <input type="checkbox" />
       <div className="collapse-title flex items-center space-x-3">
-        <div className="font-mono text-xl font-bold">GPT-4</div>
-        <div className="font-medium text-gray-400">正确率66%</div>
+        <div className="font-mono text-xl font-bold">{modelName}</div>
+        <div className="font-medium text-gray-400">得分 {score}</div>
       </div>
       <div className="collapse-content overflow-x-auto">
         <DataGrid
-          // choose rows and columns based on type
           rows={rows}
           columns={columns}
           initialState={{

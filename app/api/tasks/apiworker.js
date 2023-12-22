@@ -161,6 +161,7 @@ parentPort.on('message', async (data) => {
         );
         parentPort.postMessage({ success: true, updatedTask: updatedTask });
     } catch (error) {
+        console.log(error);
         parentPort.postMessage({ success: false, error: error.message });
     }
 });
