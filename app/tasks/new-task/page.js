@@ -57,7 +57,7 @@ export default function NewTaskPage() {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
-        questionType: selectedDataset.questionType, // TODO: no need to store this in the database
+        questionType: selectedDataset.questionType, // 0: 客观测试, 1: 主观测试, 2: 对抗测试
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });
