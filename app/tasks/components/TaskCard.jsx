@@ -6,14 +6,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-import { XMarkIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import {
+  XMarkIcon,
+  CheckCircleIcon,
+  ScaleIcon,
+  EyeIcon,
+} from "@heroicons/react/24/solid";
 
 export default function TaskCard({ task }) {
   const id = task.id;
   const taskName = task.taskName;
+  const questionType = task.questionType;
   const startTime = new Date(task.startTime);
   const [endTime, setEndTime] = useState(new Date(task.endTime));
   const [progress, setProgress] = useState(task.progress);
+  // TODO
+  const isEvaluated = false;
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
   useEffect(() => {
@@ -56,17 +64,11 @@ export default function TaskCard({ task }) {
       href={`/tasks/${id}`}
       className=" w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl bg-base-100 p-5 shadow-md hover:bg-gray-50 focus:ring focus:ring-gray-200 sm:flex sm:space-y-0"
     >
-      {progress === 1 ? (
-        <CheckCircleIcon className="h-10 w-10 text-green-500" />
-      ) : (
-        <div
-          className="radial-progress"
-          style={{ "--value": Math.round(progress * 100), "--size": "3.3rem" }}
-          role="progressbar"
-        >
-          {Math.round(progress * 100)}%
-        </div>
-      )}
+      <StatusIndicator
+        questionType={questionType}
+        progress={progress}
+        isEvaluated={isEvaluated}
+      />
 
       {/* space */}
       <div className="w-3"></div>
@@ -93,5 +95,54 @@ export default function TaskCard({ task }) {
         </button> */}
       </div>
     </Link>
+  );
+}
+
+function StatusIndicator({ questionType, progress, isEvaluated }) {
+  const Layout = ({ children }) => (
+    <div className="flex flex-col items-center text-center w-16 h-16">{children}</div>
+
+  );
+
+  if (questionType === 0) {
+    if (progress === 1) {
+      return (
+        <Layout>
+          <CheckCircleIcon className="h-10 w-10 text-green-500" />
+          <p className="text-sm text-green-500 h-5">测试完成</p>
+        </Layout>
+      );
+    }
+  } else if (questionType === 1 && !isEvaluated) {
+    return (
+      <Layout>
+        <EyeIcon className="h-10 w-10 text-accent" />
+        <p className="text-sm text-accent h-5">等待主观评测</p>
+      </Layout>
+    );
+  } else if (questionType === 2 && !isEvaluated) {
+    return (
+      <Layout>
+        <ScaleIcon className="h-10 w-10 text-accent" />
+        <p className="text-sm text-accent h-5">等待对抗评测</p>
+      </Layout>
+    );
+  }
+
+  // else, return progress
+  return (
+    <Layout>
+      <div
+        className="radial-progress text-blue-500"
+        style={{
+          "--value": Math.round(progress * 100),
+          "--size": "3rem",
+        }}
+        role="progressbar"
+      >
+        {Math.round(progress * 100)}%
+      </div>
+      <p className="text-sm text-blue-500 h-5">生成回答</p>
+    </Layout>
   );
 }
