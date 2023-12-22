@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {
   datasetItems,
-  //pages,
   issues,
 } from "./data";
 import Community from "@/app/components/Community";
@@ -14,6 +13,7 @@ import MainInfoDisplay from "@/app/components/MainInfoDisplay";
 
 export default function Home({ params: { datasetId } }) {
   const [datasetInfo, setDatasetInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const fetchDatasetInfo = async () => {
@@ -38,13 +38,30 @@ export default function Home({ params: { datasetId } }) {
     var labelList = datasetInfo.label_list.map((item) => item.labelName);
   }
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        if (datasetInfo && datasetInfo.userId) {
+          const response = await axios.get(`/api/user/${datasetInfo.userId}`);
+          if (response.status >= 200 && response.status < 300) {
+            setUserInfo(response.data);
+          } else {
+            setUserInfo(undefined);
+            console.error("Error fetching data:", response.status);
+          }
+        }
+      } catch (error) {
+        setUserInfo(undefined);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [datasetInfo]);
+
   return (
     <>
-      <MainInfoDisplay
-        name={`${datasetInfo.username}/${datasetInfo.datasetName}`}
-        downloadCount={datasetInfo.downloadCount}
-        starCount={datasetInfo.starCount}
-      />
+      <MainInfoDisplay datasetInfo={datasetInfo} />
 
       <div className="mt-6 w-full">
         <Labels labelList={labelList} />
@@ -55,9 +72,8 @@ export default function Home({ params: { datasetId } }) {
           <ItemsDisplay items={datasetItems} />
         </div>
 
-        {/* TODO: 面板高度问题 */}
         <div className="h-full w-full p-4 sm:w-1/3">
-          <UserInfo isvisitor={true} />
+          <UserInfo isvisitor={true} userInfo={userInfo} />
         </div>
       </div>
 

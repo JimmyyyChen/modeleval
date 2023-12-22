@@ -2,15 +2,6 @@ export default function ItemsDisplay({ items }) {
   const pages = Math.ceil(items.length / 10);
   return (
     <div className="w-full h-full rounded-xl border border-gray-200 bg-white shadow-lg">
-      <form className="flex h-36 w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:h-24 lg:flex-row lg:space-x-2 lg:space-y-0">
-        <input
-          className="input input-bordered w-5/6"
-          placeholder="搜索数据条目"
-        />
-        {/* TODO: Add post link */}
-        <button className="btn btn-primary w-16 text-white">搜索</button>
-      </form>
-
       {/* TODO: Add post link */}
       <div className="w-full flex-1 space-y-4 p-6">
         <button

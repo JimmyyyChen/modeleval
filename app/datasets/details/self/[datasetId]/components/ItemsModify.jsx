@@ -1,21 +1,10 @@
-export default function ItemsDisplay({ items }) {
+export default function ItemsModify({ items }) {
   const pages = Math.ceil(items.length / 10);
   return (
-    <div className="w-full h-full rounded-xl border border-gray-200 bg-white shadow-lg">
-      <form className="flex h-36 w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:h-24 lg:flex-row lg:space-x-2 lg:space-y-0">
-        <input
-          className="input input-bordered w-5/6"
-          placeholder="搜索数据条目"
-        />
-        {/* TODO: Add post link */}
-        <button className="btn btn-primary w-16 text-white">搜索</button>
-      </form>
-
+    <div className="h-full w-full rounded-xl border border-gray-200 bg-white shadow-lg">
       {/* TODO: Add post link */}
       <div className="w-full flex-1 space-y-4 p-6">
-        <button
-          className="btn btn-disabled w-full border border-gray-200 shadow-md"
-        >
+        <button className="btn btn-disabled w-full border border-gray-200 shadow-md">
           <div className="flex w-full flex-row text-black">
             <div className="w-1/6 truncate text-left">ID</div>
             <div className="w-4/6 truncate text-center">Question</div>

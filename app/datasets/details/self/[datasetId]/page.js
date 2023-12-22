@@ -8,7 +8,7 @@ import {
 } from "./data";
 import Community from "@/app/components/Community";
 import MainInfoDisplay from "@/app/components/MainInfoDisplay";
-import ItemsDisplay from "./components/ItemsDisplay";
+import ItemsModify from "./components/ItemsModify";
 
 export default function Home({ params: { datasetId } }) {
   const [datasetInfo, setDatasetInfo] = useState({});
@@ -39,9 +39,7 @@ export default function Home({ params: { datasetId } }) {
 
   return (
     <>
-      <MainInfoDisplay
-        datasetInfo={datasetInfo}
-      />
+      <MainInfoDisplay datasetInfo={datasetInfo} />
 
       <div className="mt-6 w-full">
         <Labels labelList={labelList} />
@@ -61,7 +59,7 @@ export default function Home({ params: { datasetId } }) {
         </div>
 
         <div className="h-full w-full p-4 sm:w-2/3">
-          <ItemsDisplay items={datasetItems} />
+          <ItemsModify items={datasetItems} />
         </div>
       </div>
 

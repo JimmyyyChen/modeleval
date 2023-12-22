@@ -12,7 +12,7 @@ datasource db {
 
 model Label {
   labelid       Int      @id @default(autoincrement())
-  labelName     String   @unique
+  labelName     String
   Model         Model?   @relation(fields: [modelsModelid], references: [modelid])
   Dataset       Dataset? @relation(fields: [datasetId], references: [id])
   modelsModelid Int?

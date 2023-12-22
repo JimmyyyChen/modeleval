@@ -34,7 +34,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUserDatasets = async () => {
       try {
-        if (userInfo) {
+        if (userInfo && userInfo.userId) {
           const { userId } = userInfo;
           const response = await axios.get(`/api/datasets/user/${userId}`);
           if (response.status >= 200 && response.status < 300) {
@@ -53,8 +53,8 @@ export default function Home() {
     fetchUserDatasets();
   }, [userInfo]);
 
-  console.log(userInfo);
   console.log(datasets);
+  console.log(userInfo);
 
   return (
     <>
