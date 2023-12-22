@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 import {
   ChevronLeftIcon,
@@ -15,6 +16,10 @@ export default function HumanEvalDisplay({ params }) {
   const [task, setTask] = useState({});
   const taskname = task.taskName;
   const answers = task.answerjson ? task.answerjson[modelId].answers : [];
+  // answer that "isCorrect" exist
+  const answeredCount = answers.filter(
+    (answer) => answer.isCorrect === true || answer.isCorrect === false,
+  ).length;
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -32,7 +37,9 @@ export default function HumanEvalDisplay({ params }) {
   const stickyTitle = (
     <div className="group sticky top-5 z-50 flex flex-col self-start rounded-3xl bg-secondary p-4 shadow-lg transition-all duration-300 hover:scale-110 hover:space-y-3 hover:p-7 hover:shadow-2xl">
       <div className="flex items-center space-x-3 transition-all duration-300">
+        <Link href={`/tasks/${taskId}`}>
         <ChevronLeftIcon className="h-6 w-6 text-gray-500 transition-all duration-300" />
+        </Link>
         <h1 className="text-lg font-bold text-primary transition-all duration-300 ">
           {taskname}
         </h1>
@@ -43,7 +50,7 @@ export default function HumanEvalDisplay({ params }) {
         max="100"
       ></progress>
       <p className="h-0 text-sm text-gray-500 opacity-0  transition-all duration-300 group-hover:h-max group-hover:opacity-100">
-        已完成x题, 剩余x题
+        已完成 {answeredCount} 题, 剩余 {answers.length} 题
       </p>
     </div>
   );
