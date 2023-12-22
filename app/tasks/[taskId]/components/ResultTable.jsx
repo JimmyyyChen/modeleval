@@ -14,7 +14,7 @@ const columnsOptions = [
   ],
   // humanEvalCol
   [
-    { field: "isCorrect", headerName: "人类评测", minWidth: 80 },
+    { field: "isCorrect", headerName: "主观评测", minWidth: 80 },
     { field: "question", headerName: "问题", minWidth: 300 },
     { field: "generatedAnswer", headerName: "生成答案", minWidth: 300 },
   ],
@@ -55,9 +55,18 @@ export default function ResultTable({
     });
   } else if (questionType === 1) {
     rows = answers.map((answer, index) => {
+      let isCorrectIndicator;
+      if (answer.isCorrect === undefined) {
+        isCorrectIndicator = "未评测";
+      } else if (answer.isCorrect) {
+        isCorrectIndicator = "✅";
+      } else {
+        isCorrectIndicator = "❌";
+      }
+
       return {
         id: index,
-        isCorrect: answer.isCorrect ? "✅" : "❌",
+        isCorrect: isCorrectIndicator,
         question: answer.question,
         generatedAnswer: answer.generatedAnswer,
       };
@@ -69,7 +78,8 @@ export default function ResultTable({
       <input type="checkbox" />
       <div className="collapse-title flex items-center space-x-3 ">
         <div className="font-mono text-xl font-bold">{modelName}</div>
-        <div className="font-bold text-primary">{score} 分</div>
+        {/* show it when score exists */}
+        {score && <div className="font-bold text-primary">{score} 分</div>}
       </div>
       <div className="collapse-content overflow-x-auto">
         <DataGrid

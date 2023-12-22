@@ -10,7 +10,7 @@ import ResultTable from "./components/ResultTable";
 import { EyeIcon } from "@heroicons/react/24/solid";
 
 export default function TaskDisplayPage({ params }) {
-  const taskId = parseInt(params.id);
+  const taskId = parseInt(params.taskId);
   const [task, setTask] = useState({});
   const [isTaskComplete, setIsTaskComplete] = useState(false);
 
@@ -67,24 +67,25 @@ export default function TaskDisplayPage({ params }) {
         ></progress>
         <p className="text-gray-500">
           {progress === 1
-            ? `已完成 | ${startTime.toLocaleString()}开始 | 用时${Math.round(
+            ? `已生成回答 | ${startTime.toLocaleString()}开始 | 用时${Math.round(
                 (endTime - startTime) / 1000,
               )}秒| ${endTime.toLocaleString()}结束 `
-            : `完成${Math.floor(progress * 100)}% | 用时${Math.round(
+            : `正在生成回答 ${Math.floor(progress * 100)}% | 用时${Math.round(
                 (Date.now() - startTime) / 1000,
               )}秒 | ${startTime.toLocaleString()}开始 `}
         </p>
       </div>
 
-      {questionType == 1 && ( // TODO: ShortAnswerQuestion, but it's actually subjective testing. Weird? I know...
-        <Link
-          href={`${taskId}/human-evaluation`}
-          className="btn btn-accent w-max rounded-3xl"
-        >
-          <EyeIcon className="mr-2 h-5 w-5" />
-          继续主观测试
-        </Link>
-      )}
+      {questionType == 1 &&
+        progress == 1 && ( // TODO: ShortAnswerQuestion, but it's actually subjective testing. Weird? I know...
+          <Link
+            href={`${taskId}/human-evaluation`}
+            className="btn btn-accent w-max rounded-3xl"
+          >
+            <EyeIcon className="mr-2 h-5 w-5" />
+            进行主观评测
+          </Link>
+        )}
 
       {/* TODO: 对抗测试 */}
       {/* {type == 2 && (
@@ -97,7 +98,7 @@ export default function TaskDisplayPage({ params }) {
         </Link>
       )} */}
 
-      <h2 className="text-2xl font-bold">测试结果</h2>
+      <h2 className="text-2xl font-bold">评测结果</h2>
       {isTaskComplete ? (
         Object.keys(answerjson).map((key) => (
           <ResultTable
