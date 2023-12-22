@@ -5,7 +5,7 @@ import axios from "axios";
 
 import TaskDatasetInfo from "./components/TaskDatasetInfo";
 import TaskModelInfo from "./components/TaskModelInfo";
-// import Result from "./components/Result";
+import ResultTable from "./components/ResultTable";
 // import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
 import { EyeIcon } from "@heroicons/react/24/solid";
 
@@ -51,6 +51,8 @@ export default function TaskDisplayPage({ params }) {
   const progress = task.progress; // from 0 to 1
   const startTime = new Date(task.startTime);
   const endTime = new Date(task.endTime);
+  const answerjson = task.answerjson;
+  const scoresjson = task.scoresjson;
 
   return (
     <div className="flex w-full flex-col space-y-5">
@@ -96,7 +98,18 @@ export default function TaskDisplayPage({ params }) {
       )} */}
 
       <h2 className="text-2xl font-bold">测试结果</h2>
-      {/* <Result task={task} /> */}
+      {isTaskComplete ? (
+        Object.keys(answerjson).map((key) => (
+          <ResultTable
+            key={key}
+            score={scoresjson[key]}
+            modelName={answerjson[key].modelName}
+            answers={answerjson[key].answers}
+          />
+        ))
+      ) : (
+        <div className="flex justify-center text-gray-500">请等待测试完成</div>
+      )}
 
       <h2 className="text-2xl font-bold">数据集</h2>
       <TaskDatasetInfo dataset={dataset} />
