@@ -11,8 +11,8 @@ import { XMarkIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 export default function TaskCard({ task }) {
   const id = task.id;
   const taskName = task.taskName;
-  const startTime = task.startTime;
-  const [endTime, setEndTime] = useState(task.endTime);
+  const startTime = new Date(task.startTime);
+  const [endTime, setEndTime] = useState(new Date(task.endTime));
   const [progress, setProgress] = useState(task.progress);
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
@@ -27,7 +27,7 @@ export default function TaskCard({ task }) {
         const data = response.data[0];
         setProgress(data.progress);
         if (data.progress === 1) {
-          setEndTime(new Date());
+          setEndTime(new Date(data.endTime));
         }
       } catch (error) {
         console.error(error);
@@ -76,7 +76,7 @@ export default function TaskCard({ task }) {
         {/* if completed */}
         {progress === 1 ? (
           <p className="text-gray-500">
-            {formatedStartTime} 开始 • {endTime.toLocaleTimeString()} 结束
+            {startTime.toLocaleString()} 开始 • {endTime.toLocaleString()} 结束
           </p>
         ) : (
           <p className="text-gray-500">{formatedStartTime} 开始</p>
