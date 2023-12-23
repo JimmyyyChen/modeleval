@@ -119,8 +119,8 @@ export default function TaskDisplayPage({ params }) {
       ) : questionType === 2 ? (
         <p>TODO: comparative test</p>
       ) : (
-        <span className="loading loading-dots loading-xs self-center"></span>
-      )}
+        <span className="text-gray-500 self-center">请等待回答生成</span>
+        )}
 
       <h2 className="text-2xl font-bold">数据集</h2>
       {dataset ? (

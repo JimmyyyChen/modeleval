@@ -1,5 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { EyeIcon, ScaleIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, ScaleIcon, CheckIcon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
 
@@ -79,11 +79,47 @@ export default function ResultTable({
   } else {
     resultStatus = `已完成评测, 获得 ${(score * 100).toFixed(2)} 分`;
     // evalButton is show its score
-    evalButton = (
-      <div className="btn btn-success w-max rounded-3xl text-white ">
-        <p className="break-keep ">{(score * 100).toFixed(2)}</p>
-      </div>
-    );
+    if (questionType === 0) {
+      evalButton = (
+        <div className="btn btn-success w-max rounded-3xl text-white ">
+          <p className="break-keep ">{(score * 100).toFixed(2)}</p>
+        </div>
+      );
+    } else if (questionType === 1) {
+      evalButton = (
+        <Link
+          href={evalRef}
+          className="group btn btn-success w-max rounded-3xl text-white transition-all duration-300 hover:btn-accent"
+        >
+          <CheckIcon className="h-5 w-5 group-hover:w-0" />
+          <EyeIcon className="h-5 w-0 group-hover:w-5" />
+          <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
+            修改主观评测
+          </p>
+          <p className="break-keep  group-hover:w-0 group-hover:opacity-0">
+            {(score * 100).toFixed(2)}
+          </p>
+        </Link>
+      );
+    } 
+    
+    // TODO
+    // else if (questionType === 2) {
+    //   evalButton = (
+    //     <Link
+    //       href={evalRef}
+    //       className="group btn btn-success w-max rounded-3xl text-white transition-all duration-300 hover:btn-accent"
+    //     >
+    //       <CheckIcon className="h-5 w-5 group-hover:w-0" />
+    //       <EyeIcon className="h-5 w-0 group-hover:w-5" />
+    //       <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
+    //         修改评测
+    //       </p>
+    //       <p className="break-keep  group-hover:w-0 group-hover:opacity-0">
+    //         {(score * 100).toFixed(2)}
+    //       </p>
+    //     </Link>
+    //   );
   }
 
   let rows;
