@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getUser } from "@/lib/getUsername";
 import { clerkClient } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs";
-export async function GET(request) {
+export async function GET(request, {params}) {
     try {
         const { userId } = auth();
         const user = await getUser(userId);
