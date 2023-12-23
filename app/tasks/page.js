@@ -14,9 +14,10 @@ export default async function TasksPage() {
     where: {
       userId: userId,
     },
-    orderBy: {
-      startTime: "desc",
-    },
+  });
+
+  tasks.sort((a, b) => {
+    return b.startTime - a.startTime;
   });
 
   return (

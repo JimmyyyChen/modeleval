@@ -12,6 +12,7 @@ export default function Footer() {
               height={64}
               src="/logo.png"
               alt="ModalEval Logo"
+              priority
             />
           </Link>
         </div>

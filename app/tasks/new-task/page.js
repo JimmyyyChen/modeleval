@@ -46,12 +46,19 @@ export default function NewTaskPage() {
   }, []);
 
   const addTask = async () => {
-    if (
-      !selectedDataset ||
-      !selectedTaskMethod ||
-      selectedModels.length === 0
-    ) {
+    if (!canAddTask) {
       return;
+    }
+
+    let questionType;
+    if (selectedTaskMethod === "客观测试") {
+      questionType = 0;
+    } else if (selectedTaskMethod === "主观测试") {
+      questionType = 1;
+    } else if (selectedTaskMethod === "对抗测试") {
+      questionType = 2;
+    } else {
+      throw new Error("Invalid question type");
     }
 
     let taskId;
@@ -61,13 +68,12 @@ export default function NewTaskPage() {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
-        questionType: selectedDataset.questionType, // TODO: no need to store this in the database
+        questionType: questionType,
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });
 
       taskId = response.data.id;
-      console.log("DEBUG: taskId is", taskId);
     } catch (error) {
       console.log(error);
     }
@@ -88,11 +94,17 @@ export default function NewTaskPage() {
       <div className="flex items-center space-x-3">
         <h2 className="text-xl font-bold ">选择数据集</h2>
         <p>或</p>
-        {/* TODO: create new dataset */}
         <Link className="link-primary link" href="/upload_dataset_demo">
           上传数据集
         </Link>
       </div>
+
+      {/* if no dataset is uploaded */}
+      {datasets.length == 0 && (
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <p className="text-gray-500">无数据集</p>
+        </div>
+      )}
 
       {datasets.map((dataset) => (
         <div
