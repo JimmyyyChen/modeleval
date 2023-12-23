@@ -14,13 +14,8 @@ export default async function TasksPage() {
     where: {
       userId: userId,
     },
-    // TODO: this may cause code: 1038, message: "Out of sort memory, consider increasing server sort buffer size", state: "HY001
-    // orderBy: {
-    //   startTime: "desc",
-    // },
   });
 
-  // TODO: reorder tasks by startTime desc, this is a temporary approach to fix the problem mentioned above
   tasks.sort((a, b) => {
     return b.startTime - a.startTime;
   });

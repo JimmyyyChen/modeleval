@@ -1,5 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { EyeIcon, ScaleIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, CheckIcon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
 
@@ -60,21 +60,6 @@ export default function ResultTable({
           </p>
         </Link>
       );
-    } else if (questionType === 2) {
-      resultStatus = "等待对抗评测";
-      evalButton = (
-        <Link
-          className="group btn btn-accent w-max rounded-3xl transition-all duration-300"
-          href={evalRef}
-        >
-          <ScaleIcon className="h-5 w-5" />
-          <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
-            进行对抗评测
-          </p>
-        </Link>
-      );
-    } else {
-      throw new Error("Invalid question type");
     }
   } else {
     resultStatus = `已完成评测, 获得 ${(score * 100).toFixed(2)} 分`;
@@ -101,25 +86,7 @@ export default function ResultTable({
           </p>
         </Link>
       );
-    } 
-    
-    // TODO
-    // else if (questionType === 2) {
-    //   evalButton = (
-    //     <Link
-    //       href={evalRef}
-    //       className="group btn btn-success w-max rounded-3xl text-white transition-all duration-300 hover:btn-accent"
-    //     >
-    //       <CheckIcon className="h-5 w-5 group-hover:w-0" />
-    //       <EyeIcon className="h-5 w-0 group-hover:w-5" />
-    //       <p className="w-0 break-keep opacity-0 transition-all duration-300 group-hover:w-24 group-hover:opacity-100">
-    //         修改评测
-    //       </p>
-    //       <p className="break-keep  group-hover:w-0 group-hover:opacity-0">
-    //         {(score * 100).toFixed(2)}
-    //       </p>
-    //     </Link>
-    //   );
+    }
   }
 
   let rows;

@@ -20,8 +20,10 @@ export default function TaskCard({ task }) {
   const startTime = new Date(task.startTime);
   const [endTime, setEndTime] = useState(new Date(task.endTime));
   const [progress, setProgress] = useState(task.progress);
-  // TODO
-  const isEvaluated = false;
+  const [isEvaluated, setIsEvaluated] = useState(
+    Object.keys(task.scoresjson).length === task.modelIds.length,
+  );
+  const router = useRouter();
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
   useEffect(() => {
@@ -34,6 +36,9 @@ export default function TaskCard({ task }) {
         const response = await axios.get(`/api/tasks/info/taskId/${id}`);
         const data = response.data[0];
         setProgress(data.progress);
+        setIsEvaluated(
+          Object.keys(data.scoresjson).length === data.modelIds.length,
+        );
         if (data.progress === 1) {
           setEndTime(new Date(data.endTime));
         }
@@ -54,8 +59,6 @@ export default function TaskCard({ task }) {
 
     router.refresh();
   };
-
-  const router = useRouter();
 
   const formatedStartTime = startTime.toLocaleString();
 
@@ -105,15 +108,13 @@ function StatusIndicator({ questionType, progress, isEvaluated }) {
     </div>
   );
 
-  if (questionType === 0) {
-    if (progress === 1) {
-      return (
-        <Layout>
-          <CheckCircleIcon className="h-10 w-10 text-green-500" />
-          <p className="h-5 text-sm text-green-500">测试完成</p>
-        </Layout>
-      );
-    }
+  if (progress === 1 && isEvaluated) {
+    return (
+      <Layout>
+        <CheckCircleIcon className="h-10 w-10 text-green-500" />
+        <p className="h-5 text-sm text-green-500">测试完成</p>
+      </Layout>
+    );
   } else if (progress == 1 && !isEvaluated) {
     if (questionType === 1) {
       return (
