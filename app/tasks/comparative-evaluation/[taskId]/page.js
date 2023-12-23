@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 
 import { ChevronLeftIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// TODO: dropabble cause warning, but i'm tired of fixing it .....
 
 // reorder the list
 const reorder = (list, startIndex, endIndex) => {
