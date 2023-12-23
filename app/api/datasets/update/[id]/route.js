@@ -37,6 +37,17 @@ export async function POST(request, { params }) {
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
         if (body["datasetName"]) {
+            const dataset2 = await prisma.Dataset.findFirst({
+                where: {
+                    datasetName: body["datasetName"],
+                },
+            })
+            if (dataset2) {
+                return new NextResponse(JSON.stringify({ success: false, message: "name already exists" }), {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
             if (body["datasetName"].length < 20) {
                 dataset["datasetName"] = body["datasetName"];
             }
