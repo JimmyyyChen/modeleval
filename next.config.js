@@ -15,5 +15,5 @@ const nextConfig = {
 
 module.exports = {
   nextConfig,
-  output: 'standlone',
+  output: 'standalone',
 }
