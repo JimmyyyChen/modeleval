@@ -95,7 +95,7 @@ export default function TaskDisplayPage({ params }) {
             answers={answerjson[modelId].answers}
           />
         ))
-      ) : questionType === 2 ? (
+      ) : areAnswersGenerated ? ( // 对抗性评测且回答生成
         <div className="flex flex-col space-y-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {scoresjson ? (
@@ -112,7 +112,9 @@ export default function TaskDisplayPage({ params }) {
                     }
                   </h3>
 
-                  <p className="font-bold">{(scoresjson[modelId] * 100).toFixed(2)} 分</p>
+                  <p className="font-bold">
+                    {(scoresjson[modelId] * 100).toFixed(2)} 分
+                  </p>
                 </div>
               ))
             ) : (
@@ -128,6 +130,7 @@ export default function TaskDisplayPage({ params }) {
           </Link>
         </div>
       ) : (
+        // 回答未生成
         <span className="text-gray-500">请等待回答生成</span>
       )}
 
