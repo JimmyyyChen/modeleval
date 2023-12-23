@@ -1,6 +1,82 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
+
+export async function DELETE(request, { params }) {
+    let { userId } = auth()
+    try {
+        let dataset = await prisma.Dataset.findUnique({
+            where: {
+                id: parseInt(params.id)
+            },
+            include: {
+                label_list: true,
+                ChoiceQuestions: true,
+                ShortAnswerQuestions: true,
+            }
+        });
+        if (!dataset) {
+            return new NextResponse(JSON.stringify({ success: false, message: "dataset not found" }), {
+                status: 404,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+        // if (dataset.userId != userId) {
+        //     return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
+        //         status: 403,
+        //         headers: { "Content-Type": "application/json" },
+        //     });
+        // }
+        if (dataset.questionType == 0) {
+            let question = await prisma.ChoiceQuestion.findUnique({
+                where: {
+                    id: parseInt(params.id2)
+                }
+            })
+            if (!question) {
+                return new NextResponse(JSON.stringify({ success: false, message: "question not found" }), {
+                    status: 404,
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
+            await prisma.Choice.deleteMany({
+                where: {
+                    choiceQuestionId: parseInt(params.id2)
+                }
+            })
+            await prisma.ChoiceQuestion.delete({
+                where: {
+                    id: parseInt(params.id2)
+                }
+            })
+        }
+        else {
+            let question = await prisma.ShortAnswerQuestion.findUnique({
+                where: {
+                    id: parseInt(params.id2)
+                }
+            })
+            if (!question) {
+                return new NextResponse(JSON.stringify({ success: false, message: "question not found" }), {
+                    status: 404,
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
+            await prisma.ShortAnswerQuestion.delete({
+                where: {
+                    id: parseInt(params.id2)
+                }
+            })
+        }
+        return new NextResponse(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+        });
+    } catch (error) {
+        console.log(error);
+        return new NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
 export async function POST(request, { params }) {
     let { userId } = auth()
     try {
@@ -30,7 +106,7 @@ export async function POST(request, { params }) {
         let body = JSON.parse(requestBody);
 
 
-        if (dataset["questionType"]) {         //主观题
+        if (dataset["questionType"] == 1) {         //主观题
             let question = await prisma.ShortAnswerQuestion.findUnique({
                 where: {
                     id: parseInt(params.id2)
@@ -63,24 +139,16 @@ export async function POST(request, { params }) {
                 if (body["question"]) {                         //如果有问题,更新;如果没有,删除
                     question["question"] = body["question"];
                 }
-                if (!body["question"] && !body["sampleAnswer"]) {
-                    await prisma.ShortAnswerQuestion.delete({
-                        where: {
-                            id: parseInt(params.id2)
-                        }
-                    })
-                }
-                else {
-                    await prisma.ShortAnswerQuestion.update({
-                        where: {
-                            id: parseInt(params.id2)
-                        },
-                        data: {
-                            question: question["question"],
-                            sampleAnswer: question["sampleAnswer"],
-                        }
-                    })
-                }
+                await prisma.ShortAnswerQuestion.update({
+                    where: {
+                        id: parseInt(params.id2)
+                    },
+                    data: {
+                        question: question["question"],
+                        sampleAnswer: question["sampleAnswer"],
+                    }
+                })
+
             }
         }
         else {
@@ -133,30 +201,15 @@ export async function POST(request, { params }) {
                         })),
                     })
                 }
-                if (!body["question"] && !body["correctAnswer"] && !body["choices"]) {
-                    await prisma.Choice.deleteMany({
-                        where: {
-                            choiceQuestionId: parseInt(params.id2)
-                        }
-                    })
-                    await prisma.ChoiceQuestion.delete({
-                        where: {
-                            id: parseInt(params.id2)
-                        }
-                    })
-                }
-                else {
-                    await prisma.ChoiceQuestion.update({
-                        where: {
-                            id: parseInt(params.id2)
-                        },
-                        data: {
-                            question: question["question"],
-                            correctAnswer: question["correctAnswer"],
-                        }
-                    })
-                }
-
+                await prisma.ChoiceQuestion.update({
+                    where: {
+                        id: parseInt(params.id2)
+                    },
+                    data: {
+                        question: question["question"],
+                        correctAnswer: question["correctAnswer"],
+                    }
+                })
             }
         }
         await prisma.dataset.update({

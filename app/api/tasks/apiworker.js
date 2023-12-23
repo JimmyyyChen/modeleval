@@ -16,27 +16,27 @@ const prisma = new PrismaClient();
 let pauseTask = {"taskId": "", "state": "run"};
 
 // async function connectRabbitMQ() {
-    //const connection = await amqp.connect(amqpUrl);
-    //const channel = await connection.createChannel();
+//     const connection = await amqp.connect(amqpUrl);
+//     const channel = await connection.createChannel();
     
-    //await channel.assertQueue(queue, { durable: false });
-    //console.log(" [*] Waiting for messages in %s.", queue);
+//     await channel.assertQueue(queue, { durable: false });
+//     console.log(" [*] Waiting for messages in %s.", queue);
     
-    //channel.consume(queue, function(msg) {
-        //console.log(" [x] Received %s", msg.content.toString());
-        //pauseTask= JSON.parse(msg.content.toString());
-        //eventEmitter.emit('pauseTaskUpdated', pauseTask);
-    //}, { noAck: true });
-//}
+//     channel.consume(queue, function(msg) {
+//         console.log(" [x] Received %s", msg.content.toString());
+//         pauseTask= JSON.parse(msg.content.toString());
+//         eventEmitter.emit('pauseTaskUpdated', pauseTask);
+//     }, { noAck: true });
+// }
 // 启动RabbitMQ连接
-//connectRabbitMQ();
+// connectRabbitMQ();
 // 事件监听
-//eventEmitter.on('pauseTaskUpdated', (updatedPauseTask) => {
-    // 可以在这里处理更新后的pauseTask
-    // 例如，调用checkPauseTask或其他相关函数
-    //console.log("pauseTask has been updated: ", updatedPauseTask);
-    // 您可以在这里加入调用checkPauseTask的逻辑
-//});
+// eventEmitter.on('pauseTaskUpdated', (updatedPauseTask) => {
+//     // 可以在这里处理更新后的pauseTask
+//     // 例如，调用checkPauseTask或其他相关函数
+//     console.log("pauseTask has been updated: ", updatedPauseTask);
+//     // 您可以在这里加入调用checkPauseTask的逻辑
+// });
 
 parentPort.on('message', async (data) => {
     try {

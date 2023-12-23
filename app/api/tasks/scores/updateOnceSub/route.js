@@ -17,9 +17,9 @@ export async function POST(request) {
                 },
             }
         });
-        const _totalCount = task.dataset.ShortAnswerQuestions.length;
-        const _progress = json.index;
         let score = {}; // 返回值
+        const _totalCount = task.dataset.ShortAnswerQuestions.length;
+        let _progress;
         const modelIds = Object.keys(json.judge)
         for (let i=0;i<modelIds.length;i++){ // 遍历该主观任务的所有被评测模型
             const modelId = modelIds[i];
@@ -29,15 +29,31 @@ export async function POST(request) {
                     id: scoreId,
                 }
             });
-            // 如果模型在该条数据上的回答是正确的，则正确题目数+1
-            if (json.judge[modelId] == true) {
-                scoreItem.correctCount += 1;
-                task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
+            _progress = scoreItem.progress;
+            // 如果该模型的该条目还没有被判定过
+            if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == undefined) {
+                if (json.judge[modelId] == true) {
+                    scoreItem.correctCount += 1;
+                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
+                }
+                else{
+                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
+                }
+                scoreItem.progress += 1;
             }
-            else{
-                task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
+            // 若已经判定过，需要修改
+            else if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == true) {
+                if (json.judge[modelId] == false) {
+                    scoreItem.correctCount -= 1;
+                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
+                }
             }
-            scoreItem.progress += 1;
+            else if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == false) {
+                if (json.judge[modelId] == true) {
+                    scoreItem.correctCount += 1;
+                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
+                }
+            }
             if (scoreItem.progress == scoreItem.totalCount) {  // 如果已经全部判定完毕 
                 scoreItem.score = scoreItem.correctCount / scoreItem.totalCount;
                 score[modelId] = scoreItem.score;
@@ -53,7 +69,7 @@ export async function POST(request) {
                     }
                 });
             }
-            // 更新回score数据库
+            // 更新常规数据回score数据库
             await prisma.score.update({
                 where:{
                     id:scoreItem.id,
@@ -70,16 +86,6 @@ export async function POST(request) {
                 },
                 data:{
                     answerjson: task.answerjson,
-                }
-            });
-        }
-        // 如果全部测评完，再更新task数据库
-        if (_progress + 1 == _totalCount) {
-            await prisma.task.update({
-                where: {
-                    id: task.id
-                },
-                data:{
                     scoresjson: task.scoresjson,
                 }
             });
@@ -88,7 +94,7 @@ export async function POST(request) {
         const returnValue = {
             "totalCount": _totalCount,
             "progress": _progress,
-            "score": score,
+            "score": task.scoresjson,
         }
         return new NextResponse(JSON.stringify(returnValue), {
             status: 200,
