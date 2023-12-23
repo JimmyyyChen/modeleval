@@ -77,7 +77,13 @@ export default function ResultTable({
       throw new Error("Invalid question type");
     }
   } else {
-    resultStatus = `已完成评测, 获得 ${score} 分`;
+    resultStatus = `已完成评测, 获得 ${(score * 100).toFixed(2)} 分`;
+    // evalButton is show its score
+    evalButton = (
+      <div className="btn btn-success w-max rounded-3xl text-white ">
+        <p className="break-keep ">{(score * 100).toFixed(2)}</p>
+      </div>
+    );
   }
 
   let rows;

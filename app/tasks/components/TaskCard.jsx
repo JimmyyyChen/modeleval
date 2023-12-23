@@ -100,7 +100,7 @@ export default function TaskCard({ task }) {
 
 function StatusIndicator({ questionType, progress, isEvaluated }) {
   const Layout = ({ children }) => (
-    <div className="flex h-16 w-16 flex-col items-center text-center">
+    <div className="flex h-16 w-18 flex-col items-center text-center">
       {children}
     </div>
   );
