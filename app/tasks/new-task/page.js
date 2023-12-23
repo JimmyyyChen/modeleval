@@ -21,7 +21,14 @@ export default function NewTaskPage() {
   const [selectedModels, setSelectedModels] = useState([]);
 
   const canAddTask =
-    selectedDataset && selectedTaskMethod && selectedModels.length > 0;
+    selectedModels.length > 0 &&
+    ((selectedTaskMethod === "主观测试" &&
+      selectedDataset.questionType === 1) ||
+      (selectedTaskMethod === "客观测试" &&
+        selectedDataset.questionType === 0) ||
+      (selectedTaskMethod === "对抗测试" &&
+        selectedModels.length >= 2 &&
+        selectedDataset.questionType === 1));
 
   useEffect(() => {
     const fetchDatasets = async () => {
@@ -214,17 +221,15 @@ export default function NewTaskPage() {
         <Link href="/tasks">
           <button className="btn btn-secondary w-max">取消</button>
         </Link>
-        {canAddTask ? (
-          <Link href="/tasks">
-            <button className="btn btn-primary w-max" onClick={addTask}>
-              创建新测试
-            </button>
-          </Link>
-        ) : (
-          <button className="btn btn-primary w-max" disabled>
+        <Link href="/tasks">
+          <button
+            className="btn btn-primary w-max"
+            disabled={!canAddTask}
+            onClick={addTask}
+          >
             创建新测试
           </button>
-        )}
+        </Link>
       </div>
     </div>
   );
