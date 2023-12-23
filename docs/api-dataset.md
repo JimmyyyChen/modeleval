@@ -29,6 +29,9 @@
   - `total_number`(Int): 上传的数据集的总条目数
   - `wrong_number`(Int): 上传的数据集中格式错误的条目数
   - `wrong_indexes`([Int]): 上传的数据集中格式错误的条目的索引(从1开始)
+- 条目全部错误 (`400`): 返回以下字段：
+  - `success` (Boolean): false
+  - `error`(String): Invalid dataset
 - 失败 (`500`): 返回错误信息。
 
 ### 获取数据集信息 `GET /api/datasets/info/[id]`
@@ -160,7 +163,7 @@
 
 **Request Body**
 
-  - `question` (string): 题目内容,如果存在请一定提供此项,用户未更改可以不提供
+  - `question` (string): 题目内容,用户未更改可以不提供
   - `correctAnswer` (string): 客观题答案内容,用户未更改可以不提供
   - `choices` ([string]): 客观题选项内容,用户未更改可以不提供,若更改需要将改动后的所有选项一并提供
   - `sampleAnswer` (string): 主观题样例答案,用户未更改可以不提供
@@ -168,4 +171,20 @@
 **Response:**
 - 成功 (`200`): 表示改动成功：
 - 失败 (`404`): 返回条目不存在,创建条目信息不完全等错误信息。
+- 失败 (`403`): 返回权限不允许等错误信息。
+
+### 改动条目 `DELETE api/datasets/update/[id]/questions/[id2]`
+
+**Path Info:**
+
+- `id` (string): 数据集的id,获取方式见上
+- `id2` (string): 数据集中的题目的id,获取方式见上.
+
+**Request Body**
+
+- 无
+  
+**Response:**
+- 成功 (`200`): 表示删除成功：
+- 失败 (`404`): 返回条目不存在,等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。

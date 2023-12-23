@@ -36,6 +36,7 @@ model Model {
 model Dataset {
   id                   Int                   @id @default(autoincrement())
   datasetName          String
+  repeatNames          Int                   @default(0)
   description          String                @default("this is a dataset for task")
   sizeInMB             Float
   lastUpdate           DateTime
