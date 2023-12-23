@@ -96,13 +96,37 @@ export default function TaskDisplayPage({ params }) {
           />
         ))
       ) : questionType === 2 ? (
-        <Link
-          className="btn btn-accent w-max self-center rounded-3xl "
-          href={`/tasks/comparative-evaluation/${taskId}`}
-        >
-          <ScaleIcon className="h-5 w-5" />
-          进行对抗评测
-        </Link>
+        <div className="flex flex-col space-y-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {scoresjson ? (
+              Object.keys(scoresjson).map((modelId) => (
+                <div
+                  key={modelId}
+                  className="flex flex-col space-y-1 overflow-hidden rounded-2xl border bg-white p-5"
+                >
+                  <h3 className="font-mono text-xl font-bold text-primary">
+                    {
+                      models.find(
+                        (model) => model.modelid === parseInt(modelId),
+                      ).modelName
+                    }
+                  </h3>
+
+                  <p className="font-bold">{(scoresjson[modelId] * 100).toFixed(2)} 分</p>
+                </div>
+              ))
+            ) : (
+              <span className="loading loading-dots loading-xs self-center"></span>
+            )}
+          </div>
+          <Link
+            className="btn btn-accent w-max rounded-3xl "
+            href={`/tasks/comparative-evaluation/${taskId}`}
+          >
+            <ScaleIcon className="h-5 w-5" />
+            进行对抗评测
+          </Link>
+        </div>
       ) : (
         <span className="text-gray-500">请等待回答生成</span>
       )}
