@@ -32,7 +32,7 @@ export default function TaskDisplayPage({ params }) {
   }, [areAnswersGenerated, taskId]);
 
   // return loading if task is not loaded
-  if (!task.id) {
+  if (task === undefined) {
     return (
       // make it in the middle of the page
       <div className="flex h-screen items-center justify-center">
