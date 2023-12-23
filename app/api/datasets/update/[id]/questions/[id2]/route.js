@@ -21,12 +21,12 @@ export async function DELETE(request, { params }) {
                 headers: { "Content-Type": "application/json" },
             });
         }
-        // if (dataset.userId != userId) {
-        //     return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
-        //         status: 403,
-        //         headers: { "Content-Type": "application/json" },
-        //     });
-        // }
+        if (dataset.userId != userId) {
+            return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
+                status: 403,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         if (dataset.questionType == 0) {
             let question = await prisma.ChoiceQuestion.findUnique({
                 where: {
