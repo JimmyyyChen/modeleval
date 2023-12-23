@@ -3,13 +3,14 @@ import {
   FolderIcon,
   EllipsisHorizontalIcon,
   PlusIcon,
-  MinusIcon,
 } from "@heroicons/react/24/solid";
 
 export default function UserDatasets({ isvisitor, datasets, userInfo }) {
   if (userInfo) {
     var { username, userId } = userInfo;
   }
+
+  console.log(datasets);
 
   return (
     <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-primary shadow-lg">
@@ -25,10 +26,6 @@ export default function UserDatasets({ isvisitor, datasets, userInfo }) {
               <button className="group btn btn-outline btn-primary">
                 <PlusIcon className="h-6 w-6 text-primary group-hover:text-white" />
                 上传
-              </button>
-              <button className="group btn btn-outline btn-primary">
-                <MinusIcon className="h-6 w-6 text-primary group-hover:text-white" />
-                删除
               </button>
             </>
           )}
@@ -52,7 +49,7 @@ export default function UserDatasets({ isvisitor, datasets, userInfo }) {
                 <div className="flex w-full flex-col items-center justify-between">
                   <FolderIcon className="h-8 w-8 text-primary" />
                   <div className="w-full truncate text-center text-lg font-bold">
-                    {item.name}
+                    {item.datasetName}
                   </div>
                 </div>
               </Link>

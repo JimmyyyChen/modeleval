@@ -67,12 +67,12 @@ export default function Home({ params: { datasetId } }) {
         <Labels labelList={labelList} />
       </div>
 
-      <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 sm:flex-row sm:space-y-0 ">
-        <div className="h-full w-full p-4 sm:w-2/3">
+      <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 lg:flex-row lg:space-y-0 ">
+        <div className="h-full w-full p-4 lg:w-2/3">
           <ItemsDisplay items={datasetItems} />
         </div>
 
-        <div className="h-full w-full p-4 sm:w-1/3">
+        <div className="h-full w-full p-4 lg:w-1/3">
           <UserInfo isvisitor={true} userInfo={userInfo} />
         </div>
       </div>
