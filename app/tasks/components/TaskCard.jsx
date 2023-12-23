@@ -115,14 +115,14 @@ function StatusIndicator({ questionType, progress, isEvaluated }) {
       );
     }
   } else if (progress == 1 && !isEvaluated) {
-    if (questionType === 1 && !isEvaluated) {
+    if (questionType === 1) {
       return (
         <Layout>
           <EyeIcon className="h-10 w-10 text-accent" />
           <p className="h-5 text-sm text-accent">等待主观评测</p>
         </Layout>
       );
-    } else if (questionType === 2 && !isEvaluated) {
+    } else if (questionType === 2) {
       return (
         <Layout>
           <ScaleIcon className="h-10 w-10 text-accent" />

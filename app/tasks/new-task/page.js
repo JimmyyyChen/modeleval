@@ -50,6 +50,17 @@ export default function NewTaskPage() {
       return;
     }
 
+    let questionType;
+    if (selectedTaskMethod === "客观测试") {
+      questionType = 0;
+    } else if (selectedTaskMethod === "主观测试") {
+      questionType = 1;
+    } else if (selectedTaskMethod === "对抗测试") {
+      questionType = 2;
+    } else {
+      throw new Error("Invalid question type");
+    }
+
     let taskId;
 
     try {
@@ -57,7 +68,7 @@ export default function NewTaskPage() {
         userId: userId,
         taskName: `${selectedDataset.datasetName} ${selectedTaskMethod}`,
         startTime: new Date(), // current time
-        questionType: selectedDataset.questionType, // 0: 客观测试, 1: 主观测试, 2: 对抗测试
+        questionType: questionType,
         modelIds: selectedModels.map((model) => model.modelid),
         datasetId: selectedDataset.id,
       });

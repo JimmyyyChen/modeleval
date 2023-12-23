@@ -39,7 +39,7 @@ export default function TaskDisplayPage({ params }) {
         <span className="loading loading-dots loading-md"></span>
       </div>
     );
-  } 
+  }
 
   const taskName = task.taskName;
   const dataset = task.dataset;
@@ -55,7 +55,6 @@ export default function TaskDisplayPage({ params }) {
     // unvisble at first, then fade in after isVisble is true
     // <div className="flex w-full flex-col space-y-5">
     <div className="flex w-full flex-col space-y-5">
-
       <h1 className=" font-mono text-4xl font-bold text-primary">{taskName}</h1>
 
       {/* Progress */}
@@ -100,7 +99,7 @@ export default function TaskDisplayPage({ params }) {
       )} */}
 
       <h2 className="text-2xl font-bold">评测</h2>
-      {areAnswersGenerated ? (
+      {areAnswersGenerated && questionType !== 2 ? (
         Object.keys(answerjson).map((modelId) => (
           <ResultTable
             key={modelId}
@@ -117,6 +116,8 @@ export default function TaskDisplayPage({ params }) {
             answers={answerjson[modelId].answers}
           />
         ))
+      ) : questionType === 2 ? (
+        <p>TODO: comparative test</p>
       ) : (
         <span className="loading loading-dots loading-xs self-center"></span>
       )}
