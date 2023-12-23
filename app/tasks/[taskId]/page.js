@@ -36,14 +36,14 @@ export default function TaskDisplayPage({ params }) {
     return (
       // make it in the middle of the page
       <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-spinner loading-md"></span>
+        <span className="loading loading-dots loading-md"></span>
       </div>
     );
-  }
+  } 
 
   const taskName = task.taskName;
   const dataset = task.dataset;
-  const questionType = dataset.questionType; // 0: 客观测试, 1: 主观测试, 2: 对抗测试
+  const questionType = task.questionType; // 0: 客观测试, 1: 主观测试, 2: 对抗测试
   const models = task.models;
   const progress = task.progress; // from 0 to 1
   const startTime = new Date(task.startTime);
@@ -52,7 +52,10 @@ export default function TaskDisplayPage({ params }) {
   const scoresjson = task.scoresjson;
 
   return (
+    // unvisble at first, then fade in after isVisble is true
+    // <div className="flex w-full flex-col space-y-5">
     <div className="flex w-full flex-col space-y-5">
+
       <h1 className=" font-mono text-4xl font-bold text-primary">{taskName}</h1>
 
       {/* Progress */}
@@ -115,15 +118,22 @@ export default function TaskDisplayPage({ params }) {
           />
         ))
       ) : (
-        <div className="flex justify-center text-gray-500">请等待测试完成</div>
+        <span className="loading loading-dots loading-xs self-center"></span>
       )}
 
       <h2 className="text-2xl font-bold">数据集</h2>
-      <TaskDatasetInfo dataset={dataset} />
+      {dataset ? (
+        <TaskDatasetInfo dataset={dataset} />
+      ) : (
+        <span className="loading loading-dots loading-xs self-center"></span>
+      )}
+
       <h2 className="text-2xl font-bold">模型</h2>
-      {models.map((model) => (
-        <TaskModelInfo model={model} key={model.id} />
-      ))}
+      {models ? (
+        models.map((model) => <TaskModelInfo model={model} key={model.id} />)
+      ) : (
+        <span className="loading loading-dots loading-xs self-center"></span>
+      )}
     </div>
   );
 }
