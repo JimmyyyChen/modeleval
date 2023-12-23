@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
+import { ScaleIcon } from "@heroicons/react/24/solid";
 import TaskDatasetInfo from "./components/TaskDatasetInfo";
 import TaskModelInfo from "./components/TaskModelInfo";
 import ResultTable from "./components/ResultTable";
@@ -75,29 +77,6 @@ export default function TaskDisplayPage({ params }) {
         </p>
       </div>
 
-      {/* TODO */}
-      {/* {questionType == 1 &&
-        progress == 1 && ( // TODO: ShortAnswerQuestion, but it's actually subjective testing. Weird? I know...
-          <Link
-            href={`${taskId}/human-evaluation`}
-            className="btn btn-accent w-max rounded-3xl"
-          >
-            <EyeIcon className="mr-2 h-5 w-5" />
-            进行主观评测
-          </Link>
-        )} */}
-
-      {/* TODO: 对抗测试 */}
-      {/* {type == 2 && (
-        <Link
-          href={`${testingId}/comparative-evaluation`}
-          className="btn btn-accent w-max rounded-3xl"
-        >
-          <ScaleIcon className="mr-2 h-5 w-5" />
-          继续对抗测试
-        </Link>
-      )} */}
-
       <h2 className="text-2xl font-bold">评测</h2>
       {areAnswersGenerated && questionType !== 2 ? (
         Object.keys(answerjson).map((modelId) => (
@@ -117,10 +96,16 @@ export default function TaskDisplayPage({ params }) {
           />
         ))
       ) : questionType === 2 ? (
-        <p>TODO: comparative test</p>
+        <Link
+          className="btn btn-accent w-max self-center rounded-3xl "
+          href={`/tasks/comparative-evaluation/${taskId}`}
+        >
+          <ScaleIcon className="h-5 w-5" />
+          进行对抗评测
+        </Link>
       ) : (
-        <span className="text-gray-500 self-center">请等待回答生成</span>
-        )}
+        <span className="text-gray-500">请等待回答生成</span>
+      )}
 
       <h2 className="text-2xl font-bold">数据集</h2>
       {dataset ? (
