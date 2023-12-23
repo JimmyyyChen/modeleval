@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Link from "next/link";
 
@@ -15,8 +15,7 @@ export default function HumanEvalDisplay({ params }) {
   const modelId = params.taskIdAndModelId.split("-")[1];
   const [task, setTask] = useState({});
   const taskname = task.taskName;
-  const answers = task.answerjson ? task.answerjson[modelId].answers : [];
-  // answer that "isCorrect" exist
+  const answers = useMemo(() => task.answerjson ? task.answerjson[modelId].answers : [], [task.answerjson, modelId]);
   const answeredCount = answers.filter(
     (answer) => answer.isCorrect === true || answer.isCorrect === false,
   ).length;
@@ -32,13 +31,13 @@ export default function HumanEvalDisplay({ params }) {
       }
     };
     fetchTask();
-  }, [taskId]);
+  }, [taskId, answers]);
 
   const stickyTitle = (
     <div className="group sticky top-5 z-50 flex flex-col self-start rounded-3xl bg-secondary p-4 shadow-lg transition-all duration-300 hover:scale-110 hover:space-y-3 hover:p-7 hover:shadow-2xl">
       <div className="flex items-center space-x-3 transition-all duration-300">
         <Link href={`/tasks/${taskId}`}>
-        <ChevronLeftIcon className="h-6 w-6 text-gray-500 transition-all duration-300" />
+          <ChevronLeftIcon className="h-6 w-6 text-gray-500 transition-all duration-300" />
         </Link>
         <h1 className="text-lg font-bold text-primary transition-all duration-300 ">
           {taskname}
@@ -46,11 +45,11 @@ export default function HumanEvalDisplay({ params }) {
       </div>
       <progress
         className="progress h-0 w-0 transition-all duration-300 group-hover:h-3 group-hover:w-full"
-        value="70"
-        max="100"
+        value={answeredCount}
+        max={answers.length}
       ></progress>
       <p className="h-0 text-sm text-gray-500 opacity-0  transition-all duration-300 group-hover:h-max group-hover:opacity-100">
-        已完成 {answeredCount} 题, 剩余 {answers.length} 题
+        已完成 {answeredCount} 题, 剩余 {answers.length - answeredCount} 题
       </p>
     </div>
   );
@@ -63,13 +62,46 @@ export default function HumanEvalDisplay({ params }) {
         const question = answer.question;
         const generatedAnswer = answer.generatedAnswer;
         const isCorrect = answer.isCorrect;
-        return QuestionCard(index + 1, question, generatedAnswer, isCorrect);
+
+        // Update user's judgment on subjective evaluation once `POST /api/tasks/scores/updateOnceSub`
+        // Request Body: { id: int, index: int, judge: { [modelId]: boolean } }
+        const handleCorrectClick = async () => {
+          await axios.post("/api/tasks/scores/updateOnceSub", {
+            id: taskId,
+            index: index,
+            judge: { [modelId]: true },
+          });
+        };
+
+        const handleWrongClick = async () => {
+          await axios.post("/api/tasks/scores/updateOnceSub", {
+            id: taskId,
+            index: index,
+            judge: { [modelId]: false },
+          });
+        };
+
+        return QuestionCard(
+          index + 1,
+          question,
+          generatedAnswer,
+          isCorrect,
+          handleCorrectClick,
+          handleWrongClick,
+        );
       })}
     </div>
   );
 }
 
-function QuestionCard(id, question, generatedAnswer, isCorrect) {
+function QuestionCard(
+  id,
+  question,
+  generatedAnswer,
+  isCorrect,
+  handleCorrectClick,
+  handleWrongClick,
+) {
   // this id is not the exact question id store in the database
   const correctButtonStyle =
     isCorrect === true
@@ -91,17 +123,16 @@ function QuestionCard(id, question, generatedAnswer, isCorrect) {
           {generatedAnswer}
         </div>
       </div>
-      <div className="flex flex-col items-center space-y-5 ">
-        <div className="flex justify-center space-x-10">
-          <button className={correctButtonStyle}>
-            <CheckCircleIcon className="h-5 w-5" />
-            正确
-          </button>
-          <button className={wrongButtonStyle}>
-            <XCircleIcon className="h-5 w-5" />
-            错误
-          </button>
-        </div>
+
+      <div className="flex justify-center space-x-10">
+        <button className={correctButtonStyle} onClick={handleCorrectClick}>
+          <CheckCircleIcon className="h-5 w-5" />
+          正确
+        </button>
+        <button className={wrongButtonStyle} onClick={handleWrongClick}>
+          <XCircleIcon className="h-5 w-5" />
+          错误
+        </button>
       </div>
     </div>
   );
