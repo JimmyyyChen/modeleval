@@ -221,14 +221,15 @@ export default function NewTaskPage() {
         <Link href="/tasks">
           <button className="btn btn-secondary w-max">取消</button>
         </Link>
-
-        <button
-          className="btn btn-primary w-max"
-          disabled={!canAddTask}
-          onClick={addTask}
-        >
-          创建新测试
-        </button>
+        <Link href="/tasks">
+          <button
+            className="btn btn-primary w-max"
+            disabled={!canAddTask}
+            onClick={addTask}
+          >
+            创建新测试
+          </button>
+        </Link>
       </div>
     </div>
   );
