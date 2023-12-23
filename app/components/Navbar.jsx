@@ -50,7 +50,7 @@ export default function Navbar() {
                       height={48}
                       src="/logo.png"
                       alt="ModalEval Logo"
-                      priority="true"
+                      priority
                     />
                   </Link>
                 </div>

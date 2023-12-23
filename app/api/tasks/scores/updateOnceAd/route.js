@@ -39,7 +39,7 @@ export async function POST(request) {
             }
             else {
                 const previousRank = task.answerjson[modelId]["answers"][json.index]["rank"];
-                const previousScorePerRound = json.rank.length - previousRank - 1;
+                const previousScorePerRound = json.rank.length - previousRank;
                 scoreItem.correctCount -= previousScorePerRound;
                 scoreItem.correctCount += scorePerRound;
                 task.answerjson[modelId]["answers"][json.index]["rank"] = rankInList + 1;

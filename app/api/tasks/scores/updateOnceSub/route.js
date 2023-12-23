@@ -4,9 +4,10 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
     try{
         const json = await request.json();
+        const questionId = parseInt(json.id);
         const task = await prisma.task.findUnique({
             where: {
-                id: json.id,
+                id: questionId,
             },
             include : {
                 dataset: {

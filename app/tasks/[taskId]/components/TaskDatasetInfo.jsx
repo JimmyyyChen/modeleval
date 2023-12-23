@@ -1,7 +1,13 @@
 import React from "react";
 import Link from "next/link";
 
-export default function TaskDatasetInfo({dataset}) {
+export default function TaskDatasetInfo({ dataset }) {
+  if (!dataset) {
+    return (
+      <div className="flex justify-center text-gray-500">请等待数据集加载</div>
+    );
+  }
+
   const datasetName = dataset.datasetName;
   const description = dataset.description;
   const questionType = dataset.questionType ? "问答题" : "选择题";
@@ -13,7 +19,10 @@ export default function TaskDatasetInfo({dataset}) {
       <h2 className="flex flex-wrap items-center space-x-3 ">
         <p className=" font-mono text-xl font-bold">{datasetName}</p>
         {/* TODO: link to corresponded dataset */}
-        <Link className="link-primary link text-sm" href={`/datasets/details/visitor/${datasetName}/`}>
+        <Link
+          className="link-primary link text-sm"
+          href={`/datasets/details/visitor/${datasetName}/`}
+        >
           查看更多
         </Link>
       </h2>
