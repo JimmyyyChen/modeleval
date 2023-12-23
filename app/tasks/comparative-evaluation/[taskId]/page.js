@@ -8,12 +8,99 @@ import {
   XCircleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/solid";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+// fake data generator
+const getItems = (count) =>
+  Array.from({ length: count }, (v, k) => k).map((k) => ({
+    id: `item-${k}`,
+    content: `item ${k}`,
+  }));
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+const grid = 8;
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: "none",
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+
+  // change background colour if dragging
+  background: isDragging ? "lightgreen" : "grey",
+
+  // styles we need to apply on draggables
+  ...draggableStyle,
+});
+
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? "lightblue" : "lightgrey",
+  padding: grid,
+  width: 250,
+});
 
 export default function HumanEvalDisplay({ params }) {
-  const taskId = params.taskId
+  const taskId = params.taskId;
   const [task, setTask] = useState({});
   const taskname = task.taskName;
 
+  const [items, setItems] = useState(getItems(10)); // Initialize items state
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const newItems = reorder(
+      items, // use items directly
+      result.source.index,
+      result.destination.index,
+    );
+
+    setItems(newItems); // use setItems to update the state
+  };
+
+  const draggableList = (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+          >
+            {items.map((item, index) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={getItemStyle(
+                      snapshot.isDragging,
+                      provided.draggableProps.style,
+                    )}
+                  >
+                    {item.content}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -38,7 +125,6 @@ export default function HumanEvalDisplay({ params }) {
           {taskname}
         </h1>
       </div>
-      {/* TODO */}
       <progress
         className="progress h-0 w-0 transition-all duration-300 group-hover:h-3 group-hover:w-full"
         value={100}
@@ -53,83 +139,9 @@ export default function HumanEvalDisplay({ params }) {
   return (
     <div className="flex w-full flex-col space-y-3">
       {stickyTitle}
-{/* 
-      {answers.map((answer, index) => {
-        const question = answer.question;
-        const generatedAnswer = answer.generatedAnswer;
-        const isCorrect = answer.isCorrect;
 
-        // Update user's judgment on subjective evaluation once `POST /api/tasks/scores/updateOnceSub`
-        // Request Body: { id: int, index: int, judge: { [modelId]: boolean } }
-        const handleCorrectClick = async () => {
-          await axios.post("/api/tasks/scores/updateOnceSub", {
-            id: taskId,
-            index: index,
-            judge: { [modelId]: true },
-          });
-        };
-
-        const handleWrongClick = async () => {
-          await axios.post("/api/tasks/scores/updateOnceSub", {
-            id: taskId,
-            index: index,
-            judge: { [modelId]: false },
-          });
-        };
-
-        return QuestionCard(
-          index + 1,
-          question,
-          generatedAnswer,
-          isCorrect,
-          handleCorrectClick,
-          handleWrongClick,
-        );
-      })} */}
-    </div>
-  );
-}
-
-function QuestionCard(
-  id,
-  question,
-  generatedAnswer,
-  isCorrect,
-  handleCorrectClick,
-  handleWrongClick,
-) {
-  // this id is not the exact question id store in the database
-  const correctButtonStyle =
-    isCorrect === true
-      ? "btn btn-success text-white"
-      : "btn btn-success bg-white border-success text-success";
-  const wrongButtonStyle =
-    isCorrect === false
-      ? "btn btn-error text-white"
-      : "btn btn-error bg-white border-error text-error";
-
-  return (
-    <div className="space-y-3 rounded-3xl border bg-base-100 p-6">
-      <p className=" text-xl font-bold ">问题 {id}</p>
-      <div className="chat chat-end">
-        <div className="chat-bubble chat-bubble-primary">{question}</div>
-      </div>
-      <div className="chat chat-start">
-        <div className="chat-bubble chat-bubble-secondary">
-          {generatedAnswer}
-        </div>
-      </div>
-
-      <div className="flex justify-center space-x-10">
-        <button className={correctButtonStyle} onClick={handleCorrectClick}>
-          <CheckCircleIcon className="h-5 w-5" />
-          正确
-        </button>
-        <button className={wrongButtonStyle} onClick={handleWrongClick}>
-          <XCircleIcon className="h-5 w-5" />
-          错误
-        </button>
-      </div>
+      {/* TODO: add the dragable list here */}
+      {draggableList}
     </div>
   );
 }
