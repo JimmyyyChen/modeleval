@@ -15,7 +15,7 @@ export default function HomePage() {
           alt="logo"
           width={100}
           height={100}
-          priority={true}
+          priority
         />
         <h1 className="font-['Monaco'] text-4xl font-bold tracking-tight text-primary  sm:text-6xl">
           ModelEval
