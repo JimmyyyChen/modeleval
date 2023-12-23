@@ -3,19 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-import {
-  ChevronLeftIcon,
-  XCircleIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-// fake data generator
-const getItems = (count) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -26,33 +15,34 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  padding: grid,
-  width: 250,
-});
-
 export default function HumanEvalDisplay({ params }) {
   const taskId = params.taskId;
   const [task, setTask] = useState({});
   const taskname = task.taskName;
 
-  const [items, setItems] = useState(getItems(10)); // Initialize items state
+  const [items, setItems] = useState([
+    {
+      id: "item-0",
+      content:
+        "item 0 item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0item 0",
+    },
+    {
+      id: "item-1",
+      content: "item 1",
+    },
+    {
+      id: "item-2",
+      content: "item 2",
+    },
+    {
+      id: "item-3",
+      content: "item 3",
+    },
+    {
+      id: "item-4",
+      content: "item 4",
+    },
+  ]); // Initialize items state
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -67,6 +57,7 @@ export default function HumanEvalDisplay({ params }) {
     );
 
     setItems(newItems); // use setItems to update the state
+    // TODO: update the database
   };
 
   const draggableList = (
@@ -76,8 +67,16 @@ export default function HumanEvalDisplay({ params }) {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
+            // style={getListStyle(snapshot.isDraggingOver)}
+            className="space-y-3 rounded-3xl border bg-base-100 p-6"
           >
+            <p className=" text-xl font-bold ">问题 TODO</p>
+            <div className="chat chat-end">
+              <div className="chat-bubble chat-bubble-primary">
+                TODO: this is a question?
+              </div>
+            </div>
+
             {items.map((item, index) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(provided, snapshot) => (
@@ -85,17 +84,22 @@ export default function HumanEvalDisplay({ params }) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style,
-                    )}
+                    className="group chat chat-start items-center space-x-5"
                   >
-                    {item.content}
+                    <ChevronUpDownIcon className="h-7 w-7 transition-all group-hover:scale-110 group-active:scale-125 " />
+                    <div className="group- chat-bubble chat-bubble-secondary transition-all group-hover:scale-105 group-active:scale-110 group-active:shadow-lg">
+                      {item.content}
+                    </div>
                   </div>
                 )}
               </Draggable>
             ))}
             {provided.placeholder}
+
+            {/* 提交按钮 */}
+            <div className="flex justify-center">
+              <button className="btn btn-accent">提交</button>
+            </div>
           </div>
         )}
       </Droppable>
@@ -140,7 +144,6 @@ export default function HumanEvalDisplay({ params }) {
     <div className="flex w-full flex-col space-y-3">
       {stickyTitle}
 
-      {/* TODO: add the dragable list here */}
       {draggableList}
     </div>
   );
