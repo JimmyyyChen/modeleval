@@ -104,15 +104,31 @@ export async function POST(request) {
             }
             createData(temp_name, fileSize, question_type, final_results, null, wrong_questions, number_of_wrong, total_number, userId, username);
         }
+        fs.unlink('temp/temp_dataset.txt', (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+        });
+        fs.unlink('temp/temp_dataset2.txt', (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+        });
         if (number_of_wrong == 0) {
             return new NextResponse(JSON.stringify({ success: true, total_number: total_number }), {
                 status: 200,
                 headers: { "Content-Type": "application/json" },
             });
         }
-        else if (number_of_wrong != 0) {
+        else if (number_of_wrong != 0 && number_of_wrong != total_number) {
             return new NextResponse(JSON.stringify({ success: true, wrong_indexes: wrong_questions, wrong_number: number_of_wrong, total_number: total_number }), {
                 status: 206,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+        else {
+            return new NextResponse(JSON.stringify({ success: false, error: 'Invalid dataset' }), {
+                status: 400,
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -133,6 +149,23 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
     else if (final_results.length > 100000) size_label = "100K-1M";
     else if (final_results.length > 10000) size_label = "10K-100K";
     else if (final_results.length > 1000) size_label = "1K-10K";
+    const dataset = await prisma.Dataset.findFirst({
+        where: {
+            datasetName: temp_name,
+        },
+    })
+    if (dataset) {
+        let num = dataset.repeatNames;
+        temp_name = temp_name + "(" + (num + 1) + ")";
+        await prisma.Dataset.update({
+            where: {
+                id: dataset.id,
+            },
+            data: {
+                repeatNames: num + 1,
+            },
+        })
+    }
     if (question_type == 0) {
         const new_dataset = await prisma.Dataset.create({
             data: {
