@@ -194,7 +194,7 @@
 - 失败 (`404`): 返回条目不存在,创建条目信息不完全等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。
 
-### 改动条目 `DELETE api/datasets/update/[id]/questions/[id2]`
+### 删除条目 `DELETE api/datasets/update/[id]/questions/[id2]`
 
 **Path Info:**
 
@@ -209,4 +209,20 @@
 
 - 成功 (`200`): 表示删除成功：
 - 失败 (`404`): 返回条目不存在,等错误信息。
+- 失败 (`403`): 返回权限不允许等错误信息。
+
+### 删除条目 `DELETE api/datasets/update/[id]/questions`
+
+**Path Info:**
+
+- `id` (string): 数据集的id,获取方式见上
+
+**Request Body**
+
+- `items`(Int[]): 需要删除的条目的id数组
+
+**Response:**
+
+- 成功 (`200`): 表示删除成功：
+- 失败 (`404`): 返回对应数据集不存在,等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。
