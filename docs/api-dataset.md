@@ -35,6 +35,24 @@
   - `error`(String): Invalid dataset
 - 失败 (`500`): 返回错误信息。
 
+### 下载数据集 `GET /api/datasets/download/[id]`
+
+**Path Info:**
+
+- `id` (Int): 数据集的id
+
+**Request Body**
+
+- 无
+
+**Response:**
+
+- 成功 (`200`): 返回数据集名称信息：
+  - `success` (Boolean): true
+  - `filename` (String): csv/数据集名称,用于确认下载位置
+- 失败 (`404`): 找不到数据集。
+- 失败 (`500`): 返回错误信息。
+
 ### 获取数据集信息 `GET /api/datasets/info/[id]`
 
 **Path Info:**
