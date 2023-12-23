@@ -66,7 +66,8 @@ export default function TaskDisplayPage({ params }) {
           value={progress}
           max="1"
         ></progress>
-        <p className="text-gray-500">
+        <p className={`text-gray-500 ${isNaN(startTime) ? "hidden" : ""
+        }`}>
           {progress === 1
             ? `已生成回答 | ${startTime.toLocaleString()}开始 | 用时${Math.round(
                 (endTime - startTime) / 1000,
