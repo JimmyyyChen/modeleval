@@ -7,13 +7,16 @@ export default function Footer() {
       <div className="flex flex-shrink-0 flex-col items-center space-y-4 sm:h-full sm:flex-row sm:space-x-6 sm:space-y-0">
         <div className="flex flex-shrink-0 items-center">
           <Link href="/">
-            <Image
+            {/* <Image
               width={64}
               height={64}
               src="/logo.png"
               alt="ModalEval Logo"
               priority
-            />
+            /> */}
+            <h1 className="font-['Monaco'] font-bold tracking-tight text-primary text-lg">
+              ModelEval
+            </h1>
           </Link>
         </div>
         <div className="flex flex-shrink-0 flex-col items-center text-sm text-gray-500 sm:flex-row">

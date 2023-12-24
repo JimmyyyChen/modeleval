@@ -10,20 +10,13 @@ export default function HomePage() {
   return (
     <div className="w-full space-y-3 text-left">
       <div className="flex flex-col items-center sm:flex-row">
-        <Image
-          src="/logo.png"
-          alt="logo"
-          width={100}
-          height={100}
-          priority
-        />
+        <Image src="/logo.png" alt="logo" width={100} height={100} priority />
         <h1 className="font-['Monaco'] text-4xl font-bold tracking-tight text-primary  sm:text-6xl">
           ModelEval
         </h1>
       </div>
       <p className="mt-6 text-lg leading-8 text-gray-600">
-        ModelEval旨在为用户提供一个全面评估和比较不同大模型能力的平台。它
-        将提供一个开源免费的评测平台。开发者可以在这个平台上上传自己的数据集，并对不同模型在不同数据集上的性能进行包括客观评测、主观评测和对抗性评测在内的全面评估和比较。ModelEval将提供详细的模型能力评测榜单，帮助开发者了解各个模型的优势和限制。
+        ModelEval旨在为用户提供一个全面评估和比较不同大模型能力的平台。它将提供一个开源免费的评测平台。开发者可以在这个平台上上传自己的数据集，并对不同模型在不同数据集上的性能进行包括客观评测、主观评测和对抗性评测在内的全面评估和比较。ModelEval将提供详细的模型能力评测榜单，帮助开发者了解各个模型的优势和限制。
       </p>
       {/* 当登出时显示注册登录按钮 */}
       <SignedOut>
