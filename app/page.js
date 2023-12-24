@@ -1,12 +1,99 @@
 "use client";
 import { SignedOut, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
-
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { DataGrid } from "@mui/x-data-grid";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function HomePage() {
+  const [models, setModels] = useState([]);
+  const [datasets, setDatasets] = useState([]);
+  const [scores, setScores] = useState({});
+
+  useEffect(() => {
+    // Fetch models and datasets in parallel, then get scores.
+    Promise.all([
+      axios.get("/api/models").catch((err) => {
+        console.error("Failed to fetch models", err);
+      }),
+      axios.get("/api/datasets").catch((err) => {
+        console.error("Failed to fetch datasets", err);
+      }),
+    ]).then(([modelsRes, datasetsRes]) => {
+      const newModels = modelsRes ? modelsRes.data : [];
+      const newDatasets = datasetsRes ? datasetsRes.data : [];
+
+      setModels(newModels);
+      setDatasets(newDatasets);
+
+      // Initialize an empty object to hold the new scores
+      const newScores = {};
+
+      // Function to fetch and set scores for a given model and dataset
+      const fetchAndSetScores = (modelId, datasetId) => {
+        axios
+          .post("/api/tasks/scores/getHighestScore", { modelId, datasetId })
+          .then((res) => {
+            // Ensure the modelId entry exists
+            newScores[modelId] = newScores[modelId] || {};
+            // Set the score for the datasetId
+            newScores[modelId][datasetId] = res.data;
+
+            // Update the state with the new scores
+            setScores((prevScores) => ({
+              ...prevScores,
+              [modelId]: {
+                ...prevScores[modelId],
+                [datasetId]: res.data,
+              },
+            }));
+          })
+          .catch((err) => {
+            console.error(
+              `Failed to fetch score for model ${modelId} and dataset ${datasetId}`,
+              err,
+            );
+          });
+      };
+
+      // Iterate over models and datasets to fetch scores
+      newModels.forEach((model) => {
+        newDatasets.forEach((dataset) => {
+          fetchAndSetScores(model.modelid, dataset.id);
+        });
+      });
+    });
+  }, []);
+
+  let columns = [{ field: "model", headerName: "模型", minWidth: 150 }];
+  let rows = [];
+
+  // iterate over datasets to add columns
+  datasets.forEach((dataset) => {
+    const datasetName = dataset.datasetName;
+    columns.push({
+      field: datasetName,
+      headerName: datasetName,
+      minWidth: 150,
+    });
+  });
+
+  // iterate over models to add rows
+  models.forEach((model) => {
+    const modelId = model.modelid; // what a bad naming
+    const modelName = model.modelName;
+    let row = { id: modelId, model: modelName };
+    datasets.forEach((dataset) => {
+      const datasetId = dataset.id;
+      const score = scores[modelId] && scores[modelId][datasetId];
+      row[dataset.datasetName] = score !== null ? (score * 100).toFixed(2) : "未评测";
+    });
+    rows.push(row);
+  });
+
   return (
     <div className="w-full space-y-3 text-left">
       <div className="flex flex-col items-center sm:flex-row">
@@ -44,17 +131,28 @@ export default function HomePage() {
       <div className="h-5"></div>
 
       <div className="space-y-5 rounded-3xl bg-stone-50 p-6 shadow-lg">
-        <h2 className="text-2xl font-bold text-primary">模型能力评测榜单</h2>
+        <div className="flex items-center space-x-3">
+          <h2 className="text-3xl font-bold text-primary">
+            客观与主观评测榜单
+          </h2>
+          <Link href="/" className="link-primary link flex items-center">
+            <QuestionMarkCircleIcon className="h-5 w-5" />
+            TODO:评分规则
+          </Link>
+        </div>
 
         <div className="overflow-x-auto">
           <DataGrid
             rows={rows}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
+            initialState={
+              {
+                // pagination: {
+                //   paginationModel: { page: 0, pageSize: 5 },
+                // },
+                // pinnedColumns: { left: ["model"] }, only work on @mui/x-data-grid-pro T_T
+              }
+            }
             hideFooter
             pageSizeOptions={[5, 10]}
             disableRowSelectionOnClick
@@ -71,56 +169,83 @@ export default function HomePage() {
   );
 }
 
-const columns = [
-  { field: "id", headerName: "ID", minWidth: 30, flex: 1 },
-  { field: "dataset", headerName: "数据集", minWidth: 120, flex: 2 },
-  {
-    field: "GPT4_automated",
-    headerName: "GPT4客观测试",
-    minWidth: 120,
-    flex: 2,
-  },
-  {
-    field: "GPT3_automated",
-    headerName: "GPT3.5客观测试",
-    minWidth: 120,
-    flex: 2,
-  },
-  { field: "GPT4_human", headerName: "GPT4主观测试", minWidth: 120, flex: 2 },
-  { field: "GPT3_human", headerName: "GPT3.5主观测试", minWidth: 120, flex: 2 },
-  {
-    field: "GPT4_comparative",
-    headerName: "GPT4对抗测试",
-    minWidth: 120,
-    flex: 2,
-  },
-  {
-    field: "GPT3_comparative",
-    headerName: "GPT3.5对抗测试",
-    minWidth: 120,
-    flex: 2,
-  },
-];
+// const columns = [
+//   { field: "model", headerName: "模型", minWidth: 120, flex: 2 },
+// {
+//   field: "average",
+//   headerName: "全局得分",
+//   minWidth: 150,
+//   flex: 2,
+// },
+//   {
+//     field: "task1",
+//     headerName: "mmlu_select.csv",
+//     minWidth: 150,
+//     flex: 2,
+//   },
+//   {
+//     field: "task2",
+//     headerName: "objectiv.csv",
+//     minWidth: 150,
+//     flex: 2,
+//   },
+//   {
+//     field: "task3",
+//     headerName: "subjective.csv",
+//     minWidth: 150,
+//     flex: 2,
+//   },
+//   {
+//     field: "task4",
+//     headerName: "anotherSubjective.csv",
+//     minWidth: 150,
+//     flex: 2,
+//   },
+// ];
 
-const rows = [
-  {
-    id: 1,
-    dataset: "mmlu_select",
-    GPT4_automated: "0.5",
-    GPT3_automated: "0.6",
-    GPT4_human: "untested",
-    GPT3_human: "untested",
-    GPT4_comparative: "untested",
-    GPT3_comparative: "untested",
-  },
-  {
-    id: 2,
-    dataset: "zbench_common",
-    GPT4_automated: "untested",
-    GPT3_automated: "untested",
-    GPT4_human: "0.7",
-    GPT3_human: "0.8",
-    GPT4_comparative: "0.9",
-    GPT3_comparative: "0.9",
-  },
-];
+// const rows = [
+//   {
+//     id: 1,
+//     model: "mistral_7b",
+//     average: 0.9,
+//     task1: 0.9,
+//     task2: 0.9,
+//     task3: 0.9,
+//     task4: 0.9,
+//     task5: 0.9,
+//     task6: 0.9,
+//   },
+//   {
+//     id: 2,
+//     model: "qwen_7b_chat",
+//     average: 0.9,
+//     task1: 0.9,
+//     task2: 0.9,
+//     task3: 0.9,
+//     task4: 0.9,
+//     task5: 0.9,
+//     task6: 0.9,
+//   },
+//   {
+//     id: 3,
+//     model: "vicuna_7b",
+//     average: 0.9,
+//     task1: 0.9,
+//     task2: 0.9,
+//     task3: 0.9,
+//     task4: 0.9,
+//     task5: 0.9,
+//     task6: 0.9,
+//   },
+//   {
+//     id: 4,
+//     model: "zephyr_7b",
+//     average: 0.9,
+//     task1: 0.9,
+//     task2: 0.9,
+//     task3: 0.9,
+//     task4: 0.9,
+//     task5: 0.9,
+//     task6: 0.9,
+//   },
+// ];
