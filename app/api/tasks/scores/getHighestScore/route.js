@@ -10,7 +10,7 @@ export async function POST(request) {
         // 在Score数据库中寻找modelId字段、datasetId字段对应的得分最高的记录
         const score = await prisma.score.findFirst({
             where: {
-                mainModelId: modelId,
+                modelId: modelId,
                 datasetId: datasetId,
                 // scoreType应该为0或者1
                 scoreType: {
@@ -21,6 +21,12 @@ export async function POST(request) {
                 score: "desc",
             },
         });
+        if (!score) {
+            return new NextResponse(JSON.stringify(null), {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         // 返回得分
         return new NextResponse(JSON.stringify(score.score), {
             status: 200,
