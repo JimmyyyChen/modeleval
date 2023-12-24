@@ -1,7 +1,6 @@
 "use client";
 import { SignedOut, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
-
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { DataGrid } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -10,13 +9,7 @@ export default function HomePage() {
   return (
     <div className="w-full space-y-3 text-left">
       <div className="flex flex-col items-center sm:flex-row">
-        <Image
-          src="/logo.png"
-          alt="logo"
-          width={100}
-          height={100}
-          priority
-        />
+        <Image src="/logo.png" alt="logo" width={100} height={100} priority />
         <h1 className="font-['Monaco'] text-4xl font-bold tracking-tight text-primary  sm:text-6xl">
           ModelEval
         </h1>
@@ -61,6 +54,7 @@ export default function HomePage() {
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
               },
+              // pinnedColumns: { left: ["model"] }, only work on @mui/x-data-grid-pro T_T
             }}
             hideFooter
             pageSizeOptions={[5, 10]}
@@ -79,31 +73,46 @@ export default function HomePage() {
 }
 
 const columns = [
-  { field: "id", headerName: "ID", minWidth: 30, flex: 1 },
-  { field: "dataset", headerName: "数据集", minWidth: 120, flex: 2 },
+  { field: "model", headerName: "模型", minWidth: 120, flex: 2 },
   {
-    field: "GPT4_automated",
-    headerName: "GPT4客观测试",
+    field: "average",
+    headerName: "全局得分(不包含对抗测试)",
     minWidth: 120,
     flex: 2,
   },
   {
-    field: "GPT3_automated",
-    headerName: "GPT3.5客观测试",
-    minWidth: 120,
-    flex: 2,
-  },
-  { field: "GPT4_human", headerName: "GPT4主观测试", minWidth: 120, flex: 2 },
-  { field: "GPT3_human", headerName: "GPT3.5主观测试", minWidth: 120, flex: 2 },
-  {
-    field: "GPT4_comparative",
-    headerName: "GPT4对抗测试",
+    field: "task1",
+    headerName: "mmlu_select.csv 客观测试",
     minWidth: 120,
     flex: 2,
   },
   {
-    field: "GPT3_comparative",
-    headerName: "GPT3.5对抗测试",
+    field: "task2",
+    headerName: "objectiv.csv 客观测试",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "task3",
+    headerName: "subjective.csv 主观测试",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "task4",
+    headerName: "subjective.csv 对抗测试1",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "task4",
+    headerName: "subjective.csv 对抗测试2",
+    minWidth: 120,
+    flex: 2,
+  },
+  {
+    field: "task4",
+    headerName: "anotherSubjective.csv 对抗测试1",
     minWidth: 120,
     flex: 2,
   },
@@ -112,22 +121,46 @@ const columns = [
 const rows = [
   {
     id: 1,
-    dataset: "mmlu_select",
-    GPT4_automated: "0.5",
-    GPT3_automated: "0.6",
-    GPT4_human: "untested",
-    GPT3_human: "untested",
-    GPT4_comparative: "untested",
-    GPT3_comparative: "untested",
+    model: "mistral_7b",
+    average: 0.9,
+    task1: 0.9,
+    task2: 0.9,
+    task3: 0.9,
+    task4: 0.9,
+    task5: 0.9,
+    task6: 0.9,
   },
   {
     id: 2,
-    dataset: "zbench_common",
-    GPT4_automated: "untested",
-    GPT3_automated: "untested",
-    GPT4_human: "0.7",
-    GPT3_human: "0.8",
-    GPT4_comparative: "0.9",
-    GPT3_comparative: "0.9",
+    model: "qwen_7b_chat",
+    average: 0.9,
+    task1: 0.9,
+    task2: 0.9,
+    task3: 0.9,
+    task4: 0.9,
+    task5: 0.9,
+    task6: 0.9,
+  },
+  {
+    id: 3,
+    model: "vicuna_7b",
+    average: 0.9,
+    task1: 0.9,
+    task2: 0.9,
+    task3: 0.9,
+    task4: 0.9,
+    task5: 0.9,
+    task6: 0.9,
+  },
+  {
+    id: 4,
+    model: "zephyr_7b",
+    average: 0.9,
+    task1: 0.9,
+    task2: 0.9,
+    task3: 0.9,
+    task4: 0.9,
+    task5: 0.9,
+    task6: 0.9,
   },
 ];
