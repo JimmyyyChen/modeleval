@@ -12,7 +12,7 @@ export default function TaskDatasetInfo({ dataset }) {
   const description = dataset.description;
   const questionType = dataset.questionType ? "问答题" : "选择题";
   const sizeInMB = dataset.sizeInMB;
-  const lastUpdate = dataset.lastUpdate.toLocaleString();
+  const lastUpdateText = new Date(dataset.lastUpdate).toLocaleString();
 
   return (
     <div className="w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6">
@@ -30,7 +30,7 @@ export default function TaskDatasetInfo({ dataset }) {
       <p className="text-sm text-gray-500">{description}</p>
 
       <div className="ml-auto space-x-1 font-medium text-gray-800">
-        {questionType} • {sizeInMB} MB • {lastUpdate}
+        {questionType} • {sizeInMB} MB • {lastUpdateText}
       </div>
     </div>
   );
