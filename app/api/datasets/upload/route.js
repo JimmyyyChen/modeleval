@@ -29,14 +29,24 @@ function removeFirstEmptyLine(text) {
 }
 export async function POST(request) {
     try {
+        let { userId } = auth()
+        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+        let username = "Administrator";
+        if (userId == null) userId = "Administrator";
+        else {
+            username = await getUsername(userId);
+            if (username == null) username = "Administrator";
+        }
+        const temp_datasetname = userId.slice(5, 12) + Date.now() + ".txt";
+        const temp_datasetname2 = userId.slice(6, 10) + Date.now() + ".txt";
         let results = [];
         let final_results = [];
         let get_from_request = '';
         let number_of_wrong = 0;
         let wrong_questions = [];
         let total_number = 0;
-        await promisify(pipeline)(request.body, fs.createWriteStream('temp/temp_dataset.txt'));
-        let data = fs.readFileSync('temp/temp_dataset.txt', 'utf8');//等待文件读完
+        await promisify(pipeline)(request.body, fs.createWriteStream(temp_datasetname));
+        let data = fs.readFileSync(temp_datasetname, 'utf8');//等待文件读完
         const { newfile, temp_name } = removeFirstEmptyLine(data);
         if (temp_name == null || temp_name.length > 24) {
             return new NextResponse(JSON.stringify({ success: false, error: 'Invalid dataset name' }), {
@@ -45,8 +55,8 @@ export async function POST(request) {
             });
         }
         get_from_request += newfile;
-        fs.writeFileSync('temp/temp_dataset2.txt', get_from_request, 'utf8')//等待文件去掉头部
-        const fileContent = fs.readFileSync('temp/temp_dataset2.txt', 'utf8');
+        fs.writeFileSync(temp_datasetname2, get_from_request, 'utf8')//等待文件去掉头部
+        const fileContent = fs.readFileSync(temp_datasetname2, 'utf8');
         // 替换换行符为空格
         //const sanitizedContent = fileContent.replace(/\n/g, ' ');
         // 使用 csv-parser 处理替换后的内容
@@ -64,16 +74,8 @@ export async function POST(request) {
                     reject(error);
                 });
         });
-        const stats = fs.statSync('temp/temp_dataset2.txt');
+        const stats = fs.statSync(temp_datasetname2);
         const fileSize = (stats.size / 1024 / 1024).toFixed(4);
-        let { userId } = auth()
-        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
-        let username = "Administrator";
-        if (userId == null) userId = "Administrator";
-        else {
-            username = await getUsername(userId);
-            if (username == null) username = "Administrator";
-        }
         let question_type;
         if (results[0].choices || results[1].choices) {                 //即将创建数据集
             question_type = 0;
@@ -104,12 +106,12 @@ export async function POST(request) {
             }
             createData(temp_name, fileSize, question_type, final_results, null, wrong_questions, number_of_wrong, total_number, userId, username);
         }
-        fs.unlink('temp/temp_dataset.txt', (err) => {
+        fs.unlink(temp_datasetname, (err) => {
             if (err) {
                 console.error('Error deleting file:', err);
             }
         });
-        fs.unlink('temp/temp_dataset2.txt', (err) => {
+        fs.unlink(temp_datasetname2, (err) => {
             if (err) {
                 console.error('Error deleting file:', err);
             }
