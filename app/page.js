@@ -138,7 +138,7 @@ export default function HomePage() {
           </h2>
           <Link href="/" className="link-primary link flex items-center">
             <QuestionMarkCircleIcon className="h-5 w-5" />
-            评分规则
+            TODO:评分规则
           </Link>
         </div>
 
