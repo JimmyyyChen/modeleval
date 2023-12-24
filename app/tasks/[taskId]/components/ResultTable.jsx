@@ -66,9 +66,10 @@ export default function ResultTable({
     // evalButton is show its score
     if (questionType === 0) {
       evalButton = (
-        <div className="btn btn-success w-max rounded-3xl text-white ">
+        <button className="btn btn-success w-max rounded-3xl text-white">
+          <CheckIcon className="h-5 w-5" />
           <p className="break-keep ">{(score * 100).toFixed(2)}</p>
-        </div>
+        </button>
       );
     } else if (questionType === 1) {
       evalButton = (
