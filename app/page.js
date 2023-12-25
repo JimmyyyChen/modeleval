@@ -90,6 +90,7 @@ export default function HomePage() {
       const datasetId = dataset.id;
       const score = scores[modelId] && scores[modelId][datasetId];
       row[dataset.datasetName] = score !== null ? (score * 100).toFixed(2) : "未评测";
+      // TODO: sometimes backend return 0 while it should be null(未评测)
     });
     rows.push(row);
   });

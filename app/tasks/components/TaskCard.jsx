@@ -92,10 +92,6 @@ export default function TaskCard({ task }) {
         <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
           <XMarkIcon className="h-5 w-5" />
         </button>
-        {/* TODO */}
-        {/* <button className="btn btn-circle btn-ghost">
-          <PauseIcon className="h-5 w-5" />
-        </button> */}
       </div>
     </Link>
   );
