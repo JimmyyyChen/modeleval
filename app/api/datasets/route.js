@@ -3,10 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        let dataset = await prisma.Dataset.findUnique({
-            where: {
-                id: parseInt(params.id),
-            },
+        let dataset = await prisma.Dataset.findMany({
             include: {
                 label_list: true,
                 ChoiceQuestions: {
