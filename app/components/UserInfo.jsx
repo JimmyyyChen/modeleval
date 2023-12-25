@@ -12,7 +12,6 @@ export default function UserInfo({ isvisitor, userInfo }) {
     var { image_url, username, email, organization, stars } = userInfo;
   }
 
-  // TODO: 头像
   return (
     <div className="flex h-full w-full flex-col items-center space-y-8 rounded-2xl border border-gray-200 bg-white px-4 py-12 text-left text-primary shadow-lg">
       {image_url ? (
