@@ -113,7 +113,7 @@ export async function POST(request, { params }) {
                 }
             })
             if (!question) {
-                if (body["question"]) {
+                if (body["question"] && body["question"] != '') {
                     if (!body["sampleAnswer"]) {
                         body["sampleAnswer"] = "no sampleAnswer";
                     }
@@ -133,10 +133,10 @@ export async function POST(request, { params }) {
                 };
             }
             else {
-                if (body["sampleAnswer"]) {
+                if (body["sampleAnswer"] && body["sampleAnswer"] != '') {
                     question["sampleAnswer"] = body["sampleAnswer"];
                 }
-                if (body["question"]) {                         //如果有问题,更新;如果没有,删除
+                if (body["question"] && body["question"] != '') {                         //如果有问题,更新;如果没有,删除
                     question["question"] = body["question"];
                 }
                 await prisma.ShortAnswerQuestion.update({
@@ -158,7 +158,7 @@ export async function POST(request, { params }) {
                 }
             })
             if (!question) {
-                if (body["question"] && body["choices"] && body["correctAnswer"]) {
+                if (body["question"] && body["choices"] && body["correctAnswer"] && body["question"] != '' && body["correctAnswer"] != '' && body["choices"] != '') {
                     await prisma.ChoiceQuestion.create({
                         data: {
                             question: body["question"],
@@ -182,13 +182,13 @@ export async function POST(request, { params }) {
                 };
             }
             else {
-                if (body["correctAnswer"]) {
+                if (body["correctAnswer"] && body["correctAnswer"] != '') {
                     question["correctAnswer"] = body["correctAnswer"];
                 }
-                if (body["question"]) {                         //如果有问题,更新;如果没有,删除
+                if (body["question"] && body["question"] != '') {                         //如果有问题,更新;如果没有,删除
                     question["question"] = body["question"];
                 }
-                if (body["choices"]) {
+                if (body["choices"] && body["question"] != []) {
                     await prisma.Choice.deleteMany({
                         where: {
                             choiceQuestionId: parseInt(params.id2)

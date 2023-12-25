@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `model` ADD COLUMN `repeatNames` INTEGER NOT NULL DEFAULT 0;

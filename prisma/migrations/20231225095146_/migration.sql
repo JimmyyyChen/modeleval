@@ -5,7 +5,6 @@ CREATE TABLE `Label` (
     `modelsModelid` INTEGER NULL,
     `datasetId` INTEGER NULL,
 
-    UNIQUE INDEX `Label_labelName_key`(`labelName`),
     PRIMARY KEY (`labelid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -28,6 +27,7 @@ CREATE TABLE `Model` (
 CREATE TABLE `Dataset` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `datasetName` VARCHAR(191) NOT NULL,
+    `repeatNames` INTEGER NOT NULL DEFAULT 0,
     `description` VARCHAR(191) NOT NULL DEFAULT 'this is a dataset for task',
     `sizeInMB` DOUBLE NOT NULL,
     `lastUpdate` DATETIME(3) NOT NULL,
@@ -37,6 +37,19 @@ CREATE TABLE `Dataset` (
     `userId` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL DEFAULT 'Administrator',
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `datasetId1` INTEGER NULL,
+    `datasetId2` INTEGER NULL,
+
+    UNIQUE INDEX `User_username_key`(`username`),
+    UNIQUE INDEX `User_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -132,6 +145,12 @@ ALTER TABLE `Label` ADD CONSTRAINT `Label_modelsModelid_fkey` FOREIGN KEY (`mode
 
 -- AddForeignKey
 ALTER TABLE `Label` ADD CONSTRAINT `Label_datasetId_fkey` FOREIGN KEY (`datasetId`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_datasetId1_fkey` FOREIGN KEY (`datasetId1`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_datasetId2_fkey` FOREIGN KEY (`datasetId2`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ChoiceQuestion` ADD CONSTRAINT `ChoiceQuestion_datasetId_fkey` FOREIGN KEY (`datasetId`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

@@ -41,6 +41,8 @@ model Dataset {
   sizeInMB             Float
   lastUpdate           DateTime
   starCount            Int                   @default(0)
+  starUser             User[]                @relation("StarUserRelation")
+  downloadUser         User[]                @relation("DownloadUserRelation")
   downloadCount        Int                   @default(0)
   label_list           Label[]
   questionType         Int // 0: choice, 1: short answer
@@ -50,6 +52,16 @@ model Dataset {
   username             String                @default("Administrator")
   Tasks                Task[]
   Comment              Comment[]
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String
+  userId     String
+  Dataset1   Dataset? @relation("DownloadUserRelation", fields: [datasetId1], references: [id])
+  datasetId1 Int?
+  Dataset2   Dataset? @relation("StarUserRelation", fields: [datasetId2], references: [id])
+  datasetId2 Int?
 }
 
 model ChoiceQuestion {

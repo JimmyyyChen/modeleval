@@ -5,9 +5,9 @@ export async function GET() {
     let { userId } = auth()
     if (userId == null) userId = "Administrator";
     try {
-        let dataset = await prisma.Dataset.findMany({
+        let dataset = await prisma.Dataset.findUnique({
             where: {
-                userId: userId
+                id: parseInt(params.id),
             },
             include: {
                 label_list: true,
@@ -17,6 +17,8 @@ export async function GET() {
                     }
                 },
                 ShortAnswerQuestions: true,
+                starUser: true,
+                downloadUser: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {
