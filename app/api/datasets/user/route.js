@@ -5,10 +5,7 @@ export async function GET() {
     let { userId } = auth()
     if (userId == null) userId = "Administrator";
     try {
-        let dataset = await prisma.Dataset.findUnique({
-            where: {
-                id: parseInt(params.id),
-            },
+        let dataset = await prisma.Dataset.findMany({
             include: {
                 label_list: true,
                 ChoiceQuestions: {
