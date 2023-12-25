@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
     try {
-        let dataset = await prisma.Dataset.findUnique({
+        let dataset = await prisma.Dataset.findMany({
             where: {
                 id: parseInt(params.id),
             },
