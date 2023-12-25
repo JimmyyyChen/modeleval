@@ -20,7 +20,11 @@ export default function CheckCondition({ title, labels }) {
 
   function handleCheck(checkedValues) {
     const params = new URLSearchParams(searchParams);
-    params.set("filter", checkedValues.join(","));
+    if (checkedValues.length > 0) {
+      params.set("filter", checkedValues.join(","));
+    } else {
+      params.delete("filter");
+    }
     replace(`${pathname}?${params.toString()}`);
   }
 
@@ -61,9 +65,7 @@ export default function CheckCondition({ title, labels }) {
                   <input
                     type="checkbox"
                     className="checkbox"
-                    defaultChecked = {
-                      filter?.split(",").includes(value.content)
-                    }
+                    defaultChecked={filter?.split(",").includes(value.content)}
                     onChange={(e) => {
                       // get the current checked values
                       const checkedValues = filter?.split(",") || [];
