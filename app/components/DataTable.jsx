@@ -84,7 +84,6 @@ export default function DataTable({ items, type, isvisitor }) {
     },
   ];
 
-  // TODO: key 的 unique 问题
   function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {

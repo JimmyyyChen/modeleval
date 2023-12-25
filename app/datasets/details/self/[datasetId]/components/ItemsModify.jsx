@@ -318,12 +318,29 @@ export default function ItemsModify({ datasetInfo }) {
     return items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }, [items, page, rowsPerPage]);
 
-  const handleDeleteSelectedItems = () => {
-    for (const id of selected) {
-      // TODO: Delete the item from the database
-      fetch(`/api/datasets/update/${datasetInfo.id}/questions/${id}`, {
-        method: "DELETE",
-      });
+  const handleDeleteSelectedItems = async () => {
+    const deleteItemsId = selected.map((id) => (parseInt(id)));
+
+    console.log(deleteItemsId);
+    console.log(datasetInfo.id);
+
+    const request = await axios.delete(
+      `/api/datasets/update/${datasetInfo.id}/questions`,
+      {
+        items: deleteItemsId,
+      },
+    );
+
+    if (request.status === 200) {
+      alert("Items deleted successfully!");
+      window.location.href = "/profile/self";
+    } else if (request.status === 403) {
+      alert("You are not authorized to delete these items!");
+    } else if (request.status === 404) {
+      alert("Items not found!");
+    } else {
+      alert("Something went wrong!");
+      console.error(request);
     }
   };
 
