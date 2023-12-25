@@ -38,8 +38,6 @@ async function main() {
         "Zephyr is a series of language models that are trained to act as helpful assistants. ",
     },
   });
-
-  console.log({ model_mistral_7b, qwen_7b_chat, vicuna_7b, zephyr_7b });
 }
 main()
   .then(async () => {
