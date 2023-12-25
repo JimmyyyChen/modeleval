@@ -2,8 +2,17 @@ import { NextResponse } from "next/server";
 import fs from 'fs';
 import path from 'path';
 import { prisma } from "@/lib/prisma";
+import { getUser } from "@/lib/getUsername";
+import { clerkClient } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 export async function GET(request, { params }) {
     try {
+        let { userId } = auth();
+        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ";
+        const user = await getUser(userId);
+        if (!user) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
+        }
         let dataset = await prisma.dataset.findUnique({
             where: {
                 id: parseInt(params.id),
@@ -21,14 +30,30 @@ export async function GET(request, { params }) {
         if (!dataset) {
             return new NextResponse(JSON.stringify({ success: false, message: "Dataset not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
         }
-        prisma.dataset.update({
-            where: {
-                id: parseInt(params.id),
-            },
-            data: {
-                downloadCount: dataset.downloadCount + 1,
-            },
-        });
+        if (!user.privateMetadata.downloadList.includes(dataset.id)) {
+            await clerkClient.users.updateUserMetadata(userId, {
+                privateMetadata: {
+                    downloadList: [...user.privateMetadata.downloadList, dataset.id],
+                }
+
+            });
+            await prisma.dataset.update({
+                where: {
+                    id: parseInt(params.id),
+                },
+                data: {
+                    downloadCount: dataset.downloadCount + 1,
+                },
+
+            });
+            await prisma.user.create({
+                data: {
+                    userId: userId,
+                    username: user.username,
+                    datasetId1: dataset.id,
+                }
+            });
+        }
         // 获取目录路径
         const dirPath = path.resolve(process.cwd(), 'public/csv');
 

@@ -36,7 +36,7 @@ export async function POST(request, { params }) {
         }
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
-        if (body["datasetName"]) {
+        if (body["datasetName"] && body["datasetName"] != '') {
             const dataset2 = await prisma.Dataset.findFirst({
                 where: {
                     datasetName: body["datasetName"],
@@ -58,7 +58,7 @@ export async function POST(request, { params }) {
                 });
             }
         }
-        if (body["description"]) {
+        if (body["description"] && body["description"] != '') {
             if (body["description"].length < 200) {
                 dataset["description"] = body["description"];
             }
@@ -69,7 +69,7 @@ export async function POST(request, { params }) {
                 });
             }
         }
-        if (body["label_list"]) {
+        if (body["label_list"] && body["label_list"].length > 0) {
             if (body["label_list"].length > 20) {
                 return new NextResponse(JSON.stringify({ success: false, message: "label_list too long" }), {
                     status: 403,

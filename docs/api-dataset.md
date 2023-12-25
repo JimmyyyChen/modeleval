@@ -53,6 +53,22 @@
 - 失败 (`404`): 找不到数据集。
 - 失败 (`500`): 返回错误信息。
 
+### 收藏数据集 `GET /api/datasets/star/[id]`
+  修改当前登录用户对指定数据集的收藏状态,1->0,0->1.
+**Path Info:**
+
+- `id` (Int): 数据集的id
+
+**Request Body**
+
+- 无
+
+**Response:**
+
+- 成功 (`200`).
+- 失败 (`404`): 找不到数据集或用户。
+- 失败 (`500`): 返回错误信息。
+
 ### 获取数据集信息 `GET /api/datasets/info/[id]`
 
 **Path Info:**
@@ -78,6 +94,8 @@
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者auth
   - `username` (String): 数据集的作者用户名
+  - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
 - 失败 (`500`): 返回错误信息。
 
 ## 获取所有数据集信息 `GET /api/datasets`
@@ -101,6 +119,8 @@
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者auth
   - `username` (String): 数据集的作者用户名
+  - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
 - 失败 (`500`): 返回错误信息。
 
 ### 获取个人数据集信息 `GET /api/datasets/user/[userId]`
@@ -131,6 +151,8 @@
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者
   - `username` (String): 数据集的作者用户名
+  - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
 - 失败 (`500`): 返回错误信息。
 
 ### 删除数据集 `DELETE api/datasets/delete/[id]`
@@ -163,8 +185,8 @@
 
 **Request Body**
 
-- `datasetName` (String): 数据集名称(可选,用户没提供就不传)
-- `description`(String): 数据集简介(可选,用户没提供就不传)
+- `datasetName` (String): 数据集名称(可选,用户没提供就不传或提供空串)
+- `description`(String): 数据集简介(可选,用户没提供就不传或提供空串)
 - `label_list` ([String]): 数据集的标签列表(必选,传递的是结果(无论用户是否修改)所有标签名称的列表)
 
 **Response:**
@@ -183,10 +205,10 @@
 
 **Request Body**
 
-- `question` (string): 题目内容,用户未更改可以不提供
-- `correctAnswer` (string): 客观题答案内容,用户未更改可以不提供
-- `choices` ([string]): 客观题选项内容,用户未更改可以不提供,若更改需要将改动后的所有选项一并提供
-- `sampleAnswer` (string): 主观题样例答案,用户未更改可以不提供
+- `question` (string): 题目内容,用户未更改可以不提供或提供空串
+- `correctAnswer` (string): 客观题答案内容,用户未更改可以不提供或提供空串
+- `choices` ([string]): 客观题选项内容,用户未更改可以不提供或提供空数组,若更改需要将改动后的所有选项一并提供
+- `sampleAnswer` (string): 主观题样例答案,用户未更改可以不提供或提供空串
 
 **Response:**
 
@@ -211,7 +233,7 @@
 - 失败 (`404`): 返回条目不存在,等错误信息。
 - 失败 (`403`): 返回权限不允许等错误信息。
 
-### 删除条目 `DELETE api/datasets/update/[id]/questions`
+### 删除条目 `POST api/datasets/update/[id]/questions`
 
 **Path Info:**
 
