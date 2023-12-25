@@ -166,7 +166,6 @@ function QuestionAnswersCard({ question, taskId }) {
         rank: rank,
       },
     );
-    console.log(response);
 
     setIsReordered(false);
   };
