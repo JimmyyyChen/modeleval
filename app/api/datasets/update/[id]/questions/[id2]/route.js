@@ -68,6 +68,15 @@ export async function DELETE(request, { params }) {
                 }
             })
         }
+        await prisma.dataset.update({
+            where: {
+                id: parseInt(params.id)
+            },
+            data: {
+                lastUpdate: new Date(),
+                sizeInMB: dataset.sizeInMB - 1,
+            }
+        })
         return new NextResponse(JSON.stringify({ success: true }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -124,6 +133,15 @@ export async function POST(request, { params }) {
                             datasetId: parseInt(params.id),
                         }
                     })
+                    await prisma.dataset.update({
+                        where: {
+                            id: parseInt(params.id)
+                        },
+                        data: {
+                            lastUpdate: new Date(),
+                            sizeInMB: dataset.sizeInMB + 1,
+                        }
+                    })
                 }      //如果有问题,创建;如果没有,不创建
                 else {
                     return new NextResponse(JSON.stringify({ success: false, message: "fail to create!" }), {
@@ -171,6 +189,15 @@ export async function POST(request, { params }) {
                             },
                             correctAnswer: body["correctAnswer"],
                             datasetId: parseInt(params.id),
+                        }
+                    })
+                    await prisma.dataset.update({
+                        where: {
+                            id: parseInt(params.id)
+                        },
+                        data: {
+                            lastUpdate: new Date(),
+                            sizeInMB: dataset.sizeInMB + 1,
                         }
                     })
                 }      //如果有问题,创建;如果没有,不创建
