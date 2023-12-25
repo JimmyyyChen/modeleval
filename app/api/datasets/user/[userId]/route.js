@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
     try {
         let dataset = await prisma.Dataset.findMany({
             where: {
-                userId: params.userId,
+                id: parseInt(params.id),
             },
             include: {
                 label_list: true,
@@ -15,6 +15,8 @@ export async function GET(request, { params }) {
                     }
                 },
                 ShortAnswerQuestions: true,
+                starUser: true,
+                downloadUser: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {

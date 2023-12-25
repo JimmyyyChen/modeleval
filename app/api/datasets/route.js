@@ -12,6 +12,8 @@ export async function GET() {
                     }
                 },
                 ShortAnswerQuestions: true,
+                starUser: true,
+                downloadUser: true,
             }
         });
         //console.log(dataset);

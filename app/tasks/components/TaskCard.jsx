@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { getUser } from "@/lib/getUsername";
 
 import {
   XMarkIcon,
@@ -18,6 +19,9 @@ export default function TaskCard({ task }) {
   const taskName = task.taskName;
   const questionType = task.questionType;
   const startTime = new Date(task.startTime);
+  const userId = task.userId;
+  const [user, setUser] = useState();
+  const userName = user ? user.username : "";
   const [endTime, setEndTime] = useState(new Date(task.endTime));
   const [progress, setProgress] = useState(task.progress);
   const [isEvaluated, setIsEvaluated] = useState(
@@ -27,6 +31,15 @@ export default function TaskCard({ task }) {
 
   // 定时获取指定taskId的任务 `GET /api/tasks/info/taskId/{taskId}` 来获取实时的进度progress
   useEffect(() => {
+    axios
+      .get(`/api/user/${userId}`)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     const interval = setInterval(async () => {
       if (progress === 1) {
         return () => clearInterval(interval);
@@ -47,7 +60,7 @@ export default function TaskCard({ task }) {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [id, progress]);
+  }, [id, progress, userId]);
 
   const deleteTask = async (event) => {
     event.preventDefault();
@@ -82,9 +95,10 @@ export default function TaskCard({ task }) {
         {progress === 1 ? (
           <p className="text-gray-500">
             {startTime.toLocaleString()} 开始 • {endTime.toLocaleString()} 结束
+            • 用户 {userName} 创建
           </p>
         ) : (
-          <p className="text-gray-500">{formatedStartTime} 开始</p>
+          <p className="text-gray-500">{formatedStartTime} 开始 • 用户 {userName} 创建 </p>
         )}
       </div>
 
@@ -92,10 +106,6 @@ export default function TaskCard({ task }) {
         <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
           <XMarkIcon className="h-5 w-5" />
         </button>
-        {/* TODO */}
-        {/* <button className="btn btn-circle btn-ghost">
-          <PauseIcon className="h-5 w-5" />
-        </button> */}
       </div>
     </Link>
   );

@@ -6,9 +6,6 @@ export async function GET() {
     if (userId == null) userId = "Administrator";
     try {
         let dataset = await prisma.Dataset.findMany({
-            where: {
-                userId: userId
-            },
             include: {
                 label_list: true,
                 ChoiceQuestions: {
@@ -17,6 +14,8 @@ export async function GET() {
                     }
                 },
                 ShortAnswerQuestions: true,
+                starUser: true,
+                downloadUser: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {

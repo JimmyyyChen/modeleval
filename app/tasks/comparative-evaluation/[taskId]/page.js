@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { ChevronLeftIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// TODO: dropabble cause warning, but i'm tired of fixing it .....
+// BUG: dropabble cause warning, but i'm tired of fixing it .....
 
 // reorder the list
 const reorder = (list, startIndex, endIndex) => {
@@ -34,7 +34,6 @@ class Question {
   }
   addAnswer(answer) {
     this.answers.push(answer);
-    // TODO: sort the answers by ranking
   }
 }
 
@@ -167,7 +166,6 @@ function QuestionAnswersCard({ question, taskId }) {
         rank: rank,
       },
     );
-    console.log(response);
 
     setIsReordered(false);
   };
@@ -191,7 +189,7 @@ function QuestionAnswersCard({ question, taskId }) {
   };
 
   return (
-    // TODO: encounter error "Invariant failed: Cannot finish a drop animating when no drop is occurring". Check https://github.com/atlassian/react-beautiful-dnd/issues/2507
+    // BUG: encounter error "Invariant failed: Cannot finish a drop animating when no drop is occurring". Check https://github.com/atlassian/react-beautiful-dnd/issues/2507
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided) => (

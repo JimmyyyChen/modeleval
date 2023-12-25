@@ -77,6 +77,25 @@ export async function POST(request, { params }) {
                 }
             })
         }
+        dataset = await prisma.Dataset.findUnique({
+            where: {
+                id: parseInt(params.id)
+            },
+            include: {
+                label_list: true,
+                ChoiceQuestions: true,
+                ShortAnswerQuestions: true,
+            }
+        });
+        await prisma.Dataset.update({
+            where: {
+                id: parseInt(params.id)
+            },
+            data: {
+                sizeInMB: dataset.ChoiceQuestions.length + dataset.ShortAnswerQuestions.length,
+                lastUpdate: new Date(),
+            }
+        })
         return new NextResponse(JSON.stringify({ success: true }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
