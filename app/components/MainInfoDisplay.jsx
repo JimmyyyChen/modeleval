@@ -20,10 +20,14 @@ export default function MainInfoDisplay({ datasetInfo }) {
           className="h-12 w-12"
           aria-hidden="true"
         ></CircleStackIcon>
-        <Link className="hover:underline" href={`/profile/visitor/${userId}`}>
+        <Link
+          className="hidden hover:underline lg:flex"
+          href={`/profile/visitor/${userId}`}
+        >
           {username}
         </Link>
-        <span>/ {datasetName}</span>
+        <span className="hidden lg:flex">/</span>
+        <span>{datasetName}</span>
       </div>
       {downloadCount >= 0 && (
         <div className="flex flex-row items-center">

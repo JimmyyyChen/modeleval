@@ -5,7 +5,6 @@ import MainInfoDisplay from "@/app/components/MainInfoDisplay";
 import Labels from "@/app/components/Labels";
 import Community from "@/app/components/Community";
 
-// TODO: 与其他页面雷同，将页面组件化
 export default function Home({ params: { name } }) {
   return (
     <>

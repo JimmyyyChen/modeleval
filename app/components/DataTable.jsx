@@ -96,7 +96,7 @@ export default function DataTable({ items, type, isvisitor }) {
         <StyledTableRow>
           {headCells.map((headCell) => (
             <StyledTableCell
-              key={headCell.id}
+              key={`headcell-${headCell.id}`}
               sortDirection={orderBy === headCell.id ? order : false}
               align={headCell.id.includes("Name") ? "left" : "right"}
             >
@@ -194,7 +194,7 @@ export default function DataTable({ items, type, isvisitor }) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+    <div className="flex h-full w-full flex-col items-center justify-start rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
       <Box className="w-full">
         <Paper className="mb-1 w-full">
           <TableContainer>
@@ -210,12 +210,12 @@ export default function DataTable({ items, type, isvisitor }) {
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={row.name}
+                    key={`styled-table-row-${row.id}`}
                     className="hover:bg-gray-600"
                   >
                     <StyledTableCell align="left" key={row.name}>
                       <Link
-                        key={row.name}
+                        key={`styled-table-cell-${row.name}`}
                         href={
                           isvisitor
                             ? `/${type}/details/visitor/${row.id}`
