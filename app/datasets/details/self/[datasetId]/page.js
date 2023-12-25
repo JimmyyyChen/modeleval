@@ -46,13 +46,14 @@ export default function Home({ params: { datasetId } }) {
       </div>
 
       <div className="flex h-full w-full flex-wrap items-start space-x-0 space-y-6 p-4 lg:flex-nowrap lg:space-x-6 lg:space-y-0">
-        {datasetInfo.id ? (
+        {(datasetInfo && datasetInfo.id) ? (
           <ItemsModify datasetInfo={datasetInfo} />
         ) : (
           <div className="h-full w-full rounded-xl border border-gray-200 bg-white shadow-lg p-6">
             Loading...
           </div>
         )}
+      </div>
 
       <div className="w-full p-4 text-4xl">
         <Community issues={issues} textcontent="留言" />
