@@ -74,8 +74,8 @@ export async function POST(request) {
                     reject(error);
                 });
         });
-        const stats = fs.statSync(temp_datasetname2);
-        const fileSize = (stats.size / 1024 / 1024).toFixed(4);
+        //const stats = fs.statSync(temp_datasetname2);
+        //const fileSize = (stats.size / 1024 / 1024).toFixed(4);
         let question_type;
         if (results[0].choices || results[1].choices) {                 //即将创建数据集
             question_type = 0;
@@ -172,7 +172,7 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
         const new_dataset = await prisma.Dataset.create({
             data: {
                 datasetName: temp_name,
-                sizeInMB: parseFloat(fileSize),
+                sizeInMB: final_results.length,
                 lastUpdate: new Date(),
                 questionType: question_type,
                 label_list: {
@@ -220,7 +220,7 @@ async function createData(temp_name, fileSize, question_type, final_results, cho
         await prisma.Dataset.create({
             data: {
                 datasetName: temp_name,
-                sizeInMB: parseFloat(fileSize),
+                sizeInMB: final_results.length,
                 lastUpdate: new Date(),
                 questionType: question_type,
                 label_list: {
