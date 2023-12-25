@@ -2,8 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
-export async function DELETE(request, { params }) {
-    let { userId } = auth()
+export async function POST(request, { params }) {
+    let { userId } = auth();
     try {
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
