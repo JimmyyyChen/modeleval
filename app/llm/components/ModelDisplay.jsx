@@ -5,7 +5,7 @@ import CheckCondition from "../../components/CheckCondition";
 
 export default function ModelDisplay({ title, models }) {
   return (
-    <div className="flex flex-col space-y-3">
+    <div className="flex flex-col space-y-3 w-full">
       <div>
         <CheckCondition title="模型" labels={modelTypes} />
       </div>
