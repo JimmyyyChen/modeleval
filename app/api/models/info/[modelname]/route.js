@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
     try {
         let model = await prisma.model.findMany({
             where: {
-                modelName: modelName
+                modelName: modelName,
             },
             include: {
                 label_list: true,
