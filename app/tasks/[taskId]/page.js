@@ -70,7 +70,7 @@ export default function TaskDisplayPage({ params }) {
   return (
     // unvisble at first, then fade in after isVisble is true
     // <div className="flex w-full flex-col space-y-5">
-    <div className="flex w-full flex-col space-y-5">
+    <div className="flex w-full flex-col space-y-6">
       <h1 className=" font-mono text-4xl font-bold text-primary">{taskName}</h1>
 
       {/* Progress */}

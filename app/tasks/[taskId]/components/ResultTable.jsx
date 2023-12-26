@@ -127,7 +127,8 @@ export default function ResultTable({
   }
 
   return (
-    <div className="flex space-x-3">
+    <div className="flex flex-col space-y-1">
+      {evalButton}
       <div className="collapse collapse-arrow border bg-white">
         <input type="checkbox" />
         <div className="collapse-title flex items-center space-x-3 ">
@@ -148,7 +149,6 @@ export default function ResultTable({
           />
         </div>
       </div>
-      {evalButton}
     </div>
   );
 }

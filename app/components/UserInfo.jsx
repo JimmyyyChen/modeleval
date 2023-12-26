@@ -9,7 +9,7 @@ import {
 
 export default function UserInfo({ isvisitor, userInfo }) {
   if (userInfo) {
-    var { image_url, username, email, organization, stars } = userInfo;
+    var { image_url, userId, username, email, organization, stars } = userInfo;
   }
 
   return (
@@ -32,7 +32,7 @@ export default function UserInfo({ isvisitor, userInfo }) {
       <div className="flex h-full w-full flex-col items-start space-y-4 p-2 text-primary">
         <div className="my-4 flex h-full w-full flex-row items-center space-x-4 truncate">
           <IdentificationIcon className="h-8 w-8 text-primary" />
-          <p className="h-full truncate text-4xl font-bold">{username}</p>
+          <Link className="h-12 truncate text-4xl font-bold hover:underline" href={`/profile/visitor/${userId}`}>{username}</Link>
         </div>
         <div className="flex w-full flex-row space-x-4">
           <EnvelopeIcon className="h-6 w-6 text-primary" />
