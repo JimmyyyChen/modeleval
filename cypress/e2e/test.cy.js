@@ -40,5 +40,13 @@ describe("Testing", () => {
             failOnStatusCode: false,
         });
         cy.contains('等待主观评测', { timeout: 30000 }).should('be.visible');
+        cy.contains('主观测试').parents().eq(1).click();
+        cy.url().should('include', '/tasks/');
+        cy.contains('等待人工主观评测');
+        cy.contains('进行主观评测').parents().first().children().first().click();
+        cy.url().should('include', '/tasks/human-evaluation/');
+        cy.contains('问题 1').parents().eq(1).children().eq(1).get("button").contains('正确').click();
+        cy.contains('问题 2').parents().eq(1).children().eq(2).get("button").contains('正确').click();
+        cy.contains('问题 3').parents().eq(1).children().eq(3).get("button").contains('错误').click();
     });
 });

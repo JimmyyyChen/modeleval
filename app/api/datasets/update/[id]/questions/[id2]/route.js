@@ -215,7 +215,7 @@ export async function POST(request, { params }) {
                 if (body["question"] && body["question"] != '') {                         //如果有问题,更新;如果没有,删除
                     question["question"] = body["question"];
                 }
-                if (body["choices"] && body["question"] != []) {
+                if (body["choices"] && body["choices"] != []) {
                     await prisma.Choice.deleteMany({
                         where: {
                             choiceQuestionId: parseInt(params.id2)
