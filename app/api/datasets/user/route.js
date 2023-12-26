@@ -19,6 +19,8 @@ export async function GET() {
                 ShortAnswerQuestions: true,
                 starUser: true,
                 downloadUser: true,
+                Comment: true,
+                Tasks: true,
             }
         });
         return new NextResponse(JSON.stringify(dataset), {
