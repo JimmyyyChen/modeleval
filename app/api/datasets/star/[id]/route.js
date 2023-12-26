@@ -69,7 +69,7 @@ export async function POST(request, { params }) {
                     starCount: dataset.starCount - 1,
                 }
             });
-            await prisma.User.delete({
+            await prisma.User.deleteMany({
                 where: {
                     userId: userId,
                     datasetId2: dataset.id,
