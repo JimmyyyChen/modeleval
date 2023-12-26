@@ -1,23 +1,19 @@
-import Link from "next/link";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import {
   CircleStackIcon,
-  ArrowDownTrayIcon,
   StarIcon as SolidStarIcon,
+  CubeIcon,
 } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 
 // TODO: 添加收藏判定，更改收藏图标
-export default function MainInfoDisplay({ datasetInfo }) {
+export default function ModelMainInfoDisplay({ modelInfo }) {
   const [downloadFilename, setDownloadFilename] = useState("");
 
-  console.log(datasetInfo);
-
-  if (datasetInfo) {
-    var { id, userId, username, datasetName, downloadCount, downloadUser, starCount, starUser } =
-      datasetInfo;
+  if (modelInfo) {
+    var { modelid: id, modelName, likeN: starCount, starUser, description } = modelInfo;
   }
 
   useEffect(() => {
@@ -38,29 +34,8 @@ export default function MainInfoDisplay({ datasetInfo }) {
     return null;
   }
 
-  const handleDownloadClick = async (event) => {
-    event.preventDefault();
-
-    const response = await axios.get(`/api/datasets/download/${id}`);
-
-    if (response.status == 200) {
-      setDownloadFilename("/" + response.data["filename"]);
-
-      location.reload();
-    } else if (response.status == 404) {
-      setDownloadFilename("");
-    } else {
-      console.log("error");
-    }
-  };
-
-  // TODO: 增加下载列表展示
-  const handleDownloadUserDisplayClick = async () => {
-    console.log("download user display clicked");
-  }
-
   const handleStarClick = async () => {
-    const response = await axios.post(`/api/datasets/star/${id}`);
+    const response = await axios.post(`/api/models/star/${id}`);
 
     if (response.status == 200) {
       location.reload();
@@ -70,8 +45,6 @@ export default function MainInfoDisplay({ datasetInfo }) {
       console.log("error");
     }
   };
-
-  console.log(starUser);
 
   // TODO: 增加收藏列表展示
   const handleSterUserDisplayClick = async () => {
@@ -79,40 +52,15 @@ export default function MainInfoDisplay({ datasetInfo }) {
   };
 
   return (
+    <>
     <div className="flex w-full flex-col items-center space-y-4 text-center sm:flex-row sm:space-x-6 sm:space-y-0 sm:text-left ">
       <div className="flex flex-row items-center space-x-4 text-left text-4xl font-bold text-primary">
-        <CircleStackIcon
+        <CubeIcon
           className="h-12 w-12"
           aria-hidden="true"
-        ></CircleStackIcon>
-        <Link
-          className="hidden hover:underline lg:flex"
-          href={`/profile/visitor/${userId}`}
-        >
-          {username}
-        </Link>
-        <span className="hidden lg:flex">/</span>
-        <span>{datasetName}</span>
+        ></CubeIcon>
+        <span>{modelName}</span>
       </div>
-      {downloadCount >= 0 && (
-        <div className="flex flex-row items-center">
-          <a href={downloadFilename} download onClick={handleDownloadClick}>
-            <button className="group btn btn-outline btn-primary h-8 min-h-0 rounded-full rounded-r-none px-2 text-xs">
-              <ArrowDownTrayIcon
-                className="h-4 w-4 text-primary group-hover:text-white"
-                aria-hidden="true"
-              />
-              下载
-            </button>
-          </a>
-          <button
-            className="btn btn-outline btn-primary h-8 min-h-0 rounded-full rounded-l-none border-l-0 px-2 text-xs"
-            onClick={handleDownloadUserDisplayClick}
-          >
-            {downloadCount}
-          </button>
-        </div>
-      )}
       <div className="flex flex-row items-center">
         <button
           className="group btn btn-outline btn-primary h-8 min-h-0 rounded-full rounded-r-none px-2 text-xs"
@@ -139,5 +87,9 @@ export default function MainInfoDisplay({ datasetInfo }) {
         </button>
       </div>
     </div>
+    <div className="px-16 py-4 hidden lg:block text-gray-400 text-md w-full">
+      {description}
+    </div>
+    </>
   );
 }

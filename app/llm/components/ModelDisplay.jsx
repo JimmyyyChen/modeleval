@@ -3,16 +3,11 @@ import { modelTypes } from "../../constants";
 import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 
-export default function ModelDisplay({ title, models }) {
+export default function ModelDisplay({ models }) {
   return (
-    <div className="flex flex-col space-y-3">
-      <div>
+    <div className="flex flex-col space-y-6">
         <CheckCondition title="模型" labels={modelTypes} />
-      </div>
-
-      <div>
         <DataTable items={models} type="llm" isvisitor={true} />
-      </div>
     </div>
   );
 }

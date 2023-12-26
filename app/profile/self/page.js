@@ -35,8 +35,9 @@ export default function Home() {
     const fetchUserDatasets = async () => {
       try {
         if (userInfo && userInfo.userId) {
-          const { userId } = userInfo;
-          const response = await axios.get(`/api/datasets/user/${userId}`);
+          const response = await axios.get(
+            `/api/datasets/user/${userInfo.userId}`,
+          );
           if (response.status >= 200 && response.status < 300) {
             setDatasets(response.data);
           } else {

@@ -115,7 +115,7 @@ ResponsiveDialog.propTypes = {
 };
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, numSelected, rowCount, tableTitle } = props;
+  const { onSelectAllClick, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -351,13 +351,13 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Tooltip>
           <Dialog open={editOpen} onClose={handleEditClose}>
-            <DialogTitle>更改属性</DialogTitle>
+            <DialogTitle>更改条目属性</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 请提交需要修改的属性，不需要修改的属性请留空。
                 <br />
                 请注意，如果进行修改，那么原有的选项或者答案将会被清空。Choices
-                应为以中括号([])包裹，逗号(,)分隔的双引号("")字符串数组，如下：
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
                 <br />
                 ["Choice 1", "Choice 2", "Choice 3"]
               </DialogContentText>
@@ -422,11 +422,15 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Tooltip>
           <Dialog open={addOpen} onClose={handleAddClose}>
-            <DialogTitle>Subscribe</DialogTitle>
+            <DialogTitle>新增条目</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To subscribe to this website, please enter your email address
-                here. We will send updates occasionally.
+                请提交需要新增的条目，每个属性均需要填写。
+                <br />
+                请注意，Choices
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+                <br />
+                ["Choice 1", "Choice 2", "Choice 3"]
               </DialogContentText>
               <TextField
                 autoFocus
@@ -480,8 +484,8 @@ function EnhancedTableToolbar(props) {
               )}
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleAddClose}>Cancel</Button>
-              <Button onClick={handleAddSubcribe}>Subscribe</Button>
+              <Button onClick={handleAddClose}>取消</Button>
+              <Button onClick={handleAddSubcribe}>提交</Button>
             </DialogActions>
           </Dialog>
         </>
@@ -661,6 +665,7 @@ export default function ItemsModify({ datasetInfo }) {
       >
         删除数据集
       </button>
+      {/* 修改数据集信息 */}
     </div>
   );
 }
