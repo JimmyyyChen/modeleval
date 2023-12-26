@@ -14,7 +14,6 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
-import { useSearchParams } from "next/navigation";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,10 +64,6 @@ function stableSort(array, comparator) {
 }
 
 export default function DataTable({ items, type, isvisitor }) {
-  const searchParams = useSearchParams();
-
-  const query = searchParams.get("query");
-  const filter = searchParams.get("filter");
 
   const headCells = [
     {
@@ -200,9 +195,6 @@ export default function DataTable({ items, type, isvisitor }) {
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-      <div>
-        TODO: query in the url is: {query}. filter in the url is: {filter}.
-      </div>
       <Box className="w-full">
         <Paper className="mb-1 w-full">
           <TableContainer>
