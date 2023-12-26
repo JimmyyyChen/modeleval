@@ -51,6 +51,7 @@ export async function GET(request, { params }) {
                     userId: userId,
                     username: user.username,
                     datasetId1: dataset.id,
+                    userImageUrl: user.imageUrl,
                 }
             });
         }
