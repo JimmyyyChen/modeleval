@@ -9,11 +9,13 @@ export async function GET() {
             },
             include: {
                 label_list: true,
+                starUser: true,
+                Comment: true,
             }
         });
         //names = names.map((name) => name.name)
         return new NextResponse(JSON.stringify(models), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {

@@ -44,7 +44,7 @@ parentPort.on('message', async (data) => {
         async function checkPauseTask(taskId) {
             // 检查pauseTask变量，确定是否暂停任务
             // console.log("in checkPausetask: " + pauseTask.taskId + " " + pauseTask.state);
-            console.log("in checkPausetask return value: " + (pauseTask.taskId == taskId && pauseTask.state == "pause"));
+            // console.log("in checkPausetask return value: " + (pauseTask.taskId == taskId && pauseTask.state == "pause"));
             return (pauseTask.taskId == taskId && pauseTask.state == "pause");
         }
 
@@ -120,7 +120,7 @@ parentPort.on('message', async (data) => {
                     answerjson[model.modelid]["answers"][j]["correctAnswer"] = ChoiceQuestions[j].correctAnswer;
                     // 每跑完一条更新一下本地的进度
                     task.progress = (i * ChoiceQuestions.length + j) / (modelIds.length * ChoiceQuestions.length);
-                    console.log("task progress:" + task.progress);
+                    // console.log("task progress:" + task.progress);
                     // 向task数据库更新一下
                     await updateAnswerInTask(task, answerjson);
                 }

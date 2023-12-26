@@ -102,7 +102,7 @@ export default function HumanEvalDisplay({ params }) {
 
   const isRankedCount = questionsArray.filter((question) => question.isRanked).length;
   const stickyTitle = (
-    <div className="group sticky top-5 z-50 flex flex-col self-start rounded-3xl bg-secondary p-4 shadow-lg transition-all duration-300 hover:scale-110 hover:space-y-3 hover:p-7 hover:shadow-2xl">
+    <div className="group sticky top-5 z-50 flex flex-col self-start rounded-3xl bg-gray-100 p-4 shadow-lg transition-all duration-300 hover:scale-110 hover:space-y-3 hover:p-7 hover:shadow-2xl">
       <div className="flex items-center space-x-3 transition-all duration-300">
         <Link href={`/tasks/${taskId}`}>
           <ChevronLeftIcon className="h-6 w-6 text-gray-500 transition-all duration-300" />

@@ -63,7 +63,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 export default function DataTable({ items, type, isvisitor }) {
   const headCells = [
     {
@@ -131,7 +130,7 @@ export default function DataTable({ items, type, isvisitor }) {
   const rows = useMemo(() => {
     if (!items) return [];
     return items.map((item) => ({
-      id: item.id,
+      id: type === "datasets" ? item.id : item.modelid,
       name: type === "datasets" ? item.datasetName : item.modelName,
       lastUpdate: item.lastUpdate,
       starCount: item.starCount,
@@ -174,91 +173,89 @@ export default function DataTable({ items, type, isvisitor }) {
 
   if (items === null) {
     return (
-      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
-        Loading...
+      <div className="flex justify-center">
+        <span className="loading loading-spinner loading-md flex justify-center"></span>
       </div>
     );
   } else if (items === undefined) {
     return (
-      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
-        Error loading {type === "datasets" ? "datasets" : "models"}.
+      <div className="flex justify-center p-6 text-lg text-gray-500">
+        读取 {type === "datasets" ? "数据集" : "模型"} 发生错误
       </div>
     );
   } else if (items.length === 0) {
     return (
-      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
-        No {type === "datasets" ? "dataset" : "model"} found.
+      <div className="flex justify-center p-6 text-lg text-gray-500">
+        无搜索结果
       </div>
     );
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-start rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-      <Box className="w-full">
-        <Paper className="mb-1 w-full">
-          <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-              <EnhancedTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {visibleRows.map((row) => (
-                  <StyledTableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={`styled-table-row-${row.id}`}
-                    className="hover:bg-gray-600"
-                  >
-                    <StyledTableCell align="left" key={row.name}>
-                      <Link
-                        key={`styled-table-cell-${row.name}`}
-                        href={
-                          isvisitor
-                            ? `/${type}/details/visitor/${row.id}`
-                            : `/${type}/details/self/${row.id}`
-                        }
-                        className="btn btn-outline btn-primary "
-                      >
-                        <div className="max-w-[6rem] truncate">{row.name}</div>
-                      </Link>
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.lastUpdate}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.starCount}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.downloadCount}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-                {emptyRows > 0 && (
-                  <StyledTableRow
-                    style={{
-                      height: 53 * emptyRows,
-                    }}
-                  >
-                    <StyledTableCell colSpan={6} />
-                  </StyledTableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </Box>
-    </div>
+    <Box>
+      <Paper>
+        <TableContainer>
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {visibleRows.map((row) => (
+                <StyledTableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={`styled-table-row-${row.id}`}
+                  className="hover:bg-gray-600"
+                >
+                  <StyledTableCell align="left" key={row.name}>
+                    <Link
+                      key={`styled-table-cell-${row.name}`}
+                      href={
+                        isvisitor
+                          ? `/${type}/details/visitor/${row.id}`
+                          : `/${type}/details/self/${row.id}`
+                      }
+                      className="link-primary link "
+                    >
+                      {row.name}
+                    </Link>
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.lastUpdate.toLocaleString()}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.starCount}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.downloadCount}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+              {emptyRows > 0 && (
+                <StyledTableRow
+                  style={{
+                    height: 53 * emptyRows,
+                  }}
+                >
+                  <StyledTableCell colSpan={6} />
+                </StyledTableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </Box>
   );
 }

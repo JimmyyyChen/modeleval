@@ -27,6 +27,7 @@ model Model {
   downloadCount Int       @default(0)
   lastUpdate    DateTime  @default(now())
   starCount     Int       @default(0)
+  starUser      User[]
   Tasks         Task[]
   Comment       Comment[]
   ScoreObj      Float     @default(0.0) // 平均客观题得分
@@ -55,13 +56,16 @@ model Dataset {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  username   String
-  userId     String
-  Dataset1   Dataset? @relation("DownloadUserRelation", fields: [datasetId1], references: [id])
-  datasetId1 Int?
-  Dataset2   Dataset? @relation("StarUserRelation", fields: [datasetId2], references: [id])
-  datasetId2 Int?
+  id           Int      @id @default(autoincrement())
+  username     String
+  userImage    String   @default("")
+  userId       String
+  Dataset1     Dataset? @relation("DownloadUserRelation", fields: [datasetId1], references: [id])
+  datasetId1   Int?
+  Dataset2     Dataset? @relation("StarUserRelation", fields: [datasetId2], references: [id])
+  datasetId2   Int?
+  Model        Model?   @relation(fields: [modelModelid], references: [modelid])
+  modelModelid Int?
 }
 
 model ChoiceQuestion {

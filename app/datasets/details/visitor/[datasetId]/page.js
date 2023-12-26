@@ -9,7 +9,7 @@ import Community from "@/app/components/Community";
 import UserInfo from "@/app/components/UserInfo";
 import Labels from "@/app/components/Labels";
 import ItemsDisplay from "./components/ItemsDisplay";
-import MainInfoDisplay from "@/app/components/MainInfoDisplay";
+import DatasetMainInfoDisplay from "@/app/datasets/components/DatasetMainInfoDisplay";
 
 export default function Home({ params: { datasetId } }) {
   const [datasetInfo, setDatasetInfo] = useState({});
@@ -20,7 +20,7 @@ export default function Home({ params: { datasetId } }) {
       try {
         const response = await axios.get(`/api/datasets/info/${datasetId}`);
         if (response.status >= 200 && response.status < 300) {
-          setDatasetInfo(response.data[0]);
+          setDatasetInfo(response.data);
         } else {
           setDatasetInfo({});
           console.error("Error fetching data:", response.statusText);
@@ -61,15 +61,21 @@ export default function Home({ params: { datasetId } }) {
 
   return (
     <>
-      <MainInfoDisplay datasetInfo={datasetInfo} />
+      <DatasetMainInfoDisplay datasetInfo={datasetInfo} />
 
-      <div className="mt-6 w-full">
+      <div className="h-full w-full p-4">
         <Labels labelList={labelList} />
       </div>
 
-      <div className="mt-6 flex h-full w-full flex-col items-start space-y-6 lg:flex-row lg:space-y-0 ">
+      <div className="flex h-full w-full flex-col items-start space-y-6 lg:flex-row lg:space-y-0 ">
         <div className="h-full w-full p-4 lg:w-2/3">
-          <ItemsDisplay items={datasetItems} />
+          {datasetInfo && datasetInfo.id ? (
+            <ItemsDisplay datasetInfo={datasetInfo} />
+          ) : (
+            <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
+              Loading...
+            </div>
+          )}
         </div>
 
         <div className="h-full w-full p-4 lg:w-1/3">

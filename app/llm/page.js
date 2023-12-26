@@ -1,31 +1,33 @@
-"use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { prisma } from "@/lib/prisma";
+
 import ModelDisplay from "./components/ModelDisplay";
 
-export default function Home() {
-  const [models, setModels] = useState(null);
+export default async function ModelsPage({searchParams}) {
+  const query = searchParams?.query || "";
+  const filter = searchParams?.filter || "";
+  const filterList = filter ? filter.split(",") : [];
 
-  useEffect(() => {
-    const fetchModels = async () => {
-      try {
-        const response = await axios.get("/api/models");
-        if (response.status >= 200 && response.status < 300) {
-          setModels(response.data);
-        } else {
-          setModels(undefined);
-          console.error("Error fetching data:", response.status);
-        }
-      } catch (error) {
-        setModels(undefined);
-        console.error("Error fetching data:", error);
-      }
+  let whereCondition = {
+    modelName: {
+      contains: query,
+    },
+  };
+
+  if (filterList.length > 0) {
+    whereCondition.label_list = {
+      some: {
+        labelName: {
+          in: filterList,
+        },
+      },
     };
+  }
 
-    fetchModels();
-  }, []);
+  const models = await prisma.model.findMany({
+    where: whereCondition,
+  });
 
   return (
-    <ModelDisplay title="模型" models={models} />
+    <ModelDisplay models={models} />
   );
 }

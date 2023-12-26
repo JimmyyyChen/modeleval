@@ -7,6 +7,7 @@ export async function GET(request, { params }) {
         let stars = 0;
         let organization = "individual";
         let starList = [];
+        let starList_model = [];
         let downloadList = [];
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -35,6 +36,14 @@ export async function GET(request, { params }) {
             });
         }
         else starList = user.privateMetadata.starList;
+        if (user.privateMetadata.starList_model == undefined) {
+            await clerkClient.users.updateUserMetadata(params.userId, {
+                privateMetadata: {
+                    starList_model: [],
+                }
+            });
+        }
+        else starList_model = user.privateMetadata.starList_model;
         if (user.privateMetadata.downloadList == undefined) {
             await clerkClient.users.updateUserMetadata(params.userId, {
                 privateMetadata: {
@@ -50,6 +59,7 @@ export async function GET(request, { params }) {
             organization: organization,
             stars: stars,
             starList: starList,
+            starList_model: starList_model,
             downloadList: downloadList,
             image_url: user.imageUrl,
         }, { status: 200 })
