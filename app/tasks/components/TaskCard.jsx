@@ -85,23 +85,20 @@ export default function TaskCard({ task }) {
         progress={progress}
         isEvaluated={isEvaluated}
       />
-
       {/* space */}
       <div className="w-3"></div>
-
       <div>
         <h2 className="text-xl font-bold">{taskName}</h2>
         {/* if completed */}
         {progress === 1 ? (
           <p className="text-gray-500">
             {startTime.toLocaleString()} 开始 • {endTime.toLocaleString()} 结束
-            • 用户 {userName} 创建
           </p>
         ) : (
-          <p className="text-gray-500">{formatedStartTime} 开始 • 用户 {userName} 创建 </p>
+          <p className="text-gray-500">{formatedStartTime} 开始 </p>
         )}
+        <p className="text-gray-500">用户 {userName} 创建</p>
       </div>
-
       <div className="ml-auto space-x-1">
         <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
           <XMarkIcon className="h-5 w-5" />

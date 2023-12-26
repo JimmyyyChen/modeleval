@@ -11,9 +11,23 @@ import ResultTable from "./components/ResultTable";
 export default function TaskDisplayPage({ params }) {
   const taskId = parseInt(params.taskId);
   const [task, setTask] = useState({});
+  const userId = task.userId ? task.userId : null;
   const [areAnswersGenerated, setAreAnswersGenerated] = useState(false);
+  const [user, setUser] = useState("");
+  const userName = user ? user.username : "";
 
   useEffect(() => {
+    if (userId !== null) {
+      axios
+        .get(`/api/user/${userId}`)
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     const interval = setInterval(async () => {
       if (areAnswersGenerated === 1) {
         return () => clearInterval(interval);
@@ -31,7 +45,7 @@ export default function TaskDisplayPage({ params }) {
       }
     }, 1000); // 1s
     return () => clearInterval(interval);
-  }, [areAnswersGenerated, taskId]);
+  }, [areAnswersGenerated, taskId, userId]);
 
   // return loading if task is not loaded
   if (task === undefined) {
@@ -66,23 +80,23 @@ export default function TaskDisplayPage({ params }) {
           value={progress}
           max="1"
         ></progress>
-        <p className={`text-gray-500 ${isNaN(startTime) ? "hidden" : ""
-        }`}>
+        <p className={`text-gray-500 ${isNaN(startTime) ? "hidden" : ""}`}>
           {progress === 1
             ? `已生成回答 | ${startTime.toLocaleString()}开始 | 用时${Math.round(
-                (endTime - startTime) / 1000,
-              )}秒| ${endTime.toLocaleString()}结束 `
+              (endTime - startTime) / 1000,
+            )}秒| ${endTime.toLocaleString()}结束 `
             : `正在生成回答 ${Math.floor(progress * 100)}% | 用时${Math.round(
-                (Date.now() - startTime) / 1000,
-              )}秒 | ${startTime.toLocaleString()}开始 `}
+              (Date.now() - startTime) / 1000,
+            )}秒 | ${startTime.toLocaleString()}开始 `}
         </p>
+        <p className="text-gray-500">用户 {userName} 创建</p>
       </div>
 
       <h2 className="text-2xl font-bold">评测</h2>
       {areAnswersGenerated && questionType !== 2 ? (
         Object.keys(answerjson).map((modelId) => (
           <ResultTable
-            key={modelId}
+            key={`result-table-${modelId}`}
             score={scoresjson[modelId]}
             modelName={answerjson[modelId].modelName}
             evalRef={
@@ -144,7 +158,7 @@ export default function TaskDisplayPage({ params }) {
 
       <h2 className="text-2xl font-bold">模型</h2>
       {models ? (
-        models.map((model) => <TaskModelInfo model={model} key={model.id} />)
+        models.map((model) => <TaskModelInfo model={model} key={`TaskModelInfo+${model.modelid}`} />)
       ) : (
         <span className="loading loading-dots loading-xs self-center"></span>
       )}

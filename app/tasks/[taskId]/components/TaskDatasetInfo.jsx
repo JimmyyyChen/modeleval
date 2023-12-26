@@ -11,7 +11,7 @@ export default function TaskDatasetInfo({ dataset }) {
   const datasetName = dataset.datasetName;
   const description = dataset.description;
   const questionType = dataset.questionType ? "问答题" : "选择题";
-  const sizeInMB = dataset.sizeInMB;
+  const sizeInMB = dataset.sizeInMB; // TODO: this is not sizeInMb anymore??? it's now 条目数
   const lastUpdateText = new Date(dataset.lastUpdate).toLocaleString();
 
   return (
@@ -30,7 +30,7 @@ export default function TaskDatasetInfo({ dataset }) {
       <p className="text-sm text-gray-500">{description}</p>
 
       <div className="ml-auto space-x-1 font-medium text-gray-800">
-        {questionType} • {sizeInMB} MB • {lastUpdateText}
+        {questionType} • 条目数量 {sizeInMB}  • {lastUpdateText}
       </div>
     </div>
   );
