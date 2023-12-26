@@ -83,77 +83,52 @@ export const datasetTypes = [
   },
 ];
 
+// TODO:目前没有模型有label
 export const modelTypes = [
+  {
+    id: "language",
+    label: "语言",
+    value: [
+      {
+        id: 1,
+        content: "支持中文",
+      },
+      {
+        id: 2,
+        content: "支持英文",
+      },
+      {
+        id: 3,
+        content: "支持日文",
+      },
+      {
+        id: 4,
+        content: "支持韩文",
+      },
+      {
+        id: 3,
+        content: "支持西班牙文",
+      },
+      {
+        id: 3,
+        content: "支持德文",
+      },
+    ],
+  },
   {
     id: "type",
     label: "类型",
     value: [
       {
         id: 1,
-        content: "主观",
+        content: "文字生成",
       },
       {
         id: 2,
-        content: "客观",
-      },
-    ],
-  },
-  {
-    id: "size",
-    label: "大小",
-    value: [
-      {
-        id: 1,
-        content: "<1K",
-      },
-      {
-        id: 2,
-        content: "1K-10K",
-      },
-      {
-        id: 3,
-        content: "10K-100K",
-      },
-      {
-        id: 4,
-        content: "100K-1M",
-      },
-      {
-        id: 5,
-        content: "1M-10M",
-      },
-      {
-        id: 6,
-        content: ">10M",
-      },
-    ],
-  },
-  {
-    id: "task",
-    label: "任务",
-    value: [
-      {
-        id: 1,
-        content: "事实问答",
-      },
-      {
-        id: 2,
-        content: "情感分析",
-      },
-      {
-        id: 3,
-        content: "自动化程序生成",
-      },
-      {
-        id: 4,
-        content: "多模态",
-      },
-      {
-        id: 5,
         content: "其他",
       },
     ],
-  },
+  }
 ];
 
 export const labels = {
