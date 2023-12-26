@@ -30,20 +30,20 @@ export async function GET(request, { params }) {
         if (!dataset) {
             return new NextResponse(JSON.stringify({ success: false, message: "Dataset not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
         }
+        await prisma.dataset.update({
+            where: {
+                id: parseInt(params.id),
+            },
+            data: {
+                downloadCount: dataset.downloadCount + 1,
+            },
+
+        });
         if (!user.privateMetadata.downloadList.includes(dataset.id)) {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     downloadList: [...user.privateMetadata.downloadList, dataset.id],
                 }
-
-            });
-            await prisma.dataset.update({
-                where: {
-                    id: parseInt(params.id),
-                },
-                data: {
-                    downloadCount: dataset.downloadCount + 1,
-                },
 
             });
             await prisma.user.create({
