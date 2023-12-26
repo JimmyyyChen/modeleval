@@ -74,8 +74,8 @@ export async function POST(request) {
                     reject(error);
                 });
         });
-        //const stats = fs.statSync(temp_datasetname2);
-        //const fileSize = (stats.size / 1024 / 1024).toFixed(4);
+        const stats = fs.statSync(temp_datasetname2);
+        const fileSize = (stats.size / 1024 / 1024).toFixed(4);
         let question_type;
         if (results[0].choices || results[1].choices) {                 //即将创建数据集
             question_type = 0;
