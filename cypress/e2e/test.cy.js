@@ -115,7 +115,7 @@ describe("Testing", () => {
         cy.visit("/", {
             failOnStatusCode: false,
         });
-        cy.find('.cl-avatarBox').click();
+        cy.get('.cl-avatarBox').click();
         cy.wait(500);
         cy.contains('退出登录').parent().click();
         cy.visit("/tasks", {
