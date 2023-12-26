@@ -1,4 +1,8 @@
-# API-DATASET
+    
+
+    
+
+    # API-DATASET
 
 ## 数据集部分
 
@@ -54,6 +58,7 @@
 - 失败 (`500`): 返回错误信息。
 
 ### 收藏数据集 `POST /api/datasets/star/[id]`
+
   修改当前登录用户对指定数据集的收藏状态,1->0,0->1.
 
 **Path Info:**
@@ -95,8 +100,9 @@
   - `ShortAnswerQuestions` ([`ShortAnswerQuestion`]): 主观题集合
   - `userId` (userId): 数据集的作者auth
   - `username` (String): 数据集的作者用户名
-  - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
-  - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `starUser` ([User]): 收藏该数据集的用户列表,含有三个属性userId,username与userImageUrl,分别是用户的auth与用户名与头像链接
+  - `downloadUser` ([User]): 下载该数据集的用户列表,含有三个属性userId,username与userImageUrl,分别是用户的auth与用户名与头像链接
+  - `Comment`([Comment]):评论列表,comment的数据结构见api-comment.md
 - 失败 (`500`): 返回错误信息。
 
 ## 获取所有数据集信息 `GET /api/datasets`
@@ -122,6 +128,7 @@
   - `username` (String): 数据集的作者用户名
   - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
   - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `Comment`([Comment]):评论列表,comment的数据结构见api-comment.md
 - 失败 (`500`): 返回错误信息。
 
 ### 获取个人数据集信息 `GET /api/datasets/user/[userId]`
@@ -154,6 +161,7 @@
   - `username` (String): 数据集的作者用户名
   - `starUser` ([User]): 收藏该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
   - `downloadUser` ([User]): 下载该数据集的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
+  - `Comment`([Comment]):评论列表,comment的数据结构见api-comment.md
 - 失败 (`500`): 返回错误信息。
 
 ### 删除数据集 `DELETE api/datasets/delete/[id]`

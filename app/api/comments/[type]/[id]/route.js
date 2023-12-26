@@ -5,15 +5,34 @@ export async function GET(request, { params }) {
     try {
         let type = parseInt(params.type);
         let id = parseInt(params.id);
-        let comments = await prisma.Comment.findMany({
-            where: {
-                type: type,
-                id: id
-            },
-            orderBy: {
-                commentTime: "desc"
-            },
-        });
+        let comments;
+        if (type == 0) {
+            comments = await prisma.Comment.findMany({
+                where: {
+                    modelId: id,
+                },
+                orderBy: {
+                    commentTime: "desc"
+                },
+                include: {
+                    user: true,
+                }
+            });
+        }
+        else if (type == 1) {
+            comments = await prisma.Comment.findMany({
+                where: {
+                    datasetId: id,
+                },
+                orderBy: {
+                    commentTime: "desc"
+                },
+                include: {
+                    user: true,
+                }
+            });
+        }
+
         return new NextResponse(JSON.stringify(comments), {
             status: 200,
             headers: { "Content-Type": "application/json" },

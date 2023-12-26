@@ -1,5 +1,14 @@
 # API-COMMENT
 
+## Comment的数据结构
+
+- id(int):留言的id
+- content(string):留言内容
+- commentTime(DateTime):留言时间
+- type(int):0表示model,1表示dataset,2表示user,3表示task(TODO:2&&3)
+- user(User):留言者的信息,包括userId,username与userImageUrl,分别是用户的auth与用户名与头像链接
+- 
+
 ## 留言部分
 
 ### 上传新留言 `POST /api/comments/upload`
@@ -10,6 +19,7 @@
 - `type`(Int):0表示model,1表示dataset,2表示user,3表示task(TODO:2&&3)
 - `id`(Int):对应的id,例如type为0时,表示model的id
 - `content`(String):留言内容
+- `reply`(Int):可选,指向回复的留言的id,默认为-1
 
 **Response:**
 
@@ -23,6 +33,7 @@
 获取指定对象的所有留言,按时间顺序排列,最新的在前面
 
 **Path Info:**
+
 - `type`(Int):0表示model,1表示dataset,2表示user,3表示task(TODO:2&&3)
 - `id`(Int):对应的id,例如type为0时,表示model的id
 
@@ -32,22 +43,17 @@
 
 **Response:**
 
-- 成功 (`200`),返回一个JSON数组,每个元素包括:
-  - `id`(Int):留言的id
-  - `content`(String):留言内容
-  - `commentTime`(DateTime):留言时间
-  - `lastUpdate`(DateTime):最新更新时间
-  - `type`(Int):0表示model,1表示dataset,2表示user,3表示task(TODO:2&&3)
-  - `userId`(String):留言者的auth
-  - `username`(String):留言者的用户名
+- 成功 (`200`),返回一个对应对象的所有Comment数组.
 - 失败 (`500`): 系统错误(一般不出现)。
 
-### 修改/删除留言 `POST /api/comments/update/[id]`
+### 修改/删除留言 `POST /api/comments/update/[id]`  //暂时弃用,但是该api仍然可用
 
 **Path Info:**
-  - `id`(Int):留言的id(`与上面的id定义不同!`)
+
+- `id`(Int):留言的id(`与上面的id定义不同!`)
 
 **Request Body:**
+
 - `content`(String):留言内容,为空则删除该留言
 
 **Response:**

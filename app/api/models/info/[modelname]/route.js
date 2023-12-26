@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
     try {
         let model = await prisma.model.findUnique({
             where: {
-                modelid: modelName
+                modelid: parseInt(modelName),
             },
             include: {
                 label_list: true,
