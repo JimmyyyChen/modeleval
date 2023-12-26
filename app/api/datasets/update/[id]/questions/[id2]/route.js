@@ -105,12 +105,12 @@ export async function POST(request, { params }) {
                 headers: { "Content-Type": "application/json" },
             });
         }
-        if (dataset.userId != userId) {
-            return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
-                status: 403,
-                headers: { "Content-Type": "application/json" },
-            });
-        }
+        // if (dataset.userId != userId) {
+        //     return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
+        //         status: 403,
+        //         headers: { "Content-Type": "application/json" },
+        //     });
+        // }
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
 
@@ -215,7 +215,7 @@ export async function POST(request, { params }) {
                 if (body["question"] && body["question"] != '') {                         //如果有问题,更新;如果没有,删除
                     question["question"] = body["question"];
                 }
-                if (body["choices"] && body["choices"] != []) {
+                if (body["choices"] && body["choices"].length > 0) {
                     await prisma.Choice.deleteMany({
                         where: {
                             choiceQuestionId: parseInt(params.id2)
