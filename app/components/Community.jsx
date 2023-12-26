@@ -5,7 +5,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
 
 export default function Community({ id, type }) {
-  const fromContext = type === 1 ? "fromDataset" : "fromModel";
+  const fromContext = type === 1 ? "fromDataset" : "fromModel"; // 0 for model, 1 for dataset
   const [comments, setComments] = useState([]);
 
   const submitComment = (content) => {
@@ -31,7 +31,6 @@ export default function Community({ id, type }) {
       .get(`/api/comments/${fromContext}/${id}`)
       .then((res) => {
         setComments(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

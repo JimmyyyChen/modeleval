@@ -1,8 +1,6 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import { issues } from "./data";
 import Community from "@/app/components/Community";
 import UserInfo from "../../components/UserInfo";
 import UserDatasets from "../components/UserDatasets";
@@ -73,9 +71,10 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex w-full p-6 text-2xl">
+        {/* TODO: I think there is no need for comment for a user?? that's weird */}
+        {/* <div className="flex w-full p-6 text-2xl">
           <Community issues={issues} textcontent="我的留言区" />
-        </div>
+        </div> */}
       </div>
     </>
   );

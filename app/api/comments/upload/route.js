@@ -26,7 +26,7 @@ export async function POST(request) {
         if (type == 0) {
             const model = await prisma.model.findUnique({
                 where: {
-                    id: id
+                    modelid: id
                 }
             });
             if (!model) {
@@ -46,7 +46,7 @@ export async function POST(request) {
             });
         }
         else if (type == 1) {
-            const dataset = await prisma.Dataset.findUnique({
+            const dataset = await prisma.dataset.findUnique({
                 where: {
                     id: id
                 }
