@@ -5,8 +5,7 @@ export default function DatasetOption({ dataset, isSelected }) {
   const description = dataset.description;
   const datasetName = dataset.datasetName;
   const questionType = dataset.questionType ? "问答题" : "选择题";
-  const sizeInMB = dataset.sizeInMB;
-  // dataset.lastUpdate is something like "2023-12-16T07:22:34.433Z"
+  const sizeInMB = dataset.sizeInMB; // TODO: this is not sizeInMb anymore??? it's now 条目数
   const date = new Date(dataset.lastUpdate);
   const lastUpdate = date.toLocaleString();
 
@@ -33,7 +32,7 @@ export default function DatasetOption({ dataset, isSelected }) {
       <p className="text-sm text-gray-500">{description}</p>
 
       <div className="ml-auto space-x-1 font-medium text-gray-800">
-        {questionType} • {sizeInMB} MB • {lastUpdate}
+        {questionType} • 条目数量 {sizeInMB} • {lastUpdate}
       </div>
     </div>
   );

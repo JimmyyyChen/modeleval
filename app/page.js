@@ -9,7 +9,7 @@ import { PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { DataGrid } from "@mui/x-data-grid";
 
 const scoring_criteria_content = (
-  <article class="lg:prose-sm prose mx-auto p-5">
+  <article className="lg:prose-sm prose mx-auto p-5">
     <h2>客观题</h2>
     <p>我们规定：</p>
     <ol>
