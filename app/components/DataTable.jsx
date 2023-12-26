@@ -63,8 +63,8 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 export default function DataTable({ items, type, isvisitor }) {
+
   const headCells = [
     {
       id: type === "datasets" ? "datasetName" : "modelName",
@@ -226,7 +226,7 @@ export default function DataTable({ items, type, isvisitor }) {
                       </Link>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {row.lastUpdate}
+                      {row.lastUpdate.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       {row.starCount}
