@@ -107,7 +107,7 @@ describe("Testing", () => {
         });
         cy.contains('测试完成', { timeout: 30000 }).should('be.visible');
         cy.contains('客观测试').click();
-        cy.contains('已完成评测').parent().click();
+        cy.contains('已完成评测').parent().parent().click();
         cy.contains('是否正确').should('be.visible');
         cy.contains('生成答案').should('be.visible');
     });
@@ -115,10 +115,9 @@ describe("Testing", () => {
         cy.visit("/", {
             failOnStatusCode: false,
         });
-        cy.session("signed-out", () => {
-            cy.signOut();
-            cy.signIn2();
-        });
+        cy.find('.cl-avatarBox').click();
+        cy.wait(500);
+        cy.contains('退出登录').parent().click();
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
