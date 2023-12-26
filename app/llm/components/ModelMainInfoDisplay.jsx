@@ -81,11 +81,19 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
                       href={`/profile/visitor/${item.userId}`}
                       key={`star-user-${item.userId}`}
                     >
-                      <div className="avatar">
-                        <div className="flex w-4 items-center justify-center rounded-full">
-                          <img src={item.userImageUrl} alt={item.username} />
+                      {item.userImageUrl ? (
+                        <div className="avatar">
+                          <div className="flex w-6 items-center justify-center rounded-full">
+                            <img src={item.userImageUrl} alt={item.username} />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="avatar placeholder">
+                          <div className="w-6 rounded-full bg-primary text-neutral-content">
+                            <span className="text-sm">{item.username[0]}</span>
+                          </div>
+                        </div>
+                      )}
                       <div>{item.username}</div>
                     </Link>
                   ))

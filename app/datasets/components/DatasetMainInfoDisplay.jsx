@@ -125,16 +125,27 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                       href={`/profile/visitor/${item.userId}`}
                       key={`download-user-${item.userId}`}
                     >
-                      <div className="avatar">
-                        <div className="flex w-4 items-center justify-center rounded-full">
-                          <img src={item.userImageUrl} alt={item.username} />
+                      {item.userImageUrl ? (
+                        <div className="avatar">
+                          <div className="flex w-6 items-center justify-center rounded-full">
+                            <img src={item.userImageUrl} alt={item.username} />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="avatar placeholder">
+                          <div className="w-6 rounded-full bg-primary text-neutral-content">
+                            <span className="text-sm">
+                              {item.username[0]}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                       <div>{item.username}</div>
                     </Link>
-                  ))) : (
-                    <div className="text-primary text-center p-6">无</div>
-                  )}
+                  ))
+                ) : (
+                  <div className="p-6 text-center text-primary">无</div>
+                )}
               </div>
             </DialogContent>
             <DialogActions>
@@ -178,16 +189,27 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                       href={`/profile/visitor/${item.userId}`}
                       key={`star-user-${item.userId}`}
                     >
-                      <div className="avatar">
-                        <div className="flex w-4 items-center justify-center rounded-full">
-                          <img src={item.userImageUrl} alt={item.username} />
+                      {item.userImageUrl ? (
+                        <div className="avatar">
+                          <div className="flex w-6 items-center justify-center rounded-full">
+                            <img src={item.userImageUrl} alt={item.username} />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="avatar placeholder">
+                          <div className="w-6 rounded-full bg-primary text-neutral-content">
+                            <span className="text-sm">
+                              {item.username[0]}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                       <div>{item.username}</div>
                     </Link>
-                  ))) : (
-                    <div className="text-primary text-center p-6">无</div>
-                  )}
+                  ))
+                ) : (
+                  <div className="p-6 text-center text-primary">无</div>
+                )}
               </div>
             </DialogContent>
             <DialogActions>
