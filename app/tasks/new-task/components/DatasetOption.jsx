@@ -11,15 +11,13 @@ export default function DatasetOption({ dataset, isSelected }) {
 
   return (
     <div
-      className={` ${
-        isSelected ? "ring-2 ring-teal-700" : ""
-      } w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6`}
+      className={` ${isSelected ? "ring-2 ring-teal-700" : ""
+        } w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6`}
     >
       <h2 className="flex flex-wrap items-center space-x-3 ">
         <div
-          className={` h-4 w-4 rounded-full ${
-            isSelected ? "border-4 border-teal-700" : "border border-gray-500"
-          }`}
+          className={` h-4 w-4 rounded-full ${isSelected ? "border-4 border-teal-700" : "border border-gray-500"
+            }`}
         ></div>
 
         <p className=" font-mono text-xl font-bold">{datasetName}</p>
