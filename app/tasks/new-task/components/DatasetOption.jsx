@@ -4,8 +4,9 @@ import Link from "next/link";
 export default function DatasetOption({ dataset, isSelected }) {
   const description = dataset.description;
   const datasetName = dataset.datasetName;
+  const datasetId = dataset.id;
   const questionType = dataset.questionType ? "问答题" : "选择题";
-  const sizeInMB = dataset.sizeInMB; // TODO: this is not sizeInMb anymore??? it's now 条目数
+  const sizeInMB = dataset.sizeInMB; //  this is not sizeInMb anymore??? it's now 条目数
   const date = new Date(dataset.lastUpdate);
   const lastUpdate = date.toLocaleString();
 
@@ -21,8 +22,7 @@ export default function DatasetOption({ dataset, isSelected }) {
         ></div>
 
         <p className=" font-mono text-xl font-bold">{datasetName}</p>
-        {/* TODO: link to corresponded dataset */}
-        <Link className="link-primary link text-sm" href={`/datasets/details/visitor/${datasetName}/`}>
+        <Link className="link-primary link text-sm" href={`/datasets/details/visitor/${datasetId}/`}>
           查看更多
         </Link>
       </h2>

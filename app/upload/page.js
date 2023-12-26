@@ -15,8 +15,6 @@ export default function IndexPagePage() {
 
     try {
       const response = await axios.post("/api/datasets/upload", formData);
-      //TODO
-      console.log(response);
       if (response.status == 200) {
         alert(
           "文件上传成功!共成功上传了" +

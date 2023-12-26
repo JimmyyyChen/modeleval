@@ -83,7 +83,6 @@ export const datasetTypes = [
   },
 ];
 
-// TODO:目前没有模型有label
 export const modelTypes = [
   {
     id: "language",

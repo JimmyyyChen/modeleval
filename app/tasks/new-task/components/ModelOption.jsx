@@ -4,6 +4,7 @@ import Link from "next/link";
 export default function ModelOption({ model, isSelected }) {
   const modelName = model.modelName;
   const description = model.description;
+  const modelId = model.modelid
 
   return (
     <div
@@ -20,8 +21,7 @@ export default function ModelOption({ model, isSelected }) {
         />
 
         <p className=" font-mono text-xl font-bold">{modelName}</p>
-        {/* TODO: link to corresponded model */}
-        <Link className="link-primary link text-sm" href={`/llm/details/visitor/${modelName}/`}>
+        <Link className="link-primary link text-sm" href={`/llm/details/visitor/${modelId}/`}>
           查看更多
         </Link>
       </h2>
