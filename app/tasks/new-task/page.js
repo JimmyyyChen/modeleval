@@ -101,7 +101,7 @@ export default function NewTaskPage() {
       <div className="flex items-center space-x-3">
         <h2 className="text-xl font-bold ">选择数据集</h2>
         <p>或</p>
-        <Link className="link-primary link" href="/upload_dataset_demo">
+        <Link className="link-primary link" href="/upload">
           上传数据集
         </Link>
       </div>

@@ -9,19 +9,19 @@ export default function TaskDatasetInfo({ dataset }) {
   }
 
   const datasetName = dataset.datasetName;
+  const datasetId = dataset.id;
   const description = dataset.description;
   const questionType = dataset.questionType ? "问答题" : "选择题";
-  const sizeInMB = dataset.sizeInMB; // TODO: this is not sizeInMb anymore??? it's now 条目数
+  const sizeInMB = dataset.sizeInMB; 
   const lastUpdateText = new Date(dataset.lastUpdate).toLocaleString();
 
   return (
     <div className="w-full flex-wrap items-center space-y-2 overflow-hidden rounded-3xl border bg-base-100 p-6">
       <h2 className="flex flex-wrap items-center space-x-3 ">
         <p className=" font-mono text-xl font-bold">{datasetName}</p>
-        {/* TODO: link to corresponded dataset */}
         <Link
           className="link-primary link text-sm"
-          href={`/datasets/details/visitor/${datasetName}/`}
+          href={`/datasets/details/visitor/${datasetId}/`}
         >
           查看更多
         </Link>
