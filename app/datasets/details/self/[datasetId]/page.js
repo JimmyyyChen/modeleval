@@ -18,7 +18,7 @@ export default function Home({ params: { datasetId } }) {
       try {
         const response = await axios.get(`/api/datasets/info/${datasetId}`);
         if (response.status >= 200 && response.status < 300) {
-          setDatasetInfo(response.data[0]);
+          setDatasetInfo(response.data);
         } else {
           setDatasetInfo({});
           console.error("Error fetching data:", response.statusText);
