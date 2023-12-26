@@ -1,4 +1,5 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+"use client";
+import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function CheckCondition({ title, labels }) {
@@ -10,7 +11,7 @@ export default function CheckCondition({ title, labels }) {
 
   function handleSearch(term) {
     const params = new URLSearchParams(searchParams);
-    if (term) {
+    if (term !== "") {
       params.set("query", term);
     } else {
       params.delete("query");
@@ -29,9 +30,9 @@ export default function CheckCondition({ title, labels }) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col rounded-xl border border-gray-200 bg-white shadow-lg">
+    <div className="flex flex-col rounded-xl bg-white p-3 shadow-lg">
       <form
-        className="flex w-full flex-col items-center justify-between space-y-2 rounded-lg rounded-b-none bg-gray-200 p-4 lg:flex-row lg:space-x-2 lg:space-y-0"
+        className="flex items-center space-x-3"
         onSubmit={(e) => {
           e.preventDefault();
           handleSearch(e.target[0].value);
@@ -40,17 +41,19 @@ export default function CheckCondition({ title, labels }) {
         <input
           className="input input-bordered w-5/6"
           placeholder={`搜索${title}`}
-          defaultValue={query}
+          defaultValue={searchParams.get("query")?.toString()}
         />
-        {/* TODO: Add post link */}
 
-        <button className="btn btn-primary flex w-16 text-white" type="submit">
+        <button type="submit">
           <MagnifyingGlassIcon className="h-5 w-5" />
+        </button>
+
+        <button type="reset" onClick={() => handleSearch("")}>
+          <XCircleIcon className="h-5 w-5  text-gray-500" />
         </button>
       </form>
 
       {/* TODO: Add post link */}
-      {/* <form className="w-full divide-y-2 p-4" > */}
       {labels.map((item) => (
         <div key={item.id} className="m-2 flex w-full flex-col space-y-2 pt-2">
           <div className="text-lg font-bold text-primary">{item.label}</div>
@@ -88,11 +91,6 @@ export default function CheckCondition({ title, labels }) {
           </div>
         </div>
       ))}
-
-      {/* <button className="btn btn-primary mt-6 w-full text-white" type="submit">
-          确认条件
-        </button> */}
-      {/* </form> */}
     </div>
   );
 }
