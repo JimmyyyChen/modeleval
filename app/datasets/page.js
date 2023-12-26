@@ -36,5 +36,5 @@ export default async function DatasetsPage({ searchParams }) {
     },
   });
 
-  return <DatasetDisplay title="数据集" datasets={datasets} isvisitor={true} />;
+  return <DatasetDisplay datasets={datasets} isvisitor={true} />;
 }

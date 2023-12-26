@@ -8,10 +8,18 @@ import {
   StarIcon as SolidStarIcon,
 } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
 // TODO: 添加收藏判定，更改收藏图标
 export default function DatasetMainInfoDisplay({ datasetInfo }) {
   const [downloadFilename, setDownloadFilename] = useState("");
+
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [starOpen, setStarOpen] = useState(false);
 
   if (datasetInfo) {
     var {
@@ -61,11 +69,6 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
     }
   };
 
-  // TODO: 增加下载列表展示
-  const handleDownloadUserDisplayClick = async () => {
-    console.log("download user display clicked");
-  };
-
   const handleStarClick = async () => {
     const response = await axios.post(`/api/datasets/star/${id}`);
 
@@ -76,13 +79,6 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
     } else {
       console.log("error");
     }
-  };
-
-  console.log(starUser);
-
-  // TODO: 增加收藏列表展示
-  const handleSterUserDisplayClick = async () => {
-    console.log("star user display clicked");
   };
 
   return (
@@ -114,10 +110,48 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
           </a>
           <button
             className="btn btn-outline btn-primary h-8 min-h-0 rounded-full rounded-l-none border-l-0 px-2 text-xs"
-            onClick={handleDownloadUserDisplayClick}
+            onClick={() => setDownloadOpen(true)}
           >
             {downloadCount}
           </button>
+          <Dialog open={downloadOpen} onClose={() => setDownloadOpen(false)}>
+            <DialogTitle>下载用户列表</DialogTitle>
+            <DialogContent>
+              <div className="flex flex-col space-y-2">
+                {downloadUser && downloadUser.length ? (
+                  downloadUser.map((item) => (
+                    <Link
+                      className="flex items-center justify-center space-x-4 hover:underline"
+                      href={`/profile/visitor/${item.userId}`}
+                      key={`download-user-${item.userId}`}
+                    >
+                      {item.userImageUrl ? (
+                        <div className="avatar">
+                          <div className="flex w-6 items-center justify-center rounded-full">
+                            <img src={item.userImageUrl} alt={item.username} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="avatar placeholder">
+                          <div className="w-6 rounded-full bg-primary text-neutral-content">
+                            <span className="text-sm">
+                              {item.username[0]}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      <div>{item.username}</div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="p-6 text-center text-primary">无</div>
+                )}
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDownloadOpen(false)}>关闭</Button>
+            </DialogActions>
+          </Dialog>
         </div>
         <div className="flex flex-row items-center">
           <button
@@ -140,10 +174,48 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
           </button>
           <button
             className="btn btn-outline btn-primary h-8 min-h-0 rounded-full rounded-l-none border-l-0 px-2 text-xs"
-            onClick={handleSterUserDisplayClick}
+            onClick={() => setStarOpen(true)}
           >
             {starCount}
           </button>
+          <Dialog open={starOpen} onClose={() => setStarOpen(false)}>
+            <DialogTitle>收藏用户列表</DialogTitle>
+            <DialogContent>
+              <div className="flex flex-col space-y-2">
+                {starUser && starUser.length ? (
+                  starUser.map((item) => (
+                    <Link
+                      className="flex items-center justify-center space-x-4 hover:underline"
+                      href={`/profile/visitor/${item.userId}`}
+                      key={`star-user-${item.userId}`}
+                    >
+                      {item.userImageUrl ? (
+                        <div className="avatar">
+                          <div className="flex w-6 items-center justify-center rounded-full">
+                            <img src={item.userImageUrl} alt={item.username} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="avatar placeholder">
+                          <div className="w-6 rounded-full bg-primary text-neutral-content">
+                            <span className="text-sm">
+                              {item.username[0]}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      <div>{item.username}</div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="p-6 text-center text-primary">无</div>
+                )}
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setStarOpen(false)}>关闭</Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
       <div className="text-md hidden w-full px-16 py-4 text-gray-400 lg:block">

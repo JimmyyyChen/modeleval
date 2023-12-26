@@ -4,9 +4,9 @@ import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 import Link from "next/link";
 
-export default function Home({ title, datasets, isvisitor }) {
+export default function DatasetDisplay({ datasets, isvisitor }) {
   return (
-    <div className="flex w-full flex-col space-y-3">
+    <div className="flex flex-col space-y-6">
       <div className="flex">
         {/* 设置 flex-grow 使 CheckCondition 占据更多空间 */}
         <div className="flex-grow">

@@ -77,7 +77,15 @@ export const datasetTypes = [
       },
       {
         id: 5,
-        content: "其他",
+        content: "时间序列预测",
+      },
+      {
+        id: 6,
+        content: "表格分类",
+      },
+      {
+        id: 7,
+        content: "表格回归",
       },
     ],
   },

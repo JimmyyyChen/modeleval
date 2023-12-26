@@ -10,8 +10,6 @@ export default function UserDatasets({ isvisitor, datasets, userInfo }) {
     var { username, userId } = userInfo;
   }
 
-  console.log(datasets);
-
   return (
     <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-primary shadow-lg">
       <div className="flex w-full flex-col items-center justify-between space-y-2 lg:flex-row lg:space-y-0">
