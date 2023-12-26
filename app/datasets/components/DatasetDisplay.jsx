@@ -5,22 +5,14 @@ import CheckCondition from "../../components/CheckCondition";
 
 export default function Home({ title, datasets, isvisitor }) {
   return (
-    <>
-      {/* TODO: 数据集名称长度 */}
-      <div className="w-full text-center text-4xl font-bold text-primary sm:text-left">
-        {/* TODO: 添加图标 */}
-        <p>{title}</p>
+    <div className="flex flex-col space-y-3">
+      <div>
+        <CheckCondition title="数据集" labels={datasetTypes} />
       </div>
 
-      <div className="mt-6 flex w-full flex-wrap space-x-0 space-y-6 p-4 sm:flex-nowrap sm:space-x-6 sm:space-y-0">
-        <div className="flex w-full flex-1 sm:w-1/3">
-          <CheckCondition title="数据集" labels={datasetTypes} />
-        </div>
-
-        <div className="min-h-full w-full sm:w-2/3 ">
-          <DataTable items={datasets} type="datasets" isvisitor={isvisitor} />
-        </div>
+      <div>
+        <DataTable items={datasets} type="llm" isvisitor={isvisitor} />
       </div>
-    </>
+    </div>
   );
 }

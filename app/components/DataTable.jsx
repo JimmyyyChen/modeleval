@@ -186,16 +186,15 @@ export default function DataTable({ items, type, isvisitor }) {
     );
   } else if (items.length === 0) {
     return (
-      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-6 text-lg text-primary shadow-lg">
+      <div className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white text-lg text-primary shadow-lg">
         No {type === "datasets" ? "dataset" : "model"} found.
       </div>
     );
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-start rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-      <Box className="w-full">
-        <Paper className="mb-1 w-full">
+      <Box>
+        <Paper>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
               <EnhancedTableHead
@@ -259,6 +258,5 @@ export default function DataTable({ items, type, isvisitor }) {
           />
         </Paper>
       </Box>
-    </div>
   );
 }

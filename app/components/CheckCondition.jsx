@@ -1,5 +1,5 @@
 "use client";
-import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function CheckCondition({ title, labels }) {
@@ -30,7 +30,7 @@ export default function CheckCondition({ title, labels }) {
   }
 
   return (
-    <div className="flex flex-col rounded-xl bg-white p-3 shadow-lg">
+    <div className="flex flex-col space-y-3">
       <form
         className="flex items-center space-x-3"
         onSubmit={(e) => {
@@ -39,35 +39,38 @@ export default function CheckCondition({ title, labels }) {
         }}
       >
         <input
-          className="input input-bordered w-5/6"
+          className="input input-bordered w-5/6 rounded-3xl"
           placeholder={`搜索${title}`}
           defaultValue={searchParams.get("query")?.toString()}
         />
 
-        <button type="submit">
+        <button type="submit" className="btn btn-circle btn-primary text-white shadow">
           <MagnifyingGlassIcon className="h-5 w-5" />
         </button>
 
-        <button type="reset" onClick={() => handleSearch("")}>
-          <XCircleIcon className="h-5 w-5  text-gray-500" />
+        <button
+          type="reset"
+          onClick={() => handleSearch("")}
+          className="btn btn-circle shadow"
+        >
+          <XMarkIcon className="h-5 w-5  text-gray-500" />
         </button>
       </form>
 
       {/* TODO: Add post link */}
       {labels.map((item) => (
-        <div key={item.id} className="m-2 flex w-full flex-col space-y-2 pt-2">
-          <div className="text-lg font-bold text-primary">{item.label}</div>
-          <div className="flex w-full flex-wrap">
+        <div key={`label-${item.id}`} className="flex flex-col space-y-2 ">
+          <div className="text-xl font-bold text-primary">{item.label}</div>
+          <div className="flex flex-wrap">
             {item.value.map((value) => (
               <div
-                key={value.id}
-                className="form-control m-2 border-collapse rounded-lg border bg-gray-200"
+                key={`label-${item.id}-value-${value.content}`}
+                className="form-control m-1 px-2 rounded-3xl  bg-white shadow"
               >
-                <label className="label cursor-pointer space-x-2 px-2">
-                  <span className="label-text">{value.content}</span>
+                <label className="label cursor-pointer space-x-2 p-2">
                   <input
                     type="checkbox"
-                    className="checkbox"
+                    className = "checkbox checkbox-primary w-4 h-4"
                     defaultChecked={filter?.split(",").includes(value.content)}
                     onChange={(e) => {
                       // get the current checked values
@@ -85,6 +88,7 @@ export default function CheckCondition({ title, labels }) {
                       handleCheck(checkedValues);
                     }}
                   />
+                  <span className="label-text font-bold text-gray-700">{value.content}</span>
                 </label>
               </div>
             ))}
