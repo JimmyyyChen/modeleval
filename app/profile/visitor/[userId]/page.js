@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { datasets, issues } from "./data";
+import { issues } from "./data";
 import Community from "@/app/components/Community";
 import UserInfo from "../../../components/UserInfo";
 import UserDatasets from "../../components/UserDatasets";
@@ -32,6 +32,31 @@ export default function Home({ params: { userId } }) {
   if (userInfo) {
     var { username } = userInfo;
   }
+
+  const [datasets, setDatasets] = useState(null);
+
+  useEffect(() => {
+    const fetchUserDatasets = async () => {
+      try {
+        if (userInfo && userInfo.userId) {
+          const response = await axios.get(
+            `/api/datasets/user/${userInfo.userId}`,
+          );
+          if (response.status >= 200 && response.status < 300) {
+            setDatasets(response.data);
+          } else {
+            setDatasets(undefined);
+            console.error("Error fetching data:", response.status);
+          }
+        }
+      } catch (error) {
+        setDatasets(undefined);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUserDatasets();
+  }, [userInfo]);
 
   return (
     <>

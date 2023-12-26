@@ -28,6 +28,6 @@ export default async function ModelsPage({searchParams}) {
   });
 
   return (
-    <ModelDisplay title="模型" models={models} />
+    <ModelDisplay models={models} />
   );
 }

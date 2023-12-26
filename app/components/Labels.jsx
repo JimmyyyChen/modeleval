@@ -2,7 +2,7 @@ import { labels } from "../constants";
 
 export default function Labels({ labelList }) {
   return (
-    <div className="test-xs flex flex-row flex-wrap items-center">
+    <div className="test-xs flex flex-row flex-wrap items-center ">
       {labelList &&
         labelList.map((labelName) => (
           <div key={labelName} className="mx-2 my-2 flex flex-row items-center">

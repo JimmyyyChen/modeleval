@@ -23,10 +23,10 @@ export default function UserDatasets({ isvisitor, datasets, userInfo }) {
             <></>
           ) : (
             <>
-              <button className="group btn btn-outline btn-primary">
+              <Link className="group btn btn-outline btn-primary" href="/upload">
                 <PlusIcon className="h-6 w-6 text-primary group-hover:text-white" />
                 上传
-              </button>
+              </Link>
             </>
           )}
         </div>

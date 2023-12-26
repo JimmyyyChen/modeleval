@@ -30,7 +30,7 @@ export default function CheckCondition({ title, labels }) {
   }
 
   return (
-    <div className="flex flex-col space-y-3">
+    <div className="flex flex-col space-y-6">
       <form
         className="flex items-center space-x-3"
         onSubmit={(e) => {

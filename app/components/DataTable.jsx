@@ -130,7 +130,7 @@ export default function DataTable({ items, type, isvisitor }) {
   const rows = useMemo(() => {
     if (!items) return [];
     return items.map((item) => ({
-      id: item.id,
+      id: type === "datasets" ? item.id : item.modelid,
       name: type === "datasets" ? item.datasetName : item.modelName,
       lastUpdate: item.lastUpdate,
       starCount: item.starCount,
