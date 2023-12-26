@@ -5,7 +5,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
 
 export default function Community({ id, type }) {
-  const fromContext = type === 1 ? "fromDataset" : "fromModel";
+  const fromContext = type === 1 ? "fromDataset" : "fromModel"; // 0 for model, 1 for dataset
   const [comments, setComments] = useState([]);
 
   const submitComment = (content) => {
@@ -43,11 +43,11 @@ export default function Community({ id, type }) {
         <div className="font-bold text-primary">留言</div>
         <div>
           <button
-            className="group btn btn-outline btn-primary flex h-auto w-full flex-row divide-y-2 divide-black py-2 shadow-md"
+            className="group btn btn-outline btn-primary flex h-auto w-full flex-row divide-y-2 divide-black py-2 shadow-md rounded-3xl"
             onClick={() => document.getElementById(0).showModal()}
           >
             <PlusIcon className="h-6 w-6 text-primary group-hover:text-white" />
-            新增
+          留言
           </button>
           <dialog id="0" className="modal">
             <div className="modal-box space-y-4">
@@ -88,71 +88,75 @@ export default function Community({ id, type }) {
         </div>
       </div>
       <div className="w-full space-y-4 px-4 py-2 text-sm">
-        {comments && comments.map((item) => (
-          <div key={item.id} className="w-full">
-            <button
-              className="btn flex h-auto w-full flex-col divide-y-2 divide-black py-2 shadow-md"
-              onClick={() => document.getElementById(-item.id).showModal()}
-            >
-              <div className="m-1 flex w-full flex-row">
-                <div className="flex w-1/2 flex-row truncate text-left md:w-1/3 lg:w-1/6">
-                  <div className="mx-2 h-4 w-4 rounded-full bg-blue-600"></div>
-                  {item.user}
-                </div>
-                <div className="w-1/2 truncate text-left text-gray-400 md:w-2/3 lg:w-5/6">
-                  {item.time}
-                </div>
-              </div>
-              <div className="flex h-auto w-full flex-row pt-2">
-                <div className="mx-2 w-full overflow-auto whitespace-normal text-left font-normal leading-5">
-                  {item.content}
-                </div>
-              </div>
-            </button>
-            <dialog id={-item.id} className="modal">
-              <div className="modal-box space-y-4">
-                <h3 className="text-lg font-bold">Detail</h3>
-                <div className="modal-body m-4">
-                  <div className="flex w-full flex-col space-y-4">
-                    <div className="flex w-full flex-row">
-                      <div className="w-1/3">User</div>
-                      <Link
-                        className="flex w-2/3 flex-row overflow-auto whitespace-normal "
-                        href={`/profile/visitor/${item.user}`}
-                      >
-                        <div className="mx-2 h-6 w-6 rounded-full bg-blue-600"></div>
-                        {item.user}
-                      </Link>
-                    </div>
-                    <div className="flex w-full flex-row">
-                      <div className="w-1/3">Time</div>
-                      <div className="w-2/3 overflow-auto whitespace-normal ">
-                        {item.time}
-                      </div>
-                    </div>
-                    <div className="flex w-full flex-row">
-                      <div className="w-1/3">Content</div>
-                      <div className="w-2/3 overflow-auto whitespace-normal ">
-                        {item.content}
-                      </div>
-                    </div>
-                    <textarea
-                      placeholder={`Reply to ${item.user}...`}
-                      className="textarea textarea-bordered textarea-lg h-48 w-full text-sm"
-                    ></textarea>
+        {comments.map((comment) => {
+          const userName = comment.username;
+          const content = comment.content;
+          const commentTime = new Date(comment.commentTime).toLocaleString();
+          return (
+            <div key={comment.id} className="w-full">
+              <button
+                className="btn flex h-auto w-full flex-col divide-y-2 divide-black py-2 shadow-md"
+                onClick={() => document.getElementById(-comment.id).showModal()}
+              >
+                <div className="m-1 flex w-full flex-row">
+                  <div className="flex w-1/2 flex-row truncate text-left md:w-1/3 lg:w-1/6">
+                    {userName}
+                  </div>
+                  <div className="w-1/2 truncate text-left text-gray-400 md:w-2/3 lg:w-5/6">
+                    {commentTime}
                   </div>
                 </div>
-                <div className="modal-action">
-                  <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
-                    <button className="btn mx-2">Reply</button>
-                    <button className="btn mx-2">Close</button>
-                  </form>
+                <div className="flex h-auto w-full flex-row pt-2">
+                  <div className="mx-2 w-full overflow-auto whitespace-normal text-left font-normal leading-5">
+                    {content}
+                  </div>
                 </div>
-              </div>
-            </dialog>
-          </div>
-        ))}
+              </button>
+              <dialog id={-comment.id} className="modal">
+                <div className="modal-box space-y-4">
+                  <h3 className="text-lg font-bold">留言</h3>
+                  <div className="modal-body m-4">
+                    <div className="flex w-full flex-col space-y-4">
+                      <div className="flex w-full flex-row">
+                        <div className="w-1/3">用户</div>
+                        <Link
+                          className="flex w-2/3 flex-row overflow-auto whitespace-normal "
+                          href={`/profile/visitor/${userName}`}
+                        >
+                          {userName}
+                        </Link>
+                      </div>
+                      <div className="flex w-full flex-row">
+                        <div className="w-1/3">时间</div>
+                        <div className="w-2/3 overflow-auto whitespace-normal ">
+                          {commentTime}
+                        </div>
+                      </div>
+                      <div className="flex w-full flex-row">
+                        <div className="w-1/3">内容</div>
+                        <div className="w-2/3 overflow-auto whitespace-normal ">
+                          {content}
+                        </div>
+                      </div>
+                      {/* TODO */}
+                      {/* <textarea
+                        placeholder={`Reply to ${userName}...`}
+                        className="textarea textarea-bordered textarea-lg h-48 w-full text-sm"
+                      ></textarea> */}
+                    </div>
+                  </div>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      {/* <button className="btn mx-2">Reply</button> */}
+                      <button className="btn mx-2">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

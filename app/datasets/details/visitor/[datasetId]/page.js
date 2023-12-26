@@ -1,10 +1,6 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {
-  datasetItems,
-  issues,
-} from "./data";
 import Community from "@/app/components/Community";
 import UserInfo from "@/app/components/UserInfo";
 import Labels from "@/app/components/Labels";
@@ -14,6 +10,7 @@ import DatasetMainInfoDisplay from "@/app/datasets/components/DatasetMainInfoDis
 export default function Home({ params: { datasetId } }) {
   const [datasetInfo, setDatasetInfo] = useState({});
   const [userInfo, setUserInfo] = useState(null);
+  const type = 1; // 1 for dataset, 0 for model
 
   useEffect(() => {
     const fetchDatasetInfo = async () => {
@@ -84,7 +81,7 @@ export default function Home({ params: { datasetId } }) {
       </div>
 
       <div className="w-full p-4 text-4xl">
-        <Community issues={issues} textcontent="留言" />
+        <Community type={type} id={datasetId} />
       </div>
     </>
   );

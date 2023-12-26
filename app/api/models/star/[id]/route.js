@@ -41,12 +41,12 @@ export async function POST(request, { params }) {
                 }
             });
             await prisma.user.create({
-              data: {
-                userId: userId,
-                username: user.username,
-                userImageUrl: user.imageUrl,
-                modelModelid: model.modelid,
-              },
+                data: {
+                    userId: userId,
+                    username: user.username,
+                    userImageUrl: user.imageUrl,
+                    modelModelid: model.modelid,
+                }
             });
         }
         else {
