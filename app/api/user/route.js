@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
         if (user.privateMetadata.stars == undefined) {
-            await clerkClient.users.updateUserMetadata(params.userId, {
+            await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     stars: 0,
                 }
@@ -22,7 +22,7 @@ export async function GET(request, { params }) {
         }
         else stars = user.privateMetadata.stars;
         if (user.privateMetadata.organization == undefined) {
-            await clerkClient.users.updateUserMetadata(params.userId, {
+            await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     organization: "individual",
                 }
@@ -30,7 +30,7 @@ export async function GET(request, { params }) {
         }
         else organization = user.privateMetadata.organization;
         if (user.privateMetadata.starList == undefined) {
-            await clerkClient.users.updateUserMetadata(params.userId, {
+            await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     starList: [],
                 }
@@ -38,7 +38,7 @@ export async function GET(request, { params }) {
         }
         else starList = user.privateMetadata.starList;
         if (user.privateMetadata.downloadList == undefined) {
-            await clerkClient.users.updateUserMetadata(params.userId, {
+            await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     downloadList: [],
                 }
