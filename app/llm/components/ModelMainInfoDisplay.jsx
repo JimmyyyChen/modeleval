@@ -2,7 +2,6 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import {
-  CircleStackIcon,
   StarIcon as SolidStarIcon,
   CubeIcon,
 } from "@heroicons/react/24/solid";
@@ -13,7 +12,7 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
   const [downloadFilename, setDownloadFilename] = useState("");
 
   if (modelInfo) {
-    var { modelid: id, modelName, likeN: starCount, starUser, description } = modelInfo;
+    var { modelid: id, modelName, starCount, starUser, description } = modelInfo;
   }
 
   useEffect(() => {

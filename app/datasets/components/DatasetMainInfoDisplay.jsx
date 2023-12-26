@@ -78,6 +78,8 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
     }
   };
 
+  console.log(starUser);
+
   // TODO: 增加收藏列表展示
   const handleSterUserDisplayClick = async () => {
     console.log("star user display clicked");

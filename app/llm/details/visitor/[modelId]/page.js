@@ -16,7 +16,7 @@ export default function Home({ params: { modelId } }) {
       try {
         const response = await axios.get(`/api/models/info/${modelId}`);
         if (response.status >= 200 && response.status < 300) {
-          setModelInfo(response.data[0]);
+          setModelInfo(response.data);
         } else {
           setModelInfo({});
           console.error("Error fetching data:", response.statusText);
