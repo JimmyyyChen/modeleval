@@ -12,6 +12,8 @@ export async function DELETE(request, { params }) {
                 label_list: true,
                 ChoiceQuestions: true,
                 ShortAnswerQuestions: true,
+                Comment: true,
+                Tasks: true,
             }
         });
         if (!dataset) {

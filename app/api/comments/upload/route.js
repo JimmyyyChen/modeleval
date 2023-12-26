@@ -1,22 +1,25 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { getUsername } from "@/lib/getUsername";
+import { getUser } from "@/lib/getUsername";
 export async function POST(request) {
     try {
-        let { userId } = auth()
-        //userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
-        let username = "Administrator";
-        if (userId == null) userId = "Administrator";
-        else {
-            username = await getUsername(userId);
-            if (username == null) username = "Administrator";
+        let { userId } = auth();
+        userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+        let user = await getUser(userId);
+        if (!user) {
+            return new NextResponse(JSON.stringify({ success: false, message: "user not found" }), {
+                status: 404,
+                headers: { "Content-Type": "application/json" },
+            });
         }
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
         let type = body["type"];
         let id = body["id"];
         let content = body["content"];
+        let reply = -1;
+        if (body["reply"] != -1) reply = body["reply"];
         if (content.length > 500) {
             return new NextResponse(JSON.stringify({ success: false, message: "content too long" }), {
                 status: 403,
@@ -26,7 +29,7 @@ export async function POST(request) {
         if (type == 0) {
             const model = await prisma.model.findUnique({
                 where: {
-                    id: id
+                    modelid: id
                 }
             });
             if (!model) {
@@ -35,18 +38,26 @@ export async function POST(request) {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            await prisma.comment.create({
+
+            let comment = await prisma.Comment.create({
                 data: {
-                    userId: userId,
                     type: type,
                     modelId: id,
                     content: content,
-                    username: username,
+                    reply: reply,
+                }
+            });
+            await prisma.User.create({
+                data: {
+                    userId: userId,
+                    username: user.username,
+                    userImageUrl: user.imageUrl,
+                    commentId: comment.id,
                 }
             });
         }
         else if (type == 1) {
-            const dataset = await prisma.Dataset.findUnique({
+            const dataset = await prisma.dataset.findUnique({
                 where: {
                     id: id
                 }
@@ -57,13 +68,20 @@ export async function POST(request) {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            await prisma.comment.create({
+            let comment = await prisma.comment.create({
                 data: {
-                    userId: userId,
                     type: type,
                     datasetId: id,
                     content: content,
-                    username: username,
+                    reply: reply,
+                }
+            });
+            await prisma.User.create({
+                data: {
+                    userId: userId,
+                    username: user.username,
+                    userImageUrl: user.imageUrl,
+                    commentId: comment.id,
                 }
             });
         }

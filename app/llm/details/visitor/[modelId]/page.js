@@ -1,15 +1,14 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { issues } from "./data";
-
-import ModelMainInfoDisplay from "../../../components/ModelMainInfoDisplay"; 
+import ModelMainInfoDisplay from "../../../components/ModelMainInfoDisplay";
 import Labels from "@/app/components/Labels";
 import FullWidthTabs from "./components/FullWidthTabs";
 import Community from "@/app/components/Community";
 
 export default function Home({ params: { modelId } }) {
   const [modelInfo, setModelInfo] = useState({});
+  const type = 0; // 1 for dataset, 0 for model
 
   useEffect(() => {
     const fetchModelInfo = async () => {
@@ -47,7 +46,7 @@ export default function Home({ params: { modelId } }) {
       </div>
 
       <div className="w-full p-4 text-4xl">
-        <Community issues={issues} textcontent="留言" />
+        <Community type={type} id={modelId} />
       </div>
     </>
   );

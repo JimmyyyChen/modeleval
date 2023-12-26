@@ -5,7 +5,7 @@ import CheckCondition from "../../components/CheckCondition";
 
 export default function ModelDisplay({ models }) {
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-6 w-full">
         <CheckCondition title="模型" labels={modelTypes} />
         <DataTable items={models} type="llm" isvisitor={true} />
     </div>

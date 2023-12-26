@@ -66,6 +66,8 @@ model User {
   datasetId2   Int?
   Model        Model?   @relation(fields: [modelModelid], references: [modelid])
   modelModelid Int?
+  Comment      Comment? @relation(fields: [commentId], references: [id])
+  commentId    Int?
 }
 
 model ChoiceQuestion {
@@ -125,6 +127,7 @@ model Score {
 model Comment {
   id          Int      @id @default(autoincrement())
   content     String   @db.Text
+  reply       Int      @default(-1) // -1: no reply, else: reply to the comment with id = reply
   //likeN   Int    @default(0)        //暂时不开发这项功能
   commentTime DateTime @default(now())
   lastUpdate  DateTime @default(now())
@@ -133,6 +136,5 @@ model Comment {
   modelId     Int?
   dataset     Dataset? @relation(fields: [datasetId], references: [id])
   datasetId   Int?
-  userId      String
-  username    String   @default("Administrator")
+  user        User[]
 }

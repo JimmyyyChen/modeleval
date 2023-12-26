@@ -14,6 +14,8 @@ export async function GET() {
                 ShortAnswerQuestions: true,
                 starUser: true,
                 downloadUser: true,
+                Comment: true,
+                Tasks: true,
             }
         });
         //console.log(dataset);
