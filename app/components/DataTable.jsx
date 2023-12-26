@@ -219,9 +219,9 @@ export default function DataTable({ items, type, isvisitor }) {
                             ? `/${type}/details/visitor/${row.id}`
                             : `/${type}/details/self/${row.id}`
                         }
-                        className="btn btn-outline btn-primary "
+                        className="link link-primary "
                       >
-                        <div className="max-w-[6rem] truncate">{row.name}</div>
+                        {row.name}
                       </Link>
                     </StyledTableCell>
                     <StyledTableCell align="right">
