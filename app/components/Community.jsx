@@ -88,7 +88,7 @@ export default function Community({ id, type }) {
         </div>
       </div>
       <div className="w-full space-y-4 px-4 py-2 text-sm">
-        {comments.map((item) => (
+        {comments && comments.map((item) => (
           <div key={item.id} className="w-full">
             <button
               className="btn flex h-auto w-full flex-col divide-y-2 divide-black py-2 shadow-md"

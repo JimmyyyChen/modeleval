@@ -105,12 +105,12 @@ export async function POST(request, { params }) {
                 headers: { "Content-Type": "application/json" },
             });
         }
-        // if (dataset.userId != userId) {
-        //     return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
-        //         status: 403,
-        //         headers: { "Content-Type": "application/json" },
-        //     });
-        // }
+        if (dataset.userId != userId) {
+            return new NextResponse(JSON.stringify({ success: false, message: "permission denied" }), {
+                status: 403,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         const requestBody = await request.text();
         let body = JSON.parse(requestBody);
 

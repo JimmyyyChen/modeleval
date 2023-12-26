@@ -29,6 +29,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 
+import { datasetTypes } from "@/app/constants";
+
 export function ResponsiveDialog(props) {
   const { questionType, item } = props;
   const [open, setOpen] = useState(false);
@@ -61,21 +63,20 @@ export function ResponsiveDialog(props) {
           <DialogContent>
             <div className="flex min-h-full w-96 flex-col space-y-2 pl-4">
               <div className="flex w-full flex-col">
-                <div className="font-bold">
-                  Question:
-                </div>
+                <div className="font-bold">Question:</div>
                 <div className="pl-4">
                   <DialogContentText>{item.question}</DialogContentText>
                 </div>
               </div>
               {!questionType && (
                 <div className="flex w-full flex-col">
-                  <div className="font-bold">
-                    Choices:
-                  </div>
+                  <div className="font-bold">Choices:</div>
                   <div className="flex w-full flex-col pl-4">
                     {item.choices.map((choice, index) => (
-                      <div className="flex w-full flex-row" key={`choice-${choice.id}`}>
+                      <div
+                        className="flex w-full flex-row"
+                        key={`choice-${choice.id}`}
+                      >
                         <div className="w-full truncate text-left">
                           <DialogContentText>
                             {index}: {choice.content}
@@ -88,7 +89,7 @@ export function ResponsiveDialog(props) {
               )}
               <div className="flex w-full flex-col">
                 <div className="font-bold">
-                    {questionType ? "SampleAnswer" : "CorrectAnswer"}:{" "}
+                  {questionType ? "SampleAnswer" : "CorrectAnswer"}:{" "}
                 </div>
                 <div className="pl-4">
                   <DialogContentText>
@@ -152,7 +153,8 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, datasetName, datasetId, selected, questionType, items } = props;
+  const { numSelected, datasetName, datasetId, selected, questionType, items } =
+    props;
 
   const [editOpen, setEditOpen] = useState(false);
   const [editQuestion, setEditQuestion] = useState("");
@@ -166,7 +168,8 @@ function EnhancedTableToolbar(props) {
   const [addChoices, setAddChoices] = useState("");
   const [addCorrectAnswer, setAddCorrectAnswer] = useState("");
 
-  const regex = /^\[\s*("[^"]*"|'[^']*')(?:\s*,\s*("[^"]*"|'[^']*')?)*\s*\]$/g;
+  const regex =
+    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)*\s*\]$/g;
 
   const handleDeleteSelectedItems = async () => {
     const request = await axios.post(
@@ -196,8 +199,13 @@ function EnhancedTableToolbar(props) {
       return;
     }
 
+    setEditQuestion("");
+    setEditSampleAnswer("");
+    setEditChoices("");
+    setEditCorrectAnswer("");
+
     setEditOpen(true);
-  }
+  };
 
   const handleEditClose = () => {
     setEditQuestion("");
@@ -206,10 +214,15 @@ function EnhancedTableToolbar(props) {
     setEditCorrectAnswer("");
 
     setEditOpen(false);
-  }
+  };
 
-  const handleEditSubcribe = async () => {
-    if (editQuestion === "" && editSampleAnswer === "" && editChoices === "" && editCorrectAnswer === "") {
+  const handleEditSubmit = async () => {
+    if (
+      editQuestion === "" &&
+      editSampleAnswer === "" &&
+      editChoices === "" &&
+      editCorrectAnswer === ""
+    ) {
       alert("Please input at least one attribute to edit!");
       return;
     }
@@ -217,13 +230,12 @@ function EnhancedTableToolbar(props) {
     var choices = [];
 
     if (editChoices && (choices = regex.exec(editChoices)) !== null) {
-      choices = choices.slice(1);
+      choices = choices.slice(1).filter((item) => Boolean(item));
     } else if (editChoices) {
       alert("Choices format is not correct!");
       return;
     }
 
-    // TODO: choices 传递空数组的时候会出现问题
     const request = await axios.post(
       `/api/datasets/update/${datasetId}/questions/${selected[0]}`,
       {
@@ -247,11 +259,16 @@ function EnhancedTableToolbar(props) {
       alert("Something went wrong!");
       console.error(request);
     }
-  }
+  };
 
   const handleAddOpen = () => {
+    setAddQuestion("");
+    setAddSampleAnswer("");
+    setAddChoices("");
+    setAddCorrectAnswer("");
+
     setAddOpen(true);
-  }
+  };
 
   const handleAddClose = () => {
     setAddQuestion("");
@@ -260,10 +277,14 @@ function EnhancedTableToolbar(props) {
     setAddCorrectAnswer("");
 
     setAddOpen(false);
-  }
+  };
 
-  const handleAddSubcribe = () => {
-    if (questionType && (addQuestion === "" || addSampleAnswer === "") || !questionType && (addQuestion === "" || addChoices === "" || addCorrectAnswer === "")) {
+  const handleAddSubmit = () => {
+    if (
+      (questionType && (addQuestion === "" || addSampleAnswer === "")) ||
+      (!questionType &&
+        (addQuestion === "" || addChoices === "" || addCorrectAnswer === ""))
+    ) {
       alert("Please input all attributes!");
       return;
     }
@@ -271,7 +292,7 @@ function EnhancedTableToolbar(props) {
     var choices = [];
 
     if (addChoices && (choices = regex.exec(addChoices)) !== null) {
-      choices = choices.slice(1);
+      choices = choices.slice(1).filter((item) => Boolean(item));
     } else if (addChoices) {
       alert("Choices format is not correct!");
       return;
@@ -302,7 +323,7 @@ function EnhancedTableToolbar(props) {
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   return (
     <Toolbar
@@ -360,6 +381,8 @@ function EnhancedTableToolbar(props) {
                 应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
                 <br />
                 ["Choice 1", "Choice 2", "Choice 3"]
+                <br />
+                注：以上标点全部为英文标点。
               </DialogContentText>
               <TextField
                 autoFocus
@@ -410,7 +433,7 @@ function EnhancedTableToolbar(props) {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleEditClose}>取消</Button>
-              <Button onClick={handleEditSubcribe}>提交</Button>
+              <Button onClick={handleEditSubmit}>提交</Button>
             </DialogActions>
           </Dialog>
         </>
@@ -431,6 +454,8 @@ function EnhancedTableToolbar(props) {
                 应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
                 <br />
                 ["Choice 1", "Choice 2", "Choice 3"]
+                <br />
+                注：以上标点全部为英文标点。
               </DialogContentText>
               <TextField
                 autoFocus
@@ -485,7 +510,7 @@ function EnhancedTableToolbar(props) {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleAddClose}>取消</Button>
-              <Button onClick={handleAddSubcribe}>提交</Button>
+              <Button onClick={handleAddSubmit}>提交</Button>
             </DialogActions>
           </Dialog>
         </>
@@ -509,10 +534,30 @@ export default function ItemsModify({ datasetInfo }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [items, setItems] = useState([]);
 
+  const [modifyOpen, setModifyOpen] = useState(false);
+  const [modifyDatasetName, setModifyDatasetName] = useState("");
+  const [modifyDescription, setModifyDescription] = useState("");
+  const [modifyNewLabels, setModifyNewLabels] = useState("");
+
+  const regex =
+    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)*\s*\]$/g;
+
   useEffect(() => {
     const { questionType, ChoiceQuestions, ShortAnswerQuestions } = datasetInfo;
     setItems(questionType == 0 ? ChoiceQuestions : ShortAnswerQuestions);
   }, [datasetInfo]);
+
+  if (datasetInfo && datasetInfo.label_list) {
+    var labelList = datasetInfo.label_list.map((item) => item.labelName);
+    var disabledLabels = datasetTypes[0]["value"]
+      .map((item) => item.content)
+      .concat(datasetTypes[1]["value"].map((item) => item.content));
+
+    var labels = datasetTypes[2]["value"]
+      .map((item) => item.content)
+      .concat(labelList);
+    var uniqueLabels = [...new Set(labels)];
+  }
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -562,7 +607,9 @@ export default function ItemsModify({ datasetInfo }) {
   }, [items, page, rowsPerPage]);
 
   const handleDeleteDataset = async () => {
-    const response = await axios.delete(`/api/datasets/delete/${datasetInfo.id}`);
+    const response = await axios.delete(
+      `/api/datasets/delete/${datasetInfo.id}`,
+    );
     if (response.status === 200) {
       alert("Dataset deleted successfully!");
       window.location.href = "/profile/self";
@@ -574,7 +621,72 @@ export default function ItemsModify({ datasetInfo }) {
       alert("Something went wrong!");
       console.error(response);
     }
-  }
+  };
+
+  const handleModifyDatasetOpen = () => {
+    setModifyDatasetName("");
+    setModifyDescription("");
+    setModifyNewLabels("");
+
+    setModifyOpen(true);
+  };
+
+  const handleModifyDatasetClose = () => {
+    setModifyDatasetName("");
+    setModifyDescription("");
+    setModifyNewLabels("");
+
+    setModifyOpen(false);
+  };
+
+  const handleModifyDatasetSubmit = async () => {
+    if (
+      modifyDatasetName === "" &&
+      modifyDescription === "" &&
+      labelList.length === datasetInfo.label_list.length &&
+      labelList.sort().toString() ===
+        datasetInfo.label_list
+          .map((item) => item.labelName)
+          .sort()
+          .toString() &&
+      modifyNewLabels === ""
+    ) {
+      alert("Please input at least one attribute to modify!");
+      return;
+    }
+
+    var newLabels = [];
+
+    if (modifyNewLabels && (newLabels = regex.exec(modifyNewLabels)) !== null) {
+      newLabels = newLabels.slice(1).filter((item) => Boolean(item));
+    } else if (modifyNewLabels) {
+      alert("New Labels format is not correct!");
+      return;
+    }
+
+    const response = await axios.post(
+      `/api/datasets/update/${datasetInfo.id}`,
+      {
+        datasetName: modifyDatasetName,
+        description: modifyDescription,
+        label_list: labelList.concat(newLabels),
+      },
+    );
+
+    if (response.status === 200) {
+      alert("Dataset updated successfully!");
+
+      handleModifyDatasetClose();
+      location.reload();
+    } else if (response.status === 403) {
+      alert("You are not authorized to update this dataset!");
+    } else if (response.status === 404) {
+      alert("Dataset not found!");
+    } else {
+      alert("Something went wrong!");
+      console.error(response);
+    }
+  };
 
   return (
     <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
@@ -659,13 +771,98 @@ export default function ItemsModify({ datasetInfo }) {
         </Paper>
       </Box>
 
-      <button
-        className="btn btn-primary w-full text-white"
-        onClick={handleDeleteDataset}
-      >
-        删除数据集
-      </button>
-      {/* 修改数据集信息 */}
+      <div className="flex h-full w-full flex-col space-y-4">
+        <button
+          className="btn btn-primary w-full text-white"
+          onClick={handleDeleteDataset}
+        >
+          删除数据集
+        </button>
+        <button
+          className="btn btn-primary w-full text-white"
+          onClick={handleModifyDatasetOpen}
+        >
+          修改数据集属性
+        </button>
+        <Dialog open={modifyOpen} onClose={handleModifyDatasetClose}>
+          <DialogTitle>修改数据集属性</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              请提交需要修改的属性，不需要修改的属性请留空。
+              <br />
+              请注意，数据集最终适配标签与当前选中一致。New Labels 列可以自定义标签，对于每个数据集，自定义标签自动选中（可在后续取消），应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+              <br />
+              ["Label 1", "Label 2", "Label 3"]
+              <br />
+              注：以上标点全部为英文标点。
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Dataset Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(event) => setModifyDatasetName(event.target.value)}
+            />
+            <TextField
+              margin="dense"
+              id="description"
+              label="Description"
+              type="text"
+              multiline
+              maxRows={4}
+              fullWidth
+              variant="standard"
+              onChange={(event) => setModifyDescription(event.target.value)}
+            />
+            <div className="flex flex-col pt-4">
+              <div className="text-gray-600">Labels:</div>
+              <div className="flex flex-wrap">
+                {uniqueLabels.map((label) => (
+                  <div
+                    key={`label-value-${label}`}
+                    className="form-control m-1 rounded-3xl bg-white  px-2 shadow"
+                  >
+                    <label className="label cursor-pointer space-x-2 p-2">
+                      <input
+                        type="checkbox"
+                        className="checkbox-primary checkbox h-4 w-4"
+                        disabled={disabledLabels.includes(label)}
+                        defaultChecked={labelList.includes(label)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            labelList.push(label);
+                          } else {
+                            labelList.splice(labelList.indexOf(label), 1);
+                          }
+                        }}
+                      />
+                      <span className="label-text text-gray-600">{label}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <TextField
+              margin="dense"
+              id="new_labels"
+              label="New Labels"
+              type="text"
+              multiline
+              maxRows={4}
+              fullWidth
+              variant="standard"
+              onChange={(event) => setModifyNewLabels(event.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleModifyDatasetClose}>取消</Button>
+            <Button onClick={handleModifyDatasetSubmit}>提交</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 }

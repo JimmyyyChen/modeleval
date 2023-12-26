@@ -48,11 +48,12 @@ export async function POST(request, { params }) {
                 }
             });
             await prisma.user.create({
-                data: {
-                    userId: userId,
-                    username: user.username,
-                    datasetId2: dataset.id,
-                }
+              data: {
+                userId: userId,
+                username: user.username,
+                userImageUrl: user.imageUrl,
+                datasetId2: dataset.id,
+              },
             });
         }
         else {
