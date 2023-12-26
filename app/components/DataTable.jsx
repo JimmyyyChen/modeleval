@@ -235,7 +235,7 @@ export default function DataTable({ items, type, isvisitor }) {
                       </Link>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {row.lastUpdate}
+                      {row.lastUpdate.toLocaleString()}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       {row.starCount}
