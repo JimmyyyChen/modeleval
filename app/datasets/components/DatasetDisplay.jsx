@@ -12,7 +12,7 @@ export default function Home({ title, datasets, isvisitor }) {
         <div className="flex-grow">
           <CheckCondition title="数据集" labels={datasetTypes} />
         </div>
-        <Link href="/upload_dataset_demo" className="btn btn-accent rounded-3xl">
+        <Link href="/upload" className="btn btn-accent rounded-3xl">
           上传数据集
         </Link>
       </div>
