@@ -11,68 +11,63 @@ export async function POST(request, { params }) {
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
-        let dataset = await prisma.Dataset.findUnique({
+        let model = await prisma.Model.findUnique({
             where: {
-                id: parseInt(params.id),
+                modelid: parseInt(params.id),
             },
             include: {
-                label_list: true,
-                ChoiceQuestions: {
-                    include: {
-                        choices: true
-                    }
-                },
-                ShortAnswerQuestions: true,
                 starUser: true,
-                downloadUser: true,
             }
         });
-        if (!dataset) {
-            return new NextResponse(JSON.stringify({ success: false, message: "dataset not found!" }), {
+        if (!model) {
+            return new NextResponse(JSON.stringify({ success: false, message: "model not found!" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
-        if (!user.privateMetadata.starList.includes(dataset.id)) {
+        console.log(user.privateMetadata.starList_model.includes(model.modelid));
+        if (!user.privateMetadata.starList_model.includes(model.modelid)) {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
-                    starList: [...user.privateMetadata.starList, dataset.id],
+                    starList_model: [...user.privateMetadata.starList_model, model.modelid],
                 }
             });
-            await prisma.Dataset.update({
+            await prisma.Model.update({
                 where: {
-                    id: dataset.id,
+                    modelid: parseInt(params.id),
                 },
                 data: {
-                    starCount: dataset.starCount + 1,
+                    starCount: model.starCount + 1,
                 }
             });
             await prisma.user.create({
                 data: {
                     userId: userId,
                     username: user.username,
-                    datasetId2: dataset.id,
+                    modelModelid: model.modelid,
                 }
             });
         }
         else {
+            console.log(model.modelid);
+            console.log(user.privateMetadata.starList_model);
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
-                    starList: user.privateMetadata.starList.filter((item) => item !== dataset.id),
+                    starList_model: user.privateMetadata.starList_model.filter((item) => item !== 1),
                 }
             });
-            await prisma.Dataset.update({
+            await prisma.Model.update({
                 where: {
-                    id: dataset.id,
+                    modelid: parseInt(params.id),
                 },
                 data: {
-                    starCount: dataset.starCount - 1,
+                    starCount: model.starCount - 1,
                 }
             });
             await prisma.User.deleteMany({
                 where: {
                     userId: userId,
-                    datasetId2: dataset.id,
+                    modelModelid: model.modelid,
                 }
             });
         }

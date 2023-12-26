@@ -4,17 +4,18 @@ import { NextResponse } from "next/server";
 export async function GET(request, { params }) {
     const modelName = params.modelname;
     try {
-        let model = await prisma.model.findMany({
+        let model = await prisma.model.findUnique({
             where: {
-                modelName: modelName
+                modelid: modelName
             },
             include: {
                 label_list: true,
+                starUser: true,
+                Comment: true,
             }
         });
-        //names = names.map((name) => name.name)
         return new NextResponse(JSON.stringify(model), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
