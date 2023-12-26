@@ -83,11 +83,11 @@ export default function TaskDisplayPage({ params }) {
         <p className={`text-gray-500 ${isNaN(startTime) ? "hidden" : ""}`}>
           {progress === 1
             ? `已生成回答 | ${startTime.toLocaleString()}开始 | 用时${Math.round(
-                (endTime - startTime) / 1000,
-              )}秒| ${endTime.toLocaleString()}结束 `
+              (endTime - startTime) / 1000,
+            )}秒| ${endTime.toLocaleString()}结束 `
             : `正在生成回答 ${Math.floor(progress * 100)}% | 用时${Math.round(
-                (Date.now() - startTime) / 1000,
-              )}秒 | ${startTime.toLocaleString()}开始 `}
+              (Date.now() - startTime) / 1000,
+            )}秒 | ${startTime.toLocaleString()}开始 `}
         </p>
         <p className="text-gray-500">用户 {userName} 创建</p>
       </div>
