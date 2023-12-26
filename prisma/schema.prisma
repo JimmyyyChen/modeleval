@@ -58,7 +58,7 @@ model Dataset {
 model User {
   id           Int      @id @default(autoincrement())
   username     String
-  userImage    String   @default("")
+  userImageUrl String   @default("")
   userId       String
   Dataset1     Dataset? @relation("DownloadUserRelation", fields: [datasetId1], references: [id])
   datasetId1   Int?

@@ -51,6 +51,7 @@ export async function POST(request, { params }) {
                 data: {
                     userId: userId,
                     username: user.username,
+                    userImageUrl: user.imageUrl,
                     datasetId2: dataset.id,
                 }
             });
