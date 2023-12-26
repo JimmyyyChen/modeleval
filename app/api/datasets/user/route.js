@@ -6,6 +6,9 @@ export async function GET() {
     if (userId == null) userId = "Administrator";
     try {
         let dataset = await prisma.Dataset.findMany({
+            where: {
+                userId: params.userId,
+            },
             include: {
                 label_list: true,
                 ChoiceQuestions: {
