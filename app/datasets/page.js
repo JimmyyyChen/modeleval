@@ -1,35 +1,28 @@
-"use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { prisma } from "@/lib/prisma";
+
 import DatasetDisplay from "./components/DatasetDisplay";
 
-export default function Home() {
-  const [datasets, setDatasets] = useState(null);
+export default async function DatasetsPage({searchParams}) {
+  const query = searchParams?.query || '';
+  const filter = searchParams?.filter || '';
 
-  useEffect(() => {
-    const fetchDatasets = async () => {
-      try {
-        const response = await axios.get("/api/datasets");
-        if (response.status >= 200 && response.status < 300) {
-          setDatasets(response.data);
-        } else {
-          setDatasets(undefined);
-          console.error("Error fetching data:", response.status);
-        }
-      } catch (error) {
-        setDatasets(undefined);
-        console.error("Error fetching data:", error);
-      }
-    };
+  const datasets = await prisma.dataset.findMany({
+    where: {
+      datasetName: {
+        contains: query,
+      },
+    },
+    include: {
+      label_list: true,
+      ChoiceQuestions: {
+        include: {
+          choices: true,
+        },
+      },
+      ShortAnswerQuestions: true,
+    },
+  });
 
-    fetchDatasets();
-  }, []);
+  return <DatasetDisplay title="数据集" datasets={datasets} isvisitor={true} />;
 
-  return (
-    <DatasetDisplay
-      title="数据集"
-      datasets={datasets}
-      isvisitor={true}
-    />
-  );
 }
