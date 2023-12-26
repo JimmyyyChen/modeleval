@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const dataset = await prisma.model.findMany();
         return new NextResponse(JSON.stringify(dataset), {
-            status: 201,
+            status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
