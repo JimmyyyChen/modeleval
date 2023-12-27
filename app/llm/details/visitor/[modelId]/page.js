@@ -42,6 +42,7 @@ export default function Home({ params: { modelId } }) {
       </div>
 
       <div className="mt-6 h-full w-full p-4 ">
+        {/* TODO: 调通 */}
         <FullWidthTabs />
       </div>
 

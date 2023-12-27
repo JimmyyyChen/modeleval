@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// TODO: 添加 label_list 和描述
 async function main() {
   const example_labels = [
     { labelName: "文字生成" },
