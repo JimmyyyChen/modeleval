@@ -3,6 +3,7 @@ import { BookOpenIcon } from "@heroicons/react/24/solid";
 import { labels } from "../constants";
 
 export default function Labels({ labelList }) {
+  labelList = [...new Set(labelList)];
   return (
     <div className="test-xs flex flex-row flex-wrap items-center ">
       {labelList &&

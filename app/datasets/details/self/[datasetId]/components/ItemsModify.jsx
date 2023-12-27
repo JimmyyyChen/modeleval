@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -551,16 +551,20 @@ export default function ItemsModify({ datasetInfo }) {
     setItems(questionType == 0 ? ChoiceQuestions : ShortAnswerQuestions);
   }, [datasetInfo]);
 
-  if (datasetInfo && datasetInfo.label_list) {
-    var labelList = datasetInfo.label_list.map((item) => item.labelName);
-    var disabledLabels = datasetTypes[0]["value"]
+  const labelListRef = useRef();
+  const uniqueLabelsRef = useRef();
+  const disabledLabelsRef = useRef();
+
+  if (datasetInfo && datasetInfo.label_list && !labelListRef.current) {
+    labelListRef.current = datasetInfo.label_list.map((item) => item.labelName);
+    disabledLabelsRef.current = datasetTypes[0]["value"]
       .map((item) => item.content)
       .concat(datasetTypes[1]["value"].map((item) => item.content));
 
     var labels = datasetTypes[2]["value"]
       .map((item) => item.content)
-      .concat(labelList);
-    var uniqueLabels = [...new Set(labels)];
+      .concat(labelListRef.current);
+    uniqueLabelsRef.current = [...new Set(labels)];
   }
 
   const handleSelectAllClick = (event) => {
@@ -647,8 +651,8 @@ export default function ItemsModify({ datasetInfo }) {
     if (
       modifyDatasetName === "" &&
       modifyDescription === "" &&
-      labelList.length === datasetInfo.label_list.length &&
-      labelList.sort().toString() ===
+      labelListRef.current.length === datasetInfo.label_list.length &&
+      labelListRef.current.sort().toString() ===
         datasetInfo.label_list
           .map((item) => item.labelName)
           .sort()
@@ -668,7 +672,6 @@ export default function ItemsModify({ datasetInfo }) {
         .map((item) => item.trim())
         .filter((item) => Boolean(item))
         .forEach((item) => newLabels.push(item.slice(1, -1)));
-      console.log(newLabels);
     } else if (modifyNewLabels) {
       alert("New Labels 格式不正确！");
       return;
@@ -679,7 +682,7 @@ export default function ItemsModify({ datasetInfo }) {
       {
         datasetName: modifyDatasetName,
         description: modifyDescription,
-        label_list: labelList.concat(newLabels),
+        label_list: [...new Set(labelListRef.current.concat(newLabels))],
       },
     );
 
@@ -833,22 +836,25 @@ export default function ItemsModify({ datasetInfo }) {
             <div className="flex flex-col pt-4">
               <div className="text-gray-600">Labels:</div>
               <div className="flex flex-wrap">
-                {uniqueLabels.map((label) => (
+                {uniqueLabelsRef.current.map((label) => (
                   <div
                     key={`label-value-${label}`}
-                    className="form-control m-1 rounded-3xl bg-white  px-2 shadow"
+                    className="form-control m-1 rounded-3xl bg-white px-2 shadow"
                   >
                     <label className="label cursor-pointer space-x-2 p-2">
                       <input
                         type="checkbox"
                         className="checkbox-primary checkbox h-4 w-4"
-                        disabled={disabledLabels.includes(label)}
-                        defaultChecked={labelList.includes(label)}
+                        disabled={disabledLabelsRef.current.includes(label)}
+                        defaultChecked={labelListRef.current.includes(label)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            labelList.push(label);
+                            labelListRef.current.push(label);
                           } else {
-                            labelList.splice(labelList.indexOf(label), 1);
+                            labelListRef.current.splice(
+                              labelListRef.current.indexOf(label),
+                              1,
+                            );
                           }
                         }}
                       />
