@@ -89,7 +89,7 @@ export function ResponsiveDialog(props) {
               )}
               <div className="flex w-full flex-col">
                 <div className="font-bold">
-                  {questionType ? "SampleAnswer" : "CorrectAnswer"}:{" "}
+                  {questionType ? "SampleAnswer" : "CorrectAnswer"}:
                 </div>
                 <div className="pl-4">
                   <DialogContentText>
@@ -180,22 +180,22 @@ function EnhancedTableToolbar(props) {
     );
 
     if (request.status === 200) {
-      alert("Items deleted successfully!");
+      alert("条目删除成功！");
 
       location.reload();
     } else if (request.status === 403) {
-      alert("You are not authorized to delete these items!");
+      alert("你没有权限删除这些条目！");
     } else if (request.status === 404) {
-      alert("Items not found!");
+      alert("条目不存在！");
     } else {
-      alert("Something went wrong!");
+      alert("出现了一些错误！");
       console.error(request);
     }
   };
 
   const handleEditOpen = () => {
     if (selected.length !== 1) {
-      alert("Please select one item to edit!");
+      alert("请选择一个条目进行编辑！");
       return;
     }
 
@@ -223,7 +223,7 @@ function EnhancedTableToolbar(props) {
       editChoices === "" &&
       editCorrectAnswer === ""
     ) {
-      alert("Please input at least one attribute to edit!");
+      alert("请至少输入一个需要修改的属性！");
       return;
     }
 
@@ -232,7 +232,7 @@ function EnhancedTableToolbar(props) {
     if (editChoices && (choices = regex.exec(editChoices)) !== null) {
       choices = choices.slice(1).filter((item) => Boolean(item));
     } else if (editChoices) {
-      alert("Choices format is not correct!");
+      alert("Choices 格式不正确！");
       return;
     }
 
@@ -247,16 +247,16 @@ function EnhancedTableToolbar(props) {
     );
 
     if (request.status === 200) {
-      alert("Item updated successfully!");
+      alert("条目修改成功！");
 
       handleEditClose();
       location.reload();
     } else if (request.status === 403) {
-      alert("You are not authorized to update this item!");
+      alert("你没有权限修改这个条目！");
     } else if (request.status === 404) {
-      alert("Item not found!");
+      alert("条目不存在！");
     } else {
-      alert("Something went wrong!");
+      alert("出现了一些错误！");
       console.error(request);
     }
   };
@@ -285,7 +285,7 @@ function EnhancedTableToolbar(props) {
       (!questionType &&
         (addQuestion === "" || addChoices === "" || addCorrectAnswer === ""))
     ) {
-      alert("Please input all attributes!");
+      alert("请填写所有属性！");
       return;
     }
 
@@ -294,7 +294,7 @@ function EnhancedTableToolbar(props) {
     if (addChoices && (choices = regex.exec(addChoices)) !== null) {
       choices = choices.slice(1).filter((item) => Boolean(item));
     } else if (addChoices) {
-      alert("Choices format is not correct!");
+      alert("Choices 格式不正确！");
       return;
     }
 
@@ -307,16 +307,16 @@ function EnhancedTableToolbar(props) {
       })
       .then((response) => {
         if (response.status === 200) {
-          alert("Item added successfully!");
+          alert("条目添加成功！");
 
           handleAddClose();
           location.reload();
         } else if (response.status === 403) {
-          alert("You are not authorized to add this item!");
+          alert("你没有权限添加这个条目！");
         } else if (response.status === 404) {
-          alert("Item not found!");
+          alert("条目不存在！");
         } else {
-          alert("Something went wrong!");
+          alert("出现了一些错误！");
           console.error(response);
         }
       })
@@ -611,14 +611,14 @@ export default function ItemsModify({ datasetInfo }) {
       `/api/datasets/delete/${datasetInfo.id}`,
     );
     if (response.status === 200) {
-      alert("Dataset deleted successfully!");
+      alert("数据集删除成功！");
       window.location.href = "/profile/self";
     } else if (response.status === 403) {
-      alert("You are not authorized to delete this dataset!");
+      alert("你没有权限删除这个数据集！");
     } else if (response.status === 404) {
-      alert("Dataset not found!");
+      alert("数据集不存在！");
     } else {
-      alert("Something went wrong!");
+      alert("出现了一些错误！");
       console.error(response);
     }
   };
@@ -651,7 +651,7 @@ export default function ItemsModify({ datasetInfo }) {
           .toString() &&
       modifyNewLabels === ""
     ) {
-      alert("Please input at least one attribute to modify!");
+      alert("请至少修改至少一个属性！");
       return;
     }
 
@@ -659,8 +659,8 @@ export default function ItemsModify({ datasetInfo }) {
 
     if (modifyNewLabels && (newLabels = regex.exec(modifyNewLabels)) !== null) {
       newLabels = newLabels.slice(1).filter((item) => Boolean(item));
-    } else if (modifyNewLabels) {
-      alert("New Labels format is not correct!");
+      } else if (modifyNewLabels) {
+      alert("New Labels 格式不正确！");
       return;
     }
 
@@ -674,16 +674,16 @@ export default function ItemsModify({ datasetInfo }) {
     );
 
     if (response.status === 200) {
-      alert("Dataset updated successfully!");
+      alert("数据集属性修改成功！");
 
       handleModifyDatasetClose();
       location.reload();
     } else if (response.status === 403) {
-      alert("You are not authorized to update this dataset!");
+      alert("你没有权限修改这个数据集！");
     } else if (response.status === 404) {
-      alert("Dataset not found!");
+      alert("数据集不存在！");
     } else {
-      alert("Something went wrong!");
+      alert("出现了一些错误！");
       console.error(response);
     }
   };
