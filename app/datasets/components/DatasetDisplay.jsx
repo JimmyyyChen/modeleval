@@ -5,7 +5,7 @@ import CheckCondition from "../../components/CheckCondition";
 import Link from "next/link";
 import { CloudArrowUpIcon } from "@heroicons/react/24/solid";
 
-export default function DatasetDisplay({ datasets, isvisitor }) {
+export default function DatasetDisplay({ title, datasets, isvisitor }) {
   return (
     <div className="flex w-full flex-col space-y-6">
       <Link
