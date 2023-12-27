@@ -5,7 +5,7 @@ import { getUser } from "@/lib/getUsername";
 export async function POST(request) {
     try {
         let { userId } = auth();
-        userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
+        // userId = "user_2YYm4PPqCJvDTh8umSpl6r1N6dZ"
         let user = await getUser(userId);
         if (!user) {
             return new NextResponse(JSON.stringify({ success: false, message: "user not found" }), {

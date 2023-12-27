@@ -33,8 +33,9 @@ export default function NewTaskPage() {
   useEffect(() => {
     const fetchDatasets = async () => {
       try {
-        const res = await axios.get("/api/datasets");
+        const res = await axios.get("/api/datasets/0");
         setDatasets(res.data);
+        console.log("datasets get from new-task", res.data)
       } catch (error) {
         console.log(error);
       }
