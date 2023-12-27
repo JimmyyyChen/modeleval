@@ -17,7 +17,7 @@ import { visuallyHidden } from "@mui/utils";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-  backgroundColor: "#497174",
+    backgroundColor: theme.palette.grey[400],
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -196,7 +196,6 @@ export default function DataTable({ items, type, isvisitor }) {
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden">
     <Box>
       <Paper>
         <TableContainer>
@@ -266,6 +265,5 @@ export default function DataTable({ items, type, isvisitor }) {
         />
       </Paper>
     </Box>
-    </div>
   );
 }

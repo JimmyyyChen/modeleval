@@ -3,9 +3,6 @@ describe("Testing", () => {
         cy.visit("/", {
             failOnStatusCode: false,
         });
-        // cy.session("signed-out", () => {
-        //     cy.signOut();
-        // });
         cy.session("signed-in", () => {
             cy.signIn();
         });
@@ -17,7 +14,7 @@ describe("Testing", () => {
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.get("a", { timeout: 30000 }).contains("创建新测试");
+        cy.get("a").contains("创建新测试");
         cy.get("h1").contains("我创建的测试");
         cy.get("h1").contains("他人创建的测试");
         //cy.get(".cl-userButton-root").should("not.exist");
@@ -114,33 +111,22 @@ describe("Testing", () => {
         cy.contains('是否正确').should('be.visible');
         cy.contains('生成答案').should('be.visible');
     });
-    it("should be available to omit objective testing", () => {
+    it("should let others see the result of testing", () => {
+        cy.visit("/", {
+            failOnStatusCode: false,
+        });
+        cy.get('.cl-avatarBox', { timeout: 30000 }).click();
+        cy.wait(500);
+        cy.contains('退出登录').click();
+        cy.wait(500);
+        cy.session("signed-in2", () => {
+            cy.signIn2();
+        });
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.contains('客观测试').find('button').click();
-        cy.contains('客观测试').should('not.exist');
+        cy.get('h1').contains('他人创建的测试').next().should('contain', '77777.csv');
+        cy.contains('客观测试').click();
+        cy.url().should('include', '/tasks/');
     });
-    // it("should let others see the result of testing", () => {
-    //     cy.visit("/", {
-    //         failOnStatusCode: false,
-    //     });
-    //     cy.get('.cl-avatarBox', { timeout: 30000 }).click();
-    //     cy.wait(500);
-    //     cy.contains('退出登录').click();
-    //     cy.wait(500);
-    //     cy.session("signed-out", () => {
-    //         cy.signOut();
-    //     });
-    //     cy.session("signed-in2", () => {
-    //         cy.signIn2();
-    //     });
-    //     cy.visit("/tasks", {
-    //         failOnStatusCode: false,
-    //     });
-    //     cy.get('h1').contains('他人创建的测试').next().should('contain', '77777.csv');
-    //     cy.contains('客观测试').click();
-    //     cy.url().should('include', '/tasks/');
-    // });
-
 });

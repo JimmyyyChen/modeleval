@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getUser } from "@/lib/getUsername";
 import { clerkClient } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs";
-import { prisma } from "@/lib/prisma";
 export async function GET(request) {
     try {
         const { userId } = auth();
@@ -12,26 +11,17 @@ export async function GET(request) {
         let starList = [];
         let downloadList = [];
         let starList_model = [];
-        let datasets = await prisma.dataset.findMany({
-            where: {
-                userId: userId,
-            },
-        });
-        console.log(datasets);
-        for (let i = 0; i < datasets.length; i++)
-            stars += datasets[i].starCount;
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
         if (user.privateMetadata.stars == undefined) {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
-                    stars: stars,
+                    stars: 0,
                 }
             });
         }
-        //else stars = user.privateMetadata.stars;
-        console.log(stars);
+        else stars = user.privateMetadata.stars;
         if (user.privateMetadata.organization == undefined) {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {

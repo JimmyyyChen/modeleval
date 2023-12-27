@@ -28,7 +28,7 @@ import 'cypress-file-upload';
 Cypress.Commands.add(`signOut`, () => {
   cy.log(`sign out by clearing all cookies and calling Clerk's signOut method.`);
   cy.window().then(async (window) => {
-    //await window.Clerk.client.signOut.create();
+    await window.Clerk.client.signOut.create();
     cy.clearCookies({ domain: window.location.domain });
   });
 });
