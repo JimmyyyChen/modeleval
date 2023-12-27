@@ -63,7 +63,6 @@ export default function Community({ id, type }) {
                   {/* if there is a button in form, it will close the modal */}
                   <div className="flex space-x-2">
                     <button className="btn">取消</button>
-                    {/* TODO */}
                     <button
                       className="btn btn-accent"
                       onClick={(e) => {
@@ -89,8 +88,7 @@ export default function Community({ id, type }) {
       </div>
       <div className="w-full space-y-4 px-4 py-2 text-sm">
         {comments.map((comment) => {
-          // TODO: userName undefined
-          const userName = comment.username;
+          const userName = comment.user[0].username;
           const content = comment.content;
           const commentTime = new Date(comment.commentTime).toLocaleString();
           return (
@@ -101,7 +99,7 @@ export default function Community({ id, type }) {
               >
                 <div className="flex items-center space-x-3">
                   <div className="truncate text-xl font-bold text-primary">
-                    {userName}TODO:userName
+                    {userName}
                   </div>
                   <div className=" truncate text-sm text-gray-400">{commentTime}</div>
                 </div>
@@ -136,7 +134,7 @@ export default function Community({ id, type }) {
                           {content}
                         </div>
                       </div>
-                      {/* TODO */}
+                      {/* TODO: Reply */}
                       {/* <textarea
                         placeholder={`Reply to ${userName}...`}
                         className="textarea textarea-bordered textarea-lg h-48 w-full text-sm"

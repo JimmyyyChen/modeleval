@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
             },
             include: {
                 label_list: true,
-                // TODO: i have no idea what the fck is happening here. But this causes some error
+                // i have no idea what the fck is happening here. But this causes some error
                 // starUser: true,
                 Comment: true,
                 starUser: true,

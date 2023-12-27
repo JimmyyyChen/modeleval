@@ -134,7 +134,7 @@ export default function HomePage() {
       axios.get("/api/models").catch((err) => {
         console.error("Failed to fetch models", err);
       }),
-      axios.get("/api/datasets").catch((err) => {
+      axios.get("/api/datasets/0").catch((err) => {
         console.error("Failed to fetch datasets", err);
       }),
     ]).then(([modelsRes, datasetsRes]) => {
@@ -206,7 +206,6 @@ export default function HomePage() {
       const score = scores[modelId] && scores[modelId][datasetId];
       row[dataset.datasetName] =
         score !== null ? (score * 100).toFixed(2) : "未评测";
-      // TODO: sometimes backend return 0 while it should be null(未评测)
     });
     rows.push(row);
   });

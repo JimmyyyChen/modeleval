@@ -30,7 +30,7 @@ export default function CheckCondition({ title, labels }) {
   }
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="w-full h-full flex flex-col space-y-6">
       <form
         className="flex items-center space-x-3"
         onSubmit={(e) => {
@@ -44,20 +44,19 @@ export default function CheckCondition({ title, labels }) {
           defaultValue={searchParams.get("query")?.toString()}
         />
 
-        <button type="submit" className="btn btn-circle btn-primary text-white shadow">
+        <button type="submit" className="btn btn-circle btn-primary text-white shadow w-1/12">
           <MagnifyingGlassIcon className="h-5 w-5" />
         </button>
 
         <button
           type="reset"
           onClick={() => handleSearch("")}
-          className="btn btn-circle shadow"
+          className="btn btn-circle shadow w-1/12"
         >
           <XMarkIcon className="h-5 w-5  text-gray-500" />
         </button>
       </form>
 
-      {/* TODO: Add post link */}
       {labels.map((item) => (
         <div key={`label-${item.id}`} className="flex flex-col space-y-2 ">
           <div className="text-xl font-bold text-primary">{item.label}</div>
