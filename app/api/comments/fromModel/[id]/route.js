@@ -11,6 +11,9 @@ export async function GET(request,{ params }) {
         type: type,
         modelId: modelId,
       },
+      include: {
+        user: true
+      },
       orderBy: {
         commentTime: "desc",
       },
