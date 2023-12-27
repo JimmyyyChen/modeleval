@@ -30,10 +30,16 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
     const response = await axios.post(`/api/models/star/${id}`);
 
     if (response.status == 200) {
+      alert("收藏成功");
+
       location.reload();
     } else if (response.status == 404) {
+      alert("未找到该模型");
+
       console.log("error");
     } else {
+      alert("收藏失败");
+
       console.log("error");
     }
   };
@@ -77,7 +83,7 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
                 {starUser && starUser.length ? (
                   starUser.map((item) => (
                     <Link
-                      className="flex items-center justify-center space-x-4 hover:underline"
+                      className="flex items-start justify-start space-x-4 hover:underline"
                       href={`/profile/visitor/${item.userId}`}
                       key={`star-user-${item.userId}`}
                     >

@@ -14,7 +14,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-// TODO: 添加收藏判定，更改收藏图标
 export default function DatasetMainInfoDisplay({ datasetInfo }) {
   const [downloadFilename, setDownloadFilename] = useState("");
 
@@ -73,10 +72,24 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
     const response = await axios.post(`/api/datasets/star/${id}`);
 
     if (response.status == 200) {
+      if (starUser && starUser.map((item) => item.userId).includes(selfId)) {
+        alert("取消收藏成功");
+      } else {
+        alert("收藏成功");
+      }
+
       location.reload();
     } else if (response.status == 404) {
+      alert("未找到该数据集");
+
       console.log("error");
     } else {
+      if (starUser && starUser.map((item) => item.userId).includes(selfId)) {
+        alert("取消收藏失败");
+      } else {
+        alert("收藏失败");
+      }
+
       console.log("error");
     }
   };
@@ -121,7 +134,7 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                 {downloadUser && downloadUser.length ? (
                   downloadUser.map((item) => (
                     <Link
-                      className="flex items-center justify-center space-x-4 hover:underline"
+                      className="flex items-start justify-start space-x-4 hover:underline"
                       href={`/profile/visitor/${item.userId}`}
                       key={`download-user-${item.userId}`}
                     >
@@ -185,7 +198,7 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                 {starUser && starUser.length ? (
                   starUser.map((item) => (
                     <Link
-                      className="flex items-center justify-center space-x-4 hover:underline"
+                      className="flex items-start justify-start space-x-4 hover:underline"
                       href={`/profile/visitor/${item.userId}`}
                       key={`star-user-${item.userId}`}
                     >
