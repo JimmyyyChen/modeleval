@@ -11,8 +11,8 @@ export default function SignUpPage() {
           formFieldInput:
             "rounded-lg focus:ring-teal-600 focus:border-teal-600 border-gray-200",
         },
-        redirectUrl: "/profile/self",
       }}
+      afterSignInUrl="/profile/self"
     />
   );
 }

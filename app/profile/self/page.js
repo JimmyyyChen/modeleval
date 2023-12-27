@@ -70,11 +70,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* TODO: I think there is no need for comment for a user?? that's weird */}
-        {/* <div className="flex w-full p-6 text-2xl">
-          <Community issues={issues} textcontent="我的留言区" />
-        </div> */}
       </div>
     </>
   );

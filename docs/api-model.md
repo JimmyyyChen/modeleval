@@ -19,7 +19,6 @@
   - `description` (string): 模型的说明
   - `starCount` (number): 模型的收藏次数
   - `starUser` ([User]): 收藏该模型的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
-  - `contents` (dict): 模型的其他展示信息（#TODO）
 - 失败 (`500`): 返回错误信息。
 
 ### 获取模型信息 `GET /api/models/info/[modelName]`
@@ -43,7 +42,6 @@
   - `description` (string): 模型的说明
   - `starCount` (number): 模型的收藏次数
   - `starUser` ([User]): 收藏该模型的用户列表,含有两个属性userId与username,分别是用户的auth与用户名
-  - `contents` (dict): 模型的其他展示信息（#TODO）
 - 失败 (`500`): 返回错误信息。
 
 ### 收藏模型 `POST /api/models/star/[id]`

@@ -57,7 +57,6 @@ export default function CheckCondition({ title, labels }) {
         </button>
       </form>
 
-      {/* TODO: Add post link */}
       {labels.map((item) => (
         <div key={`label-${item.id}`} className="flex flex-col space-y-2 ">
           <div className="text-xl font-bold text-primary">{item.label}</div>
