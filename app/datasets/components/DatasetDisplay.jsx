@@ -29,7 +29,7 @@ export default function DatasetDisplay({ title, datasets, isvisitor }) {
           </Link>
         )}
       </div>
-      <div className="flex space-y-6 px-6 w-full flex-col">
+      <div className="flex space-y-9 px-6 w-full flex-col">
       <CheckCondition title="数据集" labels={datasetTypes} />
       <DataTable items={datasets} type="datasets" isvisitor={isvisitor} /></div>
     </div>

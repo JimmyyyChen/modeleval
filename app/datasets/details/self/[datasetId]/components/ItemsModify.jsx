@@ -51,7 +51,9 @@ export function ResponsiveDialog(props) {
         More
       </Button>
       {questionType === undefined ? (
-        <div>Loading...</div>
+        <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
+          <span className="loading loading-spinner loading-md flex justify-center"></span>
+        </div>
       ) : (
         <Dialog
           fullScreen={fullScreen}

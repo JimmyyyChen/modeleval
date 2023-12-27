@@ -14,7 +14,7 @@ export default function ModelDisplay({ models }) {
         ></CubeIcon>
         <span>模型</span>
       </div>
-      <div className="flex space-y-6 px-6 w-full flex-col">
+      <div className="flex space-y-9 px-6 w-full flex-col">
       <CheckCondition title="模型" labels={modelTypes} />
       <DataTable items={models} type="llm" isvisitor={true} />
       </div>

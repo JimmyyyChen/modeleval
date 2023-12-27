@@ -41,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-export default function FullWidthTabs() {
+export default function FullWidthTabs({ modelInfo }) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -54,36 +54,39 @@ export default function FullWidthTabs() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: "full" }}>
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="secondary"
-          textColor="inherit"
-          variant="fullWidth"
-          aria-label="full width tabs example"
+    <div className="overflow-hidden rounded-2xl">
+      <Box sx={{ bgcolor: "background.paper", width: "full" }}>
+        <AppBar position="static">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="inherit"
+            variant="fullWidth"
+            aria-label="full width tabs example"
+            className="bg-primary"
+          >
+            <Tab label="模型简介" {...a11yProps(0)} />
+            <Tab label="使用方法" {...a11yProps(1)} />
+            <Tab label="其他信息" {...a11yProps(2)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={value}
+          onChangeIndex={handleChangeIndex}
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          test
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
-        </TabPanel>
-      </SwipeableViews>
-    </Box>
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            {modelInfo.Introduction}
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            {modelInfo.Usage}
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            {modelInfo.AdditionalInformation}
+          </TabPanel>
+        </SwipeableViews>
+      </Box>
+    </div>
   );
 }
