@@ -5,5 +5,6 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000",
     // setupNodeEvents(on, config) {},
     watchForFileChanges: false,
+    "defaultCommandTimeout": 30000,
   },
 });
