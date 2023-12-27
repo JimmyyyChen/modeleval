@@ -52,9 +52,8 @@ export default function Footer() {
           <p className="text-sm text-gray-600">About us</p>
         </Link>
 
-        {/* TODO: Add Email link */}
-        <Link
-          href="mailto:example@example.com"
+        <a
+          href="mailto:chenjimmy91@hotmail.com"
           className="flex flex-row items-center space-x-2 hover:font-semibold hover:text-gray-700 sm:flex-col sm:space-x-0"
         >
           <svg
@@ -73,7 +72,7 @@ export default function Footer() {
           </svg>
 
           <p className="text-sm text-gray-600">Contact</p>
-        </Link>
+        </a>
       </div>
     </footer>
   );

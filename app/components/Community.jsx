@@ -63,7 +63,6 @@ export default function Community({ id, type }) {
                   {/* if there is a button in form, it will close the modal */}
                   <div className="flex space-x-2">
                     <button className="btn">取消</button>
-                    {/* TODO */}
                     <button
                       className="btn btn-accent"
                       onClick={(e) => {
@@ -135,7 +134,7 @@ export default function Community({ id, type }) {
                           {content}
                         </div>
                       </div>
-                      {/* TODO */}
+                      {/* TODO: Reply */}
                       {/* <textarea
                         placeholder={`Reply to ${userName}...`}
                         className="textarea textarea-bordered textarea-lg h-48 w-full text-sm"
