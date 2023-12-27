@@ -41,8 +41,15 @@ export default function Home({ params: { modelId } }) {
         <Labels labelList={labelList} />
       </div>
 
+      {/* TODO: 调通 */}
       <div className="h-full w-full p-4 ">
-        <FullWidthTabs />
+        {modelInfo.modelName ? (
+          <FullWidthTabs modelInfo={modelInfo} />
+        ) : (
+          <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
+            <span className="loading loading-spinner loading-md flex justify-center"></span>
+          </div>
+        )}
       </div>
 
       <div className="w-full p-4 text-4xl">

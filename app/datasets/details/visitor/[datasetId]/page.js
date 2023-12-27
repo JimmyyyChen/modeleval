@@ -70,7 +70,7 @@ export default function Home({ params: { datasetId } }) {
             <ItemsDisplay datasetInfo={datasetInfo} />
           ) : (
             <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
-              Loading...
+              <span className="loading loading-spinner loading-md flex justify-center"></span>
             </div>
           )}
         </div>
