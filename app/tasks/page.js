@@ -53,7 +53,7 @@ export default async function TasksPage() {
 
       <h1 className="text-3xl font-bold text-primary">他人创建的测试</h1>
       {publicTasks.map((task) => (
-        <TaskCard task={task} key={task.id} />
+        <TaskCard task={task} key={task.id} isVisiter={true}/>
         ))}
 
       {/* if no tasks */}

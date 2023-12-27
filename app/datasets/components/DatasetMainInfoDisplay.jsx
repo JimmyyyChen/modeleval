@@ -13,6 +13,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Image from "next/image";
 
 export default function DatasetMainInfoDisplay({ datasetInfo }) {
   const [downloadFilename, setDownloadFilename] = useState("");
@@ -141,7 +142,7 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                       {item.userImageUrl ? (
                         <div className="avatar">
                           <div className="flex w-6 items-center justify-center rounded-full">
-                            <img src={item.userImageUrl} alt={item.username} />
+                            <Image src={item.userImageUrl} alt={item.username} />
                           </div>
                         </div>
                       ) : (
@@ -205,7 +206,7 @@ export default function DatasetMainInfoDisplay({ datasetInfo }) {
                       {item.userImageUrl ? (
                         <div className="avatar">
                           <div className="flex w-6 items-center justify-center rounded-full">
-                            <img src={item.userImageUrl} alt={item.username} />
+                            <Image src={item.userImageUrl} alt={item.username} />
                           </div>
                         </div>
                       ) : (

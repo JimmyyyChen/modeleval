@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request,{ params }) {
+export async function GET(request, { params }) {
   try {
     const type = 1; // 0表示model,1表示dataset,2表示user,3表示task
     const datasetId = parseInt(params.id);
@@ -13,6 +13,9 @@ export async function GET(request,{ params }) {
       },
       orderBy: {
         commentTime: "desc",
+      },
+      include: {
+        user: true,
       },
     });
     return new NextResponse(JSON.stringify(comments), {
