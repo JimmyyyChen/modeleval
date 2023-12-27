@@ -31,7 +31,11 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
     const response = await axios.post(`/api/models/star/${id}`);
 
     if (response.status == 200) {
-      alert("收藏成功");
+      if (starUser && starUser.map((item) => item.userId).includes(selfId)) {
+        alert("取消收藏成功");
+      } else {
+        alert("收藏成功");
+      }
 
       location.reload();
     } else if (response.status == 404) {
@@ -39,7 +43,11 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
 
       console.log("error");
     } else {
-      alert("收藏失败");
+      if (starUser && starUser.map((item) => item.userId).includes(selfId)) {
+        alert("取消收藏失败");
+      } else {
+        alert("收藏失败");
+      }
 
       console.log("error");
     }
