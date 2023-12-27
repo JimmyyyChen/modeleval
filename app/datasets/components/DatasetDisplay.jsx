@@ -4,7 +4,7 @@ import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 import Link from "next/link";
 
-export default function DatasetDisplay({ datasets, isvisitor }) {
+export default function DatasetDisplay({ title, datasets, isvisitor }) {
   return (
     <div className="flex flex-col space-y-6 w-full">
       <div className="flex space-x-3">
