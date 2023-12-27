@@ -16,9 +16,7 @@ export default function DatasetDisplay({ datasets, isvisitor }) {
           上传数据集
         </Link>
       </div>
-      <div className="">
         <DataTable items={datasets} type="datasets" isvisitor={isvisitor} />
-      </div>
     </div>
   );
 }
