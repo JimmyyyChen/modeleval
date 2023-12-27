@@ -134,7 +134,7 @@ export default function HomePage() {
       axios.get("/api/models").catch((err) => {
         console.error("Failed to fetch models", err);
       }),
-      axios.get("/api/datasets").catch((err) => {
+      axios.get("/api/datasets/0").catch((err) => {
         console.error("Failed to fetch datasets", err);
       }),
     ]).then(([modelsRes, datasetsRes]) => {
