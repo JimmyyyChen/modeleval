@@ -17,6 +17,7 @@ export async function GET(request) {
                 userId: userId,
             },
         });
+        console.log(datasets);
         for (let i = 0; i < datasets.length; i++)
             stars += datasets[i].starCount;
         if (!user) {
@@ -29,7 +30,8 @@ export async function GET(request) {
                 }
             });
         }
-        else stars = user.privateMetadata.stars;
+        //else stars = user.privateMetadata.stars;
+        console.log(stars);
         if (user.privateMetadata.organization == undefined) {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
