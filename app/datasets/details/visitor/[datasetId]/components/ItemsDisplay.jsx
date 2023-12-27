@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
-import axios from "axios";
 import { useState, useEffect, useMemo } from "react";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,12 +11,6 @@ import TableRow from "@mui/material/TableRow";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -26,7 +18,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 
 export function ResponsiveDialog(props) {
@@ -191,10 +182,7 @@ export default function ItemsDisplay({ datasetInfo }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {visibleRows.map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
+                {visibleRows.map((row, index) => (
                     <TableRow
                       hover
                       role="checkbox"
@@ -211,8 +199,8 @@ export default function ItemsDisplay({ datasetInfo }) {
                         />
                       </TableCell>
                     </TableRow>
-                  );
-                })}
+                  )
+                )}
                 {emptyRows > 0 && (
                   <TableRow
                     style={{

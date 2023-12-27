@@ -4,10 +4,10 @@ import DataTable from "../../components/DataTable";
 import CheckCondition from "../../components/CheckCondition";
 import Link from "next/link";
 
-export default function Home({ title, datasets, isvisitor }) {
+export default function DatasetDisplay({ datasets, isvisitor }) {
   return (
-    <div className="flex w-full flex-col space-y-3">
-      <div className="flex">
+    <div className="flex flex-col space-y-6 w-full">
+      <div className="flex space-x-3">
         {/* 设置 flex-grow 使 CheckCondition 占据更多空间 */}
         <div className="flex-grow">
           <CheckCondition title="数据集" labels={datasetTypes} />
@@ -16,7 +16,7 @@ export default function Home({ title, datasets, isvisitor }) {
           上传数据集
         </Link>
       </div>
-      <DataTable items={datasets} type="datasets" isvisitor={isvisitor} />
+        <DataTable items={datasets} type="datasets" isvisitor={isvisitor} />
     </div>
   );
 }

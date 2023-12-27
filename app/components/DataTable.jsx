@@ -83,6 +83,10 @@ export default function DataTable({ items, type, isvisitor }) {
     },
   ];
 
+  if (type === "llm") {
+    headCells.pop();
+  }
+
   function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
@@ -229,9 +233,13 @@ export default function DataTable({ items, type, isvisitor }) {
                   <StyledTableCell align="right">
                     {row.starCount}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.downloadCount}
-                  </StyledTableCell>
+                  {type === "datasets" ? (
+                    <StyledTableCell align="right">
+                      {row.downloadCount}
+                    </StyledTableCell>
+                  ) : (
+                    <></>
+                  )}
                 </StyledTableRow>
               ))}
               {emptyRows > 0 && (

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { getUser } from "@/lib/getUsername";
 
 import {
   XMarkIcon,
@@ -14,7 +13,7 @@ import {
   EyeIcon,
 } from "@heroicons/react/24/solid";
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, isVisiter }) {
   const id = task.id;
   const taskName = task.taskName;
   const questionType = task.questionType;
@@ -100,7 +99,7 @@ export default function TaskCard({ task }) {
         <p className="text-gray-500">用户 {userName} 创建</p>
       </div>
       <div className="ml-auto space-x-1">
-        <button className="btn btn-circle btn-ghost " onClick={deleteTask}>
+        <button className={`btn btn-circle btn-ghost ${isVisiter && `hidden`}`} onClick={deleteTask} disabled={isVisiter}>
           <XMarkIcon className="h-5 w-5" />
         </button>
       </div>

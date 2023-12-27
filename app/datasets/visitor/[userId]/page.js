@@ -46,11 +46,5 @@ export default function Home({ params: { userId } }) {
     fetchUserDatasets();
   }, [userId]);
 
-  return (
-    <DatasetDisplay
-      title={`${username}的数据集`}
-      datasets={datasets}
-      isvisitor={true}
-    />
-  );
+  return <DatasetDisplay datasets={datasets} isvisitor={true} />;
 }
