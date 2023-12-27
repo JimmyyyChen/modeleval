@@ -118,7 +118,7 @@ export default function HumanEvalDisplay({ params }) {
         max={questionsArray.length}
       ></progress>
       <p className="h-0 text-sm text-gray-500 opacity-0  transition-all duration-300 group-hover:h-max group-hover:opacity-100">
-        已完成 {isRankedCount} 题, 剩余 {questionsArray.length-isRankedCount} 题
+        已完成 {isRankedCount} 题, 剩余 {questionsArray.length - isRankedCount} 题
       </p>
     </div>
   );
@@ -159,7 +159,7 @@ function QuestionAnswersCard({ question, taskId }) {
     const rank = rankedAnswers.map((answer) => parseInt(answer.modelId));
 
     const response = await axios.post(
-      `http://localhost:3000/api/tasks/scores/updateOnceAd`,
+      `/api/tasks/scores/updateOnceAd`,
       {
         id: taskId,
         index: questionIndex,
@@ -244,9 +244,8 @@ function QuestionAnswersCard({ question, taskId }) {
             <div className="flex justify-center">
               {isRanked ? (
                 <div
-                  className={`flex space-x-5 transition-all ${
-                    isReordered ? "opacity-100" : "h-0 opacity-0"
-                  }`}
+                  className={`flex space-x-5 transition-all ${isReordered ? "opacity-100" : "h-0 opacity-0"
+                    }`}
                 >
                   <button
                     disabled={!isReordered}

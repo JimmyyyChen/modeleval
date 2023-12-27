@@ -1,0 +1,17 @@
+time for loading page: 204
+time for subjective evaluation: 6962
+time for finishing subjective evaluation: 3579
+time for changing subjective evaluation: 1923
+time for loading main page: 147
+time for objective evaluation: 3163
+time for comparative evaluation: 17529
+time for finishing comparative evaluation: 5677
+time for loading page: 507
+time for loading page: 195
+time for subjective evaluation: 8054
+time for finishing subjective evaluation: 4069
+time for changing subjective evaluation: 1865
+time for loading main page: 112
+time for objective evaluation: 2367
+time for comparative evaluation: 16150
+time for finishing comparative evaluation: 2536

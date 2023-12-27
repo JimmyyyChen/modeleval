@@ -13,36 +13,37 @@ export default function IndexPagePage() {
     const formData = new FormData();
     formData.append("csvFile", file);
 
-    try {
-      const response = await axios.post("/api/datasets/upload", formData);
-      if (response.status == 200) {
-        alert(
-          "文件上传成功!共成功上传了" +
-            response.data["total_number"] +
-            "条数据",
-        );
-        window.location.href = "/profile/self";
-      }
-      if (response.status == 206) {
-        alert(
-          "文件部分上传成功,共上传了" +
-            response.data["total_number"] +
-            "条数据，但是其中有" +
-            response.data["wrong_number"] +
-            "条数据格式错误",
-        );
-        window.location.href = "/profile/self";
-      }
-      if (response.status == 400) {
-        alert("文件部分上传失败!格式错误");
-      }
-      if (response.status == 500) {
-        alert(
-          "文件上传失败，请检查文件格式是否正确，文件大小是否超过10MB，文件名是否含有中文",
-        );
-      }
-    } catch (error) {
-      console.error("Error uploading CSV file:", error);
+
+    const response = await axios.post("/api/datasets/upload", formData, {
+      validateStatus: function (status) {
+        return status >= 200 && status < 600; // 默认的实现
+      },
+    });
+    if (response.status == 200) {
+      alert(
+        "文件上传成功!共成功上传了" +
+        response.data["total_number"] +
+        "条数据",
+      );
+      window.location.href = "/profile/self";
+    }
+    if (response.status == 206) {
+      alert(
+        "文件部分上传成功,共上传了" +
+        response.data["total_number"] +
+        "条数据，但是其中有" +
+        response.data["wrong_number"] +
+        "条数据格式错误",
+      );
+      window.location.href = "/profile/self";
+    }
+    if (response.status == 400) {
+      alert("文件上传失败!格式错误");
+    }
+    if (response.status == 500) {
+      alert(
+        "文件上传失败，请检查文件格式是否正确，文件大小是否超过10MB，文件名是否含有中文",
+      );
     }
   };
 

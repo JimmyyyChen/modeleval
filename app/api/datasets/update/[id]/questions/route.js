@@ -68,7 +68,7 @@ export async function POST(request, { params }) {
             //         headers: { "Content-Type": "application/json" },
             //     });
             // }
-            await prisma.ShortAnswerQuestion.delete({
+            await prisma.ShortAnswerQuestion.deleteMany({
                 where: {
                     id: {
                         in: body["items"],
