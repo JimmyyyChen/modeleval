@@ -20,18 +20,21 @@ model Label {
 }
 
 model Model {
-  modelid       Int       @id @default(autoincrement())
-  modelName     String    @unique
-  label_list    Label[]
-  description   String    @default("This is a default description.")
-  downloadCount Int       @default(0)
-  lastUpdate    DateTime  @default(now())
-  starCount     Int       @default(0)
-  starUser      User[]
-  Tasks         Task[]
-  Comment       Comment[]
-  ScoreObj      Float     @default(0.0) // 平均客观题得分
-  ScoreSub      Float     @default(0.0) // 平均主观题得分
+  modelid               Int       @id @default(autoincrement())
+  modelName             String    @unique
+  label_list            Label[]
+  description           String    @default("This is a default description.")
+  Introduction          String    @default("This is a default introduction for model.")
+  Usage                 String    @default("This is a default usage for model.")
+  AdditionalInformation String    @default("This is a default additional information for model.")
+  downloadCount         Int       @default(0)
+  lastUpdate            DateTime  @default(now())
+  starCount             Int       @default(0)
+  starUser              User[]
+  Tasks                 Task[]
+  Comment               Comment[]
+  ScoreObj              Float     @default(0.0) // 平均客观题得分
+  ScoreSub              Float     @default(0.0) // 平均主观题得分
 }
 
 model Dataset {
