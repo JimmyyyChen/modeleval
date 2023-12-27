@@ -128,11 +128,27 @@ export const modelTypes = [
     value: [
       {
         id: 1,
-        content: "文字生成",
+        content: "文本补全",
       },
       {
         id: 2,
-        content: "其他",
+        content: "聊天对话",
+      },
+      {
+        id: 3,
+        content: "金融",
+      },
+      {
+        id: 4,
+        content: "医疗",
+      },
+      {
+        id: 5,
+        content: "法律",
+      },
+      {
+        id: 6,
+        content: "数学",
       },
     ],
   }
@@ -154,4 +170,5 @@ export const labels = {
   "时间序列预测": <ClockIcon className="h-4 w-4 text-primary" />,
   "表格分类": <TableCellsIcon className="h-4 w-4 text-primary" />,
   "表格回归": <BookmarkIcon className="h-4 w-4 text-primary" />,
+  // TODO: add more icons
 }

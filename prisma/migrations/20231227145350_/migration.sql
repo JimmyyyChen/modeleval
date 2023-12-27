@@ -12,7 +12,10 @@ CREATE TABLE `Label` (
 CREATE TABLE `Model` (
     `modelid` INTEGER NOT NULL AUTO_INCREMENT,
     `modelName` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL DEFAULT 'this is a model for testing',
+    `description` TEXT NOT NULL,
+    `Introduction` TEXT NOT NULL,
+    `Usage` TEXT NOT NULL,
+    `AdditionalInformation` TEXT NOT NULL,
     `downloadCount` INTEGER NOT NULL DEFAULT 0,
     `lastUpdate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `starCount` INTEGER NOT NULL DEFAULT 0,
@@ -28,7 +31,7 @@ CREATE TABLE `Dataset` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `datasetName` VARCHAR(191) NOT NULL,
     `repeatNames` INTEGER NOT NULL DEFAULT 0,
-    `description` VARCHAR(191) NOT NULL DEFAULT 'this is a dataset for task',
+    `description` VARCHAR(191) NOT NULL DEFAULT 'This is a default description.',
     `sizeInMB` DOUBLE NOT NULL,
     `lastUpdate` DATETIME(3) NOT NULL,
     `starCount` INTEGER NOT NULL DEFAULT 0,
@@ -44,12 +47,13 @@ CREATE TABLE `Dataset` (
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NOT NULL,
+    `userImageUrl` VARCHAR(191) NOT NULL DEFAULT '',
     `userId` VARCHAR(191) NOT NULL,
     `datasetId1` INTEGER NULL,
     `datasetId2` INTEGER NULL,
+    `modelModelid` INTEGER NULL,
+    `commentId` INTEGER NULL,
 
-    UNIQUE INDEX `User_username_key`(`username`),
-    UNIQUE INDEX `User_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -120,13 +124,12 @@ CREATE TABLE `Score` (
 CREATE TABLE `Comment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `content` TEXT NOT NULL,
+    `reply` INTEGER NOT NULL DEFAULT -1,
     `commentTime` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `lastUpdate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `type` INTEGER NOT NULL,
     `modelId` INTEGER NULL,
     `datasetId` INTEGER NULL,
-    `userId` VARCHAR(191) NOT NULL,
-    `username` VARCHAR(191) NOT NULL DEFAULT 'Administrator',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -151,6 +154,12 @@ ALTER TABLE `User` ADD CONSTRAINT `User_datasetId1_fkey` FOREIGN KEY (`datasetId
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_datasetId2_fkey` FOREIGN KEY (`datasetId2`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_modelModelid_fkey` FOREIGN KEY (`modelModelid`) REFERENCES `Model`(`modelid`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_commentId_fkey` FOREIGN KEY (`commentId`) REFERENCES `Comment`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ChoiceQuestion` ADD CONSTRAINT `ChoiceQuestion_datasetId_fkey` FOREIGN KEY (`datasetId`) REFERENCES `Dataset`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
