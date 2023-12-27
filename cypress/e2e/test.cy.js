@@ -117,10 +117,15 @@ describe("Testing", () => {
         });
         cy.get('.cl-avatarBox').click();
         cy.wait(500);
-        cy.contains('退出登录').parent().click();
+        cy.contains('退出登录').click();
+        cy.wait(500);
+        cy.session("signed-in2", () => {
+            cy.signIn2();
+        });
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
         cy.get('h1').contains('他人创建的测试').next().should('contain', '77777.csv');
+        cy.contains('客观测试').click();
     });
 });

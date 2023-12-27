@@ -26,10 +26,12 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add(`signOut`, () => {
-  cy.log(`sign out by clearing all cookies.`);
-  cy.clearCookies({ domain: null });
+  cy.log(`sign out by clearing all cookies and calling Clerk's signOut method.`);
+  cy.window().then(async (window) => {
+    await window.Clerk.client.signOut.create();
+    cy.clearCookies({ domain: window.location.domain });
+  });
 });
-
 Cypress.Commands.add(`signIn`, () => {
   cy.log(`Signing in.`);
   cy.visit(`/sign-in`, { failOnStatusCode: false });
