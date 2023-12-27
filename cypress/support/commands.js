@@ -24,7 +24,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
+import 'cypress-file-upload';
 Cypress.Commands.add(`signOut`, () => {
   cy.log(`sign out by clearing all cookies and calling Clerk's signOut method.`);
   cy.window().then(async (window) => {

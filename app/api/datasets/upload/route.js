@@ -87,6 +87,12 @@ export async function POST(request) {
                     wrong_questions.push(i + 1);
                     continue;
                 }
+                if (results[i].choices.slice(3, -3).split('", "').map(str => ({ content: str })).length != 4) {
+                    number_of_wrong++;
+                    wrong_questions.push(i + 1);
+                    continue;
+                }
+
                 final_results.push(results[i]);
                 choices[final_results.length - 1] = results[i].choices.slice(3, -3).split('", "').map(str => ({ content: str }));
             }
