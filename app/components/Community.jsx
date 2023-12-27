@@ -89,8 +89,7 @@ export default function Community({ id, type }) {
       </div>
       <div className="w-full space-y-4 px-4 py-2 text-sm">
         {comments.map((comment) => {
-          // TODO: userName undefined
-          const userName = comment.username;
+          const userName = comment.user[0].username;
           const content = comment.content;
           const commentTime = new Date(comment.commentTime).toLocaleString();
           return (
@@ -101,7 +100,7 @@ export default function Community({ id, type }) {
               >
                 <div className="flex items-center space-x-3">
                   <div className="truncate text-xl font-bold text-primary">
-                    {userName}TODO:userName
+                    {userName}
                   </div>
                   <div className=" truncate text-sm text-gray-400">{commentTime}</div>
                 </div>
