@@ -27,5 +27,5 @@ export default function Home() {
     fetchUserDatasets();
   }, []);
 
-  return <DatasetDisplay datasets={datasets} isvisitor={false} />;
+  return <DatasetDisplay title={"我的数据集"} datasets={datasets} isvisitor={false} />;
 }
