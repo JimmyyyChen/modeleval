@@ -169,7 +169,7 @@ function EnhancedTableToolbar(props) {
   const [addCorrectAnswer, setAddCorrectAnswer] = useState("");
 
   const regex =
-    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)*\s*\]$/g;
+    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?){0,3}\s*\]$/g;
 
   const handleDeleteSelectedItems = async () => {
     const request = await axios.post(

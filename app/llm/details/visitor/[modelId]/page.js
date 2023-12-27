@@ -41,6 +41,7 @@ export default function Home({ params: { modelId } }) {
         <Labels labelList={labelList} />
       </div>
 
+      {/* TODO: 调通 */}
       <div className="h-full w-full p-4 ">
         <FullWidthTabs />
       </div>
