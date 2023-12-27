@@ -171,7 +171,7 @@ function EnhancedTableToolbar(props) {
   const [addCorrectAnswer, setAddCorrectAnswer] = useState("");
 
   const regex =
-    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?){0,3}\s*\]$/g;
+    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)\s*\]$/g;
 
   const handleDeleteSelectedItems = async () => {
     const request = await axios.post(
@@ -380,9 +380,10 @@ function EnhancedTableToolbar(props) {
                 请提交需要修改的属性，不需要修改的属性请留空。
                 <br />
                 请注意，如果进行修改，那么原有的选项或者答案将会被清空。Choices
-                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，且
+                Choices 长度必须为 4，如下：
                 <br />
-                ["Choice 1", "Choice 2", "Choice 3"]
+                ["Choice 1", "Choice 2", "Choice 3", "Choice 4"]
                 <br />
                 注：以上标点全部为英文标点。
               </DialogContentText>
@@ -453,9 +454,10 @@ function EnhancedTableToolbar(props) {
                 请提交需要新增的条目，每个属性均需要填写。
                 <br />
                 请注意，Choices
-                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，且
+                Choices 长度必须为 4，如下：
                 <br />
-                ["Choice 1", "Choice 2", "Choice 3"]
+                ["Choice 1", "Choice 2", "Choice 3", "Choice 4"]
                 <br />
                 注：以上标点全部为英文标点。
               </DialogContentText>
@@ -659,9 +661,15 @@ export default function ItemsModify({ datasetInfo }) {
 
     var newLabels = [];
 
-    if (modifyNewLabels && (newLabels = regex.exec(modifyNewLabels)) !== null) {
-      newLabels = newLabels.slice(1).filter((item) => Boolean(item));
-      } else if (modifyNewLabels) {
+    if (modifyNewLabels && regex.exec(modifyNewLabels) !== null) {
+      modifyNewLabels
+        .slice(1, -1)
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => Boolean(item))
+        .forEach((item) => newLabels.push(item.slice(1, -1)));
+      console.log(newLabels);
+    } else if (modifyNewLabels) {
       alert("New Labels 格式不正确！");
       return;
     }
@@ -794,7 +802,8 @@ export default function ItemsModify({ datasetInfo }) {
             <DialogContentText>
               请提交需要修改的属性，不需要修改的属性请留空。
               <br />
-              请注意，数据集最终适配标签与当前选中一致。New Labels 列可以自定义标签，对于每个数据集，自定义标签自动选中（可在后续取消），应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+              请注意，数据集最终适配标签与当前选中一致。New Labels
+              列可以自定义标签，对于每个数据集，自定义标签自动选中（可在后续取消），应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
               <br />
               ["Label 1", "Label 2", "Label 3"]
               <br />
