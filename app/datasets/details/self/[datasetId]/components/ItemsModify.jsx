@@ -738,7 +738,9 @@ export default function ItemsModify({ datasetInfo }) {
                           onClick={(event) => handleClick(event, row.id)}
                         />
                       </TableCell>
-                      <TableCell align="left">{items.indexOf(row)}</TableCell>
+                      <TableCell align="left">
+                        {items.indexOf(row) + 1}
+                      </TableCell>
                       <TableCell align="left">{row.question}</TableCell>
                       <TableCell align="center">
                         <ResponsiveDialog
