@@ -81,11 +81,17 @@ describe("Testing", () => {
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.contains('主观测试').click();
+        let start;
+        cy.contains('主观测试').click().then(() => {
+            start = new Date();
+        });
         cy.contains('修改主观评测').parents().first().children().first().click();
         cy.contains('问题 1').parents().eq(1).children().eq(1).find("button").contains('错误').click();
         cy.contains('问题 2').parents().eq(1).children().eq(2).find("button").contains('错误').click();
-        cy.contains('主观测试').parents().first().children().first().click();
+        cy.contains('主观测试').parents().first().children().first().click().then(() => {
+            const duration = new Date() - start;
+            cy.writeFile('testlog.txt', `time for changing subjective evaluation: ${duration}\n`, { flag: 'a+' });
+        });
         cy.url().should('not.include', '/tasks/human-evaluation/');
         cy.contains('已完成评测, 获得 100.00 分').should('not.exist');
         cy.contains('已完成评测, 获得 75.00 分').should('be.visible');
@@ -94,8 +100,14 @@ describe("Testing", () => {
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.contains('测试完成').should('be.visible');
-        cy.get('nav').find('img').first().click();
+        let start;
+        cy.contains('测试完成').should('be.visible').then(() => {
+            start = new Date();
+        });
+        cy.get('nav').find('img').first().click().then(() => {
+            const duration = new Date() - start;
+            cy.writeFile('testlog.txt', `time for loading main page: ${duration}\n`, { flag: 'a+' });
+        });
         cy.contains('75.00').should('exist');
         cy.get('nav').contains('测试').click();
         cy.contains('主观测试').find('button').click();
@@ -119,7 +131,11 @@ describe("Testing", () => {
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.contains('测试完成', { timeout: 300000 }).should('be.visible');
+        let start = new Date();
+        cy.contains('测试完成', { timeout: 300000 }).should('be.visible').then(() => {
+            const duration = new Date() - start;
+            cy.writeFile('testlog.txt', `time for objective evaluation: ${duration}\n`, { flag: 'a+' });
+        });
         cy.contains('客观测试').click();
         cy.contains('已完成评测').parent().parent().click();
         cy.contains('是否正确').should('be.visible');
@@ -150,11 +166,17 @@ describe("Testing", () => {
         cy.visit("/tasks", {
             failOnStatusCode: false,
         });
-        cy.contains('等待对抗评测', { timeout: 300000 }).should('be.visible');
+        let start = new Date();
+        cy.contains('等待对抗评测', { timeout: 300000 }).should('be.visible').then(() => {
+            const duration = new Date() - start;
+            cy.writeFile('testlog.txt', `time for comparative evaluation: ${duration}\n`, { flag: 'a+' });
+        });
         cy.contains('对抗测试').click();
         cy.url().should('include', '/tasks/');
         cy.get('a').contains('进行对抗评测').click();
-        cy.url().should('include', '/tasks/comparative-evaluation/');
+        cy.url().should('include', '/tasks/comparative-evaluation/').then(() => {
+            start = new Date();
+        });
         cy.contains('问题 1').parents().eq(1).children().eq(4).find("button").contains('提交').click();
         cy.contains('问题 2').parents().eq(1).children().eq(4).find("button").contains('提交').click();
         cy.contains('问题 3').parents().eq(1).children().eq(4).find("button").contains('提交').click();
@@ -163,9 +185,13 @@ describe("Testing", () => {
         cy.contains('问题 6').parents().eq(1).children().eq(4).find("button").contains('提交').click();
         cy.contains('问题 7').parents().eq(1).children().eq(4).find("button").contains('提交').click();
         cy.contains('问题 8').parents().eq(1).children().eq(4).find("button").contains('提交').click();
-        cy.get('nav').contains('测试').click();
-        cy.contains('对抗测试').find('button').click();
+        cy.contains('对抗测试').parents().first().children().first().click();
+        cy.get('nav').contains('测试').click().then(() => {
+            const duration = new Date() - start;
+            cy.writeFile('testlog.txt', `time for finishing comparative evaluation: ${duration}\n`, { flag: 'a+' });
+        });
         cy.contains('测试完成').should('be.visible');
+        cy.contains('对抗测试').find('button').click();
     });
     it("should let others see the result of testing", () => {
         cy.visit("/", {
