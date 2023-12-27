@@ -53,6 +53,16 @@ export default function FullWidthTabs({ modelInfo }) {
     setValue(index);
   };
 
+  const introductions = modelInfo.Introduction.split(/\n/g)
+    .filter((item) => item.trim() !== "")
+    .map((item) => item.trim());
+  const usages = modelInfo.Usage.split(/\n/g)
+    .filter((item) => item.trim() !== "")
+    .map((item) => item.trim());
+  const additionalInformations = modelInfo.AdditionalInformation.split(/\n/g)
+    .filter((item) => item.trim() !== "")
+    .map((item) => item.trim());
+
   return (
     <div className="overflow-hidden rounded-2xl">
       <Box sx={{ bgcolor: "background.paper", width: "full" }}>
@@ -77,13 +87,25 @@ export default function FullWidthTabs({ modelInfo }) {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            {modelInfo.Introduction}
+            {introductions.map((introduction, index) => (
+              <React.Fragment key={`introduction-${index}`}>
+                <span className="block indent-8">{introduction}</span>
+              </React.Fragment>
+            ))}
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            {modelInfo.Usage}
+            {usages.map((usage, index) => (
+              <React.Fragment key={`usage-${index}`}>
+                <span className="block indent-8">{usage}</span>
+              </React.Fragment>
+            ))}
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            {modelInfo.AdditionalInformation}
+            {additionalInformations.map((additionalInformation, index) => (
+              <React.Fragment key={`additional-information-${index}`}>
+                <span className="block indent-8">{additionalInformation}</span>
+              </React.Fragment>
+            ))}
           </TabPanel>
         </SwipeableViews>
       </Box>

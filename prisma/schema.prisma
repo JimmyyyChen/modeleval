@@ -23,10 +23,10 @@ model Model {
   modelid               Int       @id @default(autoincrement())
   modelName             String    @unique
   label_list            Label[]
-  description           String    @default("This is a default description.")
-  Introduction          String    @default("This is a default introduction for model.")
-  Usage                 String    @default("This is a default usage for model.")
-  AdditionalInformation String    @default("This is a default additional information for model.")
+  description           String    @db.Text
+  Introduction          String    @db.Text
+  Usage                 String    @db.Text
+  AdditionalInformation String    @db.Text
   downloadCount         Int       @default(0)
   lastUpdate            DateTime  @default(now())
   starCount             Int       @default(0)
