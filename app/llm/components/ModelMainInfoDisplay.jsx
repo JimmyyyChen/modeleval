@@ -1,7 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   StarIcon as SolidStarIcon,
   CubeIcon,
@@ -12,6 +12,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Image from "next/image";
 
 export default function ModelMainInfoDisplay({ modelInfo }) {
   const [starOpen, setStarOpen] = useState(false);
@@ -84,7 +85,7 @@ export default function ModelMainInfoDisplay({ modelInfo }) {
                       {item.userImageUrl ? (
                         <div className="avatar">
                           <div className="flex w-6 items-center justify-center rounded-full">
-                            <img src={item.userImageUrl} alt={item.username} />
+                            <Image src={item.userImageUrl} alt={item.username} />
                           </div>
                         </div>
                       ) : (
