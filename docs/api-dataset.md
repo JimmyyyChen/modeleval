@@ -1,6 +1,6 @@
-    
+​    
 
-    
+​    
 
     # API-DATASET
 
@@ -106,6 +106,12 @@
 - 失败 (`500`): 返回错误信息。
 
 ## 获取所有数据集信息 `GET /api/datasets`
+
+> TODO: 在部署环境下`npm run build && npm run start`出现问题, 目前暂时改用`GET /api/datasets/[randomID]`, randomId可以为任意值,功能相同.
+>
+> 问题如下:
+>
+> 在部署环境中,当加入新的数据集后, `GET api/datasets` 只会返回没有包括新加入的数据集的数据集数组
 
 **Request Body**
 
