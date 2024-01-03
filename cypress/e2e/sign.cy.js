@@ -18,12 +18,19 @@ describe("Signed out", () => {
 
   it("should navigate to sign in page when user trying to access other pages in a signed out state", () => {
     // open dashboard page
+    let start;
     cy.visit("/datasets", {
       failOnStatusCode: false,
+    }).then(() => {
+      start = new Date();
     });
 
     // check url
-    cy.url().should("include", "/sign-in");
+    cy.url().should("include", "/sign-in").then(() => {
+      const duration = new Date() - start;
+      cy.writeFile('testlog.txt', `time for loading sign in page: ${duration}\n`, { flag: 'a+' });
+      start = new Date();
+    });
 
     // open dashboard page
     cy.visit("/tasks", {
@@ -63,8 +70,18 @@ describe("Signed in", () => {
 
   it("should navigate to other pages in a signed in state", () => {
     // open dashboard page
+    let start;
+    cy.visit("/", {
+      failOnStatusCode: false,
+    }).then(() => {
+      start = new Date();
+    });
     cy.visit("/datasets", {
       failOnStatusCode: false,
+    }).then(() => {
+      const duration = new Date() - start;
+      cy.writeFile('testlog.txt', `time for loading datasets page: ${duration}\n`, { flag: 'a+' });
+      start = new Date();
     });
 
     // check url
@@ -73,6 +90,10 @@ describe("Signed in", () => {
     // open dashboard page
     cy.visit("/tasks", {
       failOnStatusCode: false,
+    }).then(() => {
+      const duration = new Date() - start;
+      cy.writeFile('testlog.txt', `time for loading tasks page: ${duration}\n`, { flag: 'a+' });
+      start = new Date();
     });
 
     // check url
@@ -81,6 +102,10 @@ describe("Signed in", () => {
     // open dashboard page
     cy.visit("/llm", {
       failOnStatusCode: false,
+    }).then(() => {
+      const duration = new Date() - start;
+      cy.writeFile('testlog.txt', `time for loading model page: ${duration}\n`, { flag: 'a+' });
+      start = new Date();
     });
 
     // check url
