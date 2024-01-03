@@ -108,6 +108,7 @@ export async function GET(request, { params }) {
                 return new NextResponse('File written successfully');
             }
         });
+        console.log(filename);
         return new NextResponse(JSON.stringify({ success: true, filename: filename }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
