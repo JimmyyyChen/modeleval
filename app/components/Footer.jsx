@@ -30,28 +30,6 @@ export default function Footer() {
       </div>
 
       <div className="flex flex-col items-center space-y-4 text-gray-500 sm:flex-row sm:space-x-6 sm:space-y-0">
-        <Link
-          href="/about"
-          className="flex flex-row items-center space-x-2 hover:font-semibold hover:text-gray-700 sm:flex-col sm:space-x-0"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-
-          <p className="text-sm text-gray-600">About us</p>
-        </Link>
-
         <a
           href="mailto:chenjimmy91@hotmail.com"
           className="flex flex-row items-center space-x-2 hover:font-semibold hover:text-gray-700 sm:flex-col sm:space-x-0"
