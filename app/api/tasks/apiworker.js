@@ -2,6 +2,8 @@ const { parentPort } = require('worker_threads');
 const { PrismaClient } = require('@prisma/client');
 const getModelAnswer = require("./api.js");
 const getModelAnswerBlock = require("./api.js");
+const findABCD = require('./findABCD');
+const recoverFrom  = require('./recoverFrom.js');
 // const amqp = require('amqplib');
 // const EventEmitter = require('events');
 // const eventEmitter = new EventEmitter();
@@ -224,22 +226,6 @@ async function updateAnswerInTask(task, answerjson) {
 }
 
 
-function recoverFrom(task, progress) {
-    const modelsLength = Object.keys(task.modelIds).length;
-    let datasetLength;
-    if (task.dataset.questionType == 0) {
-        datasetLength = task.dataset.ChoiceQuestions.length;
-    }
-    else {
-        datasetLength = task.dataset.ShortAnswerQuestions.length;
-    }
-    const totalLength = modelsLength * datasetLength;
-    const currentLength = parseInt(progress * totalLength);
-    const currentModelId = currentLength % modelsLength;
-    const currentQuestionId = currentLength / modelsLength;
-    return [currentModelId, currentQuestionId];
-}
-
 /*
 只用于客观题的自动化评测
 根据answerjson，更新task对应score数据库中的条目，并且更新task的scoresjson
@@ -290,13 +276,4 @@ async function calculateScore(task, answerjson) {
         },
     });
     return scorejson;
-}
-
-// 正则表达式寻找模型给出的选择题答案
-function findABCD(answerstr) {
-    const regex = /[A-D]/g;
-    let match;
-    while ((match = regex.exec(answerstr)) != null) {
-        return match[0];
-    }
 }

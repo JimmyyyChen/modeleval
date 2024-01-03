@@ -1,6 +1,7 @@
 // 添加新的测评任务
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getTotalCount } from "./getTotalCount";
 
 export async function POST(request) {
     try {
@@ -92,13 +93,8 @@ async function calculateTotalCount(datasetId) {
             ShortAnswerQuestions: true,
         }
     });
-    let totalCount = 0;
-    if (dataset.questionType == 0) {
-        totalCount = dataset.ChoiceQuestions.length;
-    }
-    else {
-        totalCount = dataset.ShortAnswerQuestions.length;
-    }
+    const totalCount = getTotalCount(dataset);
     console.log(totalCount);
     return totalCount;
 }
+
