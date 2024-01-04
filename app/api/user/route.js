@@ -3,7 +3,7 @@ import { getUser } from "@/lib/getUsername";
 import { clerkClient } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs";
 import { prisma } from "@/lib/prisma";
-export async function GET(request) {
+export async function GET() {
     try {
         const { userId } = auth();
         const user = await getUser(userId);

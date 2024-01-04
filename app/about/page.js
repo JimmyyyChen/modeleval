@@ -1,7 +1,7 @@
 // TODO: Add AboutPage and beautify it
 export default function AboutPage() {
   return (
-    <div>
+    <div className="text-primary space-x-2">
       <h1 className="text-2xl font-bold">关于 ModelEval</h1>
       <p className="text-lg">
         ModelEval 是一个用于评估机器学习模型性能的网站。

@@ -4,7 +4,6 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function CheckCondition({ title, labels }) {
   const searchParams = useSearchParams();
-  const query = searchParams.get("query")?.toString();
   const filter = searchParams.get("filter")?.toString();
   const pathname = usePathname();
   const { replace } = useRouter();

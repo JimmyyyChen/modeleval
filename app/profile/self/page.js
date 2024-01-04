@@ -1,7 +1,6 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Community from "@/app/components/Community";
 import UserInfo from "../../components/UserInfo";
 import UserDatasets from "../components/UserDatasets";
 
