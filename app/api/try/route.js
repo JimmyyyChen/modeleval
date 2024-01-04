@@ -1,8 +1,6 @@
 const { Clerk } = require('@clerk/clerk-sdk-node');
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
-export async function GET(request, { params }) {
+export async function GET() {
     // 初始化 Clerk
     const clerk = new Clerk({
         secretKey: 'sk_test_aifaxODoPybY4i9vTslZtXBlP7xvz4JYpRNWbVyceu',

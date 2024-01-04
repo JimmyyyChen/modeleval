@@ -151,6 +151,7 @@ export async function POST(request) {
 }
 
 async function createData(temp_name, fileSize, question_type, final_results, choices, wrong_questions, number_of_wrong, total_number, userId, username) {
+    if (number_of_wrong == total_number) return;
     let size_label = "<1K";
     if (final_results.length > 10000000) size_label = ">10M";
     else if (final_results.length > 1000000) size_label = "1M-10M";

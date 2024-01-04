@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request, { params }) {
+export async function GET() {
     try {
         let dataset = await prisma.Dataset.findMany({
             include: {

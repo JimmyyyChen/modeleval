@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -155,7 +155,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, datasetName, datasetId, selected, questionType, items } =
+  const { numSelected, datasetName, datasetId, selected, questionType } =
     props;
 
   const [editOpen, setEditOpen] = useState(false);
@@ -171,7 +171,7 @@ function EnhancedTableToolbar(props) {
   const [addCorrectAnswer, setAddCorrectAnswer] = useState("");
 
   const regex =
-    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?){0,3}\s*\]$/g;
+    /^\[\s*(?:"([^"]*)"|'([^']*)')(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)(?:\s*,\s*(?:"([^"]*)"|'([^']*)')?)\s*\]$/g;
 
   const handleDeleteSelectedItems = async () => {
     const request = await axios.post(
@@ -380,9 +380,10 @@ function EnhancedTableToolbar(props) {
                 请提交需要修改的属性，不需要修改的属性请留空。
                 <br />
                 请注意，如果进行修改，那么原有的选项或者答案将会被清空。Choices
-                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，且
+                Choices 长度必须为 4，如下：
                 <br />
-                ["Choice 1", "Choice 2", "Choice 3"]
+                ["Choice 1", "Choice 2", "Choice 3", "Choice 4"]
                 <br />
                 注：以上标点全部为英文标点。
               </DialogContentText>
@@ -453,9 +454,10 @@ function EnhancedTableToolbar(props) {
                 请提交需要新增的条目，每个属性均需要填写。
                 <br />
                 请注意，Choices
-                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+                应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，且
+                Choices 长度必须为 4，如下：
                 <br />
-                ["Choice 1", "Choice 2", "Choice 3"]
+                ["Choice 1", "Choice 2", "Choice 3", "Choice 4"]
                 <br />
                 注：以上标点全部为英文标点。
               </DialogContentText>
@@ -549,16 +551,20 @@ export default function ItemsModify({ datasetInfo }) {
     setItems(questionType == 0 ? ChoiceQuestions : ShortAnswerQuestions);
   }, [datasetInfo]);
 
-  if (datasetInfo && datasetInfo.label_list) {
-    var labelList = datasetInfo.label_list.map((item) => item.labelName);
-    var disabledLabels = datasetTypes[0]["value"]
+  const labelListRef = useRef();
+  const uniqueLabelsRef = useRef();
+  const disabledLabelsRef = useRef();
+
+  if (datasetInfo && datasetInfo.label_list && !labelListRef.current) {
+    labelListRef.current = datasetInfo.label_list.map((item) => item.labelName);
+    disabledLabelsRef.current = datasetTypes[0]["value"]
       .map((item) => item.content)
       .concat(datasetTypes[1]["value"].map((item) => item.content));
 
     var labels = datasetTypes[2]["value"]
       .map((item) => item.content)
-      .concat(labelList);
-    var uniqueLabels = [...new Set(labels)];
+      .concat(labelListRef.current);
+    uniqueLabelsRef.current = [...new Set(labels)];
   }
 
   const handleSelectAllClick = (event) => {
@@ -645,8 +651,8 @@ export default function ItemsModify({ datasetInfo }) {
     if (
       modifyDatasetName === "" &&
       modifyDescription === "" &&
-      labelList.length === datasetInfo.label_list.length &&
-      labelList.sort().toString() ===
+      labelListRef.current.length === datasetInfo.label_list.length &&
+      labelListRef.current.sort().toString() ===
         datasetInfo.label_list
           .map((item) => item.labelName)
           .sort()
@@ -659,9 +665,14 @@ export default function ItemsModify({ datasetInfo }) {
 
     var newLabels = [];
 
-    if (modifyNewLabels && (newLabels = regex.exec(modifyNewLabels)) !== null) {
-      newLabels = newLabels.slice(1).filter((item) => Boolean(item));
-      } else if (modifyNewLabels) {
+    if (modifyNewLabels && regex.exec(modifyNewLabels) !== null) {
+      modifyNewLabels
+        .slice(1, -1)
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => Boolean(item))
+        .forEach((item) => newLabels.push(item.slice(1, -1)));
+    } else if (modifyNewLabels) {
       alert("New Labels 格式不正确！");
       return;
     }
@@ -671,7 +682,7 @@ export default function ItemsModify({ datasetInfo }) {
       {
         datasetName: modifyDatasetName,
         description: modifyDescription,
-        label_list: labelList.concat(newLabels),
+        label_list: [...new Set(labelListRef.current.concat(newLabels))],
       },
     );
 
@@ -738,7 +749,9 @@ export default function ItemsModify({ datasetInfo }) {
                           onClick={(event) => handleClick(event, row.id)}
                         />
                       </TableCell>
-                      <TableCell align="left">{index}</TableCell>
+                      <TableCell align="left">
+                        {items.indexOf(row) + 1}
+                      </TableCell>
                       <TableCell align="left">{row.question}</TableCell>
                       <TableCell align="center">
                         <ResponsiveDialog
@@ -792,7 +805,8 @@ export default function ItemsModify({ datasetInfo }) {
             <DialogContentText>
               请提交需要修改的属性，不需要修改的属性请留空。
               <br />
-              请注意，数据集最终适配标签与当前选中一致。New Labels 列可以自定义标签，对于每个数据集，自定义标签自动选中（可在后续取消），应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
+              请注意，数据集最终适配标签与当前选中一致。New Labels
+              列可以自定义标签，对于每个数据集，自定义标签自动选中（可在后续取消），应为以中括号([])包裹，逗号(,)分隔的单/双引号(''/"")字符串数组，如下：
               <br />
               ["Label 1", "Label 2", "Label 3"]
               <br />
@@ -822,22 +836,25 @@ export default function ItemsModify({ datasetInfo }) {
             <div className="flex flex-col pt-4">
               <div className="text-gray-600">Labels:</div>
               <div className="flex flex-wrap">
-                {uniqueLabels.map((label) => (
+                {uniqueLabelsRef.current.map((label) => (
                   <div
                     key={`label-value-${label}`}
-                    className="form-control m-1 rounded-3xl bg-white  px-2 shadow"
+                    className="form-control m-1 rounded-3xl bg-white px-2 shadow"
                   >
                     <label className="label cursor-pointer space-x-2 p-2">
                       <input
                         type="checkbox"
                         className="checkbox-primary checkbox h-4 w-4"
-                        disabled={disabledLabels.includes(label)}
-                        defaultChecked={labelList.includes(label)}
+                        disabled={disabledLabelsRef.current.includes(label)}
+                        defaultChecked={labelListRef.current.includes(label)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            labelList.push(label);
+                            labelListRef.current.push(label);
                           } else {
-                            labelList.splice(labelList.indexOf(label), 1);
+                            labelListRef.current.splice(
+                              labelListRef.current.indexOf(label),
+                              1,
+                            );
                           }
                         }}
                       />

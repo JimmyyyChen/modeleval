@@ -1,0 +1,18 @@
+time for loading sign in page: 1156
+time for loading datasets page: 244
+time for loading tasks page: 383
+time for loading model page: 246
+time for adding question: 0
+time for deleting question: 19
+time for updating dataset: 743
+time for deleting dataset: 23
+time for starring dataset: 9
+time for commenting dataset: 65
+time for loading testing page: 277
+time for subjective evaluation: 10433
+time for finishing subjective evaluation: 4861
+time for changing subjective evaluation: 2349
+time for loading main page: 167
+time for objective evaluation: 6062
+time for comparative evaluation: 17791
+time for finishing comparative evaluation: 4037

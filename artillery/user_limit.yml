@@ -1,0 +1,9 @@
+config:
+  target: 'http://101.43.208.28/'
+  phases:
+    - duration: 5
+      arrivalRate: 400         #change size of user   
+scenarios:
+  - flow:
+    - get:
+        url: "/test"

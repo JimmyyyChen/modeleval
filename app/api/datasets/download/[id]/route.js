@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/getUsername";
 import { clerkClient } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs";
+import { handleDataset } from "./handleDataset";
 export async function GET(request, { params }) {
     try {
         let { userId } = auth();
@@ -72,33 +73,7 @@ export async function GET(request, { params }) {
             filename += '.csv';
         }
         const filePath = path.resolve(process.cwd(), 'public', filename);
-        let content = '';
-        if (dataset.questionType == 0) {
-            content += "question,choices,correctAnswer\n";
-            for (let i = 0; i < dataset.ChoiceQuestions.length; i++) {
-                dataset.ChoiceQuestions[i].question = dataset.ChoiceQuestions[i].question.replace(/"/g, '""');
-                content += ("\"" + dataset.ChoiceQuestions[i].question + "\",\"[ ");
-                for (let j = 0; j < dataset.ChoiceQuestions[i].choices.length; j++) {
-                    dataset.ChoiceQuestions[i].choices[j].content = dataset.ChoiceQuestions[i].choices[j].content.replace(/"/g, '""');
-                    content += ("\"\"" + dataset.ChoiceQuestions[i].choices[j].content + "\"\"");
-                    if (j != dataset.ChoiceQuestions[i].choices.length - 1) {
-                        content += ", ";
-                    }
-                    else content += " ]\"";
-                }
-                content += ",";
-                content += dataset.ChoiceQuestions[i].correctAnswer + ",,,\n";
-            }
-        }
-        else if (dataset.questionType == 1) {
-            content += "prompt,answer\n";
-            for (let i = 0; i < dataset.ShortAnswerQuestions.length; i++) {
-                dataset.ShortAnswerQuestions[i].question = dataset.ShortAnswerQuestions[i].question.replace(/"/g, '""');
-                content += ("\"" + dataset.ShortAnswerQuestions[i].question + "\",");
-                dataset.ShortAnswerQuestions[i].sampleAnswer = dataset.ShortAnswerQuestions[i].sampleAnswer.replace(/"/g, '""');
-                content += dataset.ShortAnswerQuestions[i].sampleAnswer + ",,,\n";
-            }
-        }
+        let content = handleDataset(dataset);
         // 写入文件
         fs.writeFileSync(filePath, content, 'utf8', function (error) {
             if (error) {
@@ -108,6 +83,7 @@ export async function GET(request, { params }) {
                 return new NextResponse('File written successfully');
             }
         });
+        console.log(filename);
         return new NextResponse(JSON.stringify({ success: true, filename: filename }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
