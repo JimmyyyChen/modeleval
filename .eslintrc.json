@@ -13,10 +13,6 @@
     "jest": true
   },
   "rules": {
-    // your rules here
-    "no-unused-vars": "off",
-    "no-inner-declarations": "off",
-    "react/no-unescaped-entities": "off",
-    "no-irregular-whitespace": "off"
+    "react/no-unescaped-entities": "off"
   }
 }

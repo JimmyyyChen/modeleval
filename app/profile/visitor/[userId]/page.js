@@ -26,10 +26,6 @@ export default function Home({ params: { userId } }) {
     fetchUserInfo();
   }, [userId]);
 
-  if (userInfo) {
-    var { username } = userInfo;
-  }
-
   const [datasets, setDatasets] = useState(null);
 
   useEffect(() => {

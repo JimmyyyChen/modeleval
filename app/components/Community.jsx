@@ -16,7 +16,7 @@ export default function Community({ id, type }) {
         id: parseInt(id),
         content: content,
       })
-      .then(function (response) {
+      .then(function () {
         axios.get(`/api/comments/${fromContext}/${id}`).then((res) => {
           setComments(res.data);
         });

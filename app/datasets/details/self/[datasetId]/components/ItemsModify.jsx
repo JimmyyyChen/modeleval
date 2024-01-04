@@ -155,7 +155,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, datasetName, datasetId, selected, questionType, items } =
+  const { numSelected, datasetName, datasetId, selected, questionType } =
     props;
 
   const [editOpen, setEditOpen] = useState(false);

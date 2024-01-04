@@ -41,6 +41,7 @@ let pauseTask = {"taskId": "", "state": "run"};
 parentPort.on('message', async (data) => {
     try {
 
+        // eslint-disable-next-line no-inner-declarations
         async function checkPauseTask(taskId) {
             // 检查pauseTask变量，确定是否暂停任务
             // console.log("in checkPausetask: " + pauseTask.taskId + " " + pauseTask.state);
