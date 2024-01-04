@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { updateAnswer } from "./updateAnswer";
 
 export async function POST(request) {
     try{
@@ -30,30 +31,7 @@ export async function POST(request) {
                 }
             });
             _progress = scoreItem.progress;
-            // 如果该模型的该条目还没有被判定过
-            if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == undefined) {
-                if (json.judge[modelId] == true) {
-                    scoreItem.correctCount += 1;
-                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
-                }
-                else{
-                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
-                }
-                scoreItem.progress += 1;
-            }
-            // 若已经判定过，需要修改
-            else if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == true) {
-                if (json.judge[modelId] == false) {
-                    scoreItem.correctCount -= 1;
-                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = false;
-                }
-            }
-            else if (task.answerjson[modelId]["answers"][json.index]["isCorrect"] == false) {
-                if (json.judge[modelId] == true) {
-                    scoreItem.correctCount += 1;
-                    task.answerjson[modelId]["answers"][json.index]["isCorrect"] = true;
-                }
-            }
+            updateAnswer(task, modelId, json, scoreItem);
             if (scoreItem.progress == scoreItem.totalCount) {  // 如果已经全部判定完毕 
                 scoreItem.score = scoreItem.correctCount / scoreItem.totalCount;
                 score[modelId] = scoreItem.score;

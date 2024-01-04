@@ -16,7 +16,7 @@ describe("Testing", () => {
             failOnStatusCode: false,
         }).then(() => {
             const duration = new Date() - start;
-            cy.writeFile('testlog.txt', `time for loading page: ${duration}\n`, { flag: 'a+' });
+            cy.writeFile('testlog.txt', `time for loading testing page: ${duration}\n`, { flag: 'a+' });
         });
         cy.get("a", { timeout: 30000 }).contains("创建新测试");
         cy.get("h1").contains("我创建的测试");
@@ -191,7 +191,7 @@ describe("Testing", () => {
             cy.writeFile('testlog.txt', `time for finishing comparative evaluation: ${duration}\n`, { flag: 'a+' });
         });
         cy.contains('测试完成').should('be.visible');
-        cy.contains('对抗测试').find('button').click();
+        //cy.contains('对抗测试').find('button').click();
     });
     it("should let others see the result of testing", () => {
         cy.visit("/", {

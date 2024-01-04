@@ -1,17 +1,18 @@
-time for loading page: 204
-time for subjective evaluation: 6962
-time for finishing subjective evaluation: 3579
-time for changing subjective evaluation: 1923
-time for loading main page: 147
-time for objective evaluation: 3163
-time for comparative evaluation: 17529
-time for finishing comparative evaluation: 5677
-time for loading page: 507
-time for loading page: 195
-time for subjective evaluation: 8054
-time for finishing subjective evaluation: 4069
-time for changing subjective evaluation: 1865
-time for loading main page: 112
-time for objective evaluation: 2367
-time for comparative evaluation: 16150
-time for finishing comparative evaluation: 2536
+time for loading sign in page: 1156
+time for loading datasets page: 244
+time for loading tasks page: 383
+time for loading model page: 246
+time for adding question: 0
+time for deleting question: 19
+time for updating dataset: 743
+time for deleting dataset: 23
+time for starring dataset: 9
+time for commenting dataset: 65
+time for loading testing page: 277
+time for subjective evaluation: 10433
+time for finishing subjective evaluation: 4861
+time for changing subjective evaluation: 2349
+time for loading main page: 167
+time for objective evaluation: 6062
+time for comparative evaluation: 17791
+time for finishing comparative evaluation: 4037

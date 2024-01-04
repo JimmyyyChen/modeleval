@@ -1,6 +1,7 @@
 // 更新模型的平均得分（Model中的字段ScoreObj和ScoreSub）
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { updateReturnScoreObj, updateReturnScoreSub } from "./updateReturnScore";
 
 export async function POST(request) {
     try {
@@ -28,20 +29,10 @@ export async function POST(request) {
                     }
                 },
             });
-            if (scoreObjs.length == 0) { // 代表该模型没有已经完成的客观题评测
-                ReturnScoreObj[model[i].modelid] = 0;
-            }
-            else {
-                let correctCount = 0;
-                let totalCount = 0;
-                for (let j = 0; j < scoreObjs.length; j++) {
-                    const scoreObj = scoreObjs[j];
-                    correctCount += scoreObj.correctCount;
-                    totalCount += scoreObj.progress;
-                }
-                score_obj = correctCount / totalCount;
-                ReturnScoreObj[model[i].modelid] = score_obj;
-            }
+
+            // update ReturnScoreObj
+            const modelId = model[i].modelid;
+            score_obj = updateReturnScoreObj(scoreObjs, ReturnScoreObj, modelId, score_obj);
 
             // 2. 更新主观题得分ScoreSub
             let score_sub;
@@ -54,20 +45,7 @@ export async function POST(request) {
                     }
                 },
             });
-            if (scoreSubs.length == 0) {
-                ReturnScoreSub[model[i].modelid] = 0;
-            }
-            else {
-                let correctCount = 0;
-                let totalCount = 0;
-                for (let j = 0; j < scoreSubs.length; j++) {
-                    const scoreSub = scoreSubs[j];
-                    correctCount += scoreSub.correctCount;
-                    totalCount += scoreSub.progress;
-                }
-                score_sub = correctCount / totalCount;
-                ReturnScoreSub[model[i].modelid] = score_sub;
-            }
+            score_sub = updateReturnScoreSub(scoreSubs, ReturnScoreSub, modelId, score_sub);
 
             // 3. 在模型数据库中更新得分
             await prisma.model.update({

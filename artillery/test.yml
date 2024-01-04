@@ -1,0 +1,23 @@
+config:
+  target: 'http://101.43.208.28'
+  phases:
+    - duration: 5
+      arrivalRate: 20               #change size of user
+scenarios:
+  - name: "User logs in and does some stuff"
+    flow:
+      - post:
+          url: "/api/tasks/operations/addTask"
+          json:
+            userId: "testuser"
+            taskName: "test task"
+            questionType: 1           #need to change according to the real question type in the server
+            modelIds: [1,2,3,4]
+            datasetId: 7                #need to change according to the real dataset id in the server
+          capture:
+            - json: "$.id"
+              as: "taskId"
+      - think: 3
+      - post:
+          url: "/api/tasks/operations/startTask/{{taskId}}"
+      - think: 5
